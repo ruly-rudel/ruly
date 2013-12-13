@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{19EB3990-36FA-4675-8E6E-8BD3294E4BAD}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Ruly</RootNamespace>
+    <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
+    <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
+    <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
+    <AndroidApplication>True</AndroidApplication>
+    <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
+    <AndroidResgenClass>Resource</AndroidResgenClass>
+    <AssemblyName>Ruly</AssemblyName>
+    <TargetFrameworkVersion>v4.0.3</TargetFrameworkVersion>
+    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidLinkMode>None</AndroidLinkMode>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Mono.Android" />
+    <Reference Include="SQLite">
+      <HintPath>..\Components\sqlite-net-1.0.1\lib\android\SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Components\json.net-4.5.11\lib\android\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Android.Support.v4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resources\Resource.designer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="model\TaskData.cs" />
+    <Compile Include="viewmodel\ViewModel.cs" />
+    <Compile Include="model\TaskHistory.cs" />
+    <Compile Include="model\Model.cs">
+      <Gettext-ScanForTranslations>False</Gettext-ScanForTranslations>
+    </Compile>
+    <Compile Include="model\TaskAlarm.cs" />
+    <Compile Include="model\TaskCategory.cs" />
+    <Compile Include="model\TaskPlace.cs" />
+    <Compile Include="model\TaskCategoryRelation.cs" />
+    <Compile Include="model\PersistentModelData.cs" />
+    <Compile Include="model\CombinedTaskHistory.cs" />
+    <Compile Include="view\Adapter\HomeViewPagerAdapter.cs" />
+    <Compile Include="view\Adapter\TaskAdapter.cs" />
+    <Compile Include="view\Adapter\TaskHistryAdapter.cs" />
+    <Compile Include="view\Fragment\AddTaskFragment.cs" />
+    <Compile Include="view\Fragment\InboxFragment.cs" />
+    <Compile Include="view\Fragment\NextFragment.cs" />
+    <Compile Include="view\Fragment\TaskEditFragment.cs" />
+    <Compile Include="view\Fragment\TaskPickerFragment.cs" />
+    <Compile Include="view\Fragment\DatePickerFragment.cs" />
+    <Compile Include="view\Fragment\TimePickerFragment.cs" />
+    <Compile Include="view\Fragment\TodayFragment.cs" />
+    <Compile Include="view\Activity\MainActivity.cs" />
+    <Compile Include="view\Activity\TaskEditActivity.cs" />
+    <Compile Include="view\Activity\TaskInfoActivity.cs" />
+    <Compile Include="view\Adapter\TaskInfoAdapter.cs" />
+    <Compile Include="view\Adapter\AlarmAdapter.cs">
+      <DependentUpon>HomeViewPagerAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="view\Activity\AlarmReceiver.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AboutResources.txt" />
+    <None Include="Assets\AboutAssets.txt" />
+    <None Include="Properties\AndroidManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\Main.axml" />
+    <AndroidResource Include="Resources\values\Strings.xml" />
+    <AndroidResource Include="Resources\drawable\Icon.png" />
+    <AndroidResource Include="Resources\layout\TaskHistoryItem.axml" />
+    <AndroidResource Include="Resources\layout\MainToday.axml" />
+    <AndroidResource Include="Resources\layout\MainInbox.axml" />
+    <AndroidResource Include="Resources\layout\MainNext.axml" />
+    <AndroidResource Include="Resources\layout\TaskItem.axml" />
+    <AndroidResource Include="Resources\layout\TaskItemDetail.axml" />
+    <AndroidResource Include="Resources\layout\TaskInfo.axml" />
+    <AndroidResource Include="Resources\layout\TaskEdit.axml" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_accept.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_accept.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_accept.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_accept.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_cancel.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_cancel.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_cancel.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_cancel.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_discard.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_discard.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_discard.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_discard.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_edit.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_edit.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_edit.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_edit.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_new.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_new.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_new.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_new.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_save.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_save.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_save.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_save.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_pause.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_pause.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_pause.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_pause.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_play.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_play.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_play.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_play.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_stop.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_stop.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_stop.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_stop.png" />
+    <AndroidResource Include="Resources\values\themes.xml" />
+    <AndroidResource Include="Resources\menu\edit_menu.xml" />
+    <AndroidResource Include="Resources\values\TempSpinner.xml" />
+    <AndroidResource Include="Resources\layout\TaskEditHome.axml" />
+    <AndroidResource Include="Resources\menu\info_menu.xml" />
+    <AndroidResource Include="Resources\menu\main_menu.xml" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_collapse.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_collapse.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_collapse.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_collapse.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_expand.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_expand.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_expand.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_expand.png" />
+    <AndroidResource Include="Resources\layout\TaskAlarm.axml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="view\" />
+    <Folder Include="viewmodel\" />
+    <Folder Include="model\" />
+    <Folder Include="Resources\menu\" />
+    <Folder Include="view\Adapter\" />
+    <Folder Include="view\Fragment\" />
+    <Folder Include="view\Activity\" />
+  </ItemGroup>
+  <ItemGroup>
+    <XamarinComponentReference Include="sqlite-net">
+      <Version>1.0.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="json.net">
+      <Version>4.5.11</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+  </ItemGroup>
+</Project>

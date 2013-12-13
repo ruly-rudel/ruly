@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:p1="http://schemas.android.com/apk/res/android"
+    p1:minWidth="25px"
+    p1:minHeight="25px"
+    p1:layout_width="match_parent"
+    p1:layout_height="match_parent"
+    p1:id="@+id/linearLayout1">
+    <LinearLayout
+        p1:minWidth="25px"
+        p1:minHeight="25px"
+        p1:layout_width="wrap_content"
+        p1:layout_height="match_parent"
+        p1:id="@+id/linearLayout2"
+        p1:orientation="vertical">
+        <TextView
+            p1:textAppearance="?android:attr/textAppearanceSmall"
+            p1:layout_width="72dp"
+            p1:layout_height="wrap_content"
+            p1:id="@+id/taskHistoryFrom"
+            p1:padding="1dp"
+            p1:gravity="left" />
+        <TextView
+            p1:textAppearance="?android:attr/textAppearanceSmall"
+            p1:layout_width="72dp"
+            p1:layout_height="match_parent"
+            p1:id="@+id/taskHistoryTo"
+            p1:padding="1dp"
+            p1:gravity="bottom" />
+    </LinearLayout>
+    <TextView
+        p1:text="Task Name"
+        p1:textAppearance="?android:attr/textAppearanceLarge"
+        p1:layout_width="match_parent"
+        p1:layout_height="match_parent"
+        p1:id="@+id/taskHistoryName"
+        p1:gravity="center"
+        p1:background="#ba75dc"
+        p1:padding="0dp"
+        p1:layout_marginLeft="4dp" />
+</LinearLayout>

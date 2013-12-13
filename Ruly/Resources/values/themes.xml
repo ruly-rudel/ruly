@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <style name="MyTheme" parent="@android:style/Theme.Holo.Light">
+        <!-- Any customizations for your app running on devices with Theme.Holo here -->
+		<item name="android:actionBarStyle">@style/MyActionBar</item>
+    </style>
+    <style name="MyActionBar"
+           parent="@android:style/Widget.ActionBar">
+        <item name="android:displayOptions">disableHome</item>
+    </style>
+</resources>

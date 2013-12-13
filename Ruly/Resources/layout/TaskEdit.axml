@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+    <EditText
+        android:id="@+id/taskTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Task Title" />
+<!--    <Spinner
+        android:id="@+id/taskParent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/taskTitle"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/taskState"
+        android:hint="Parent" />
+    <Spinner
+        android:id="@+id/taskState"
+        android:layout_width="96dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/taskTitle"
+        android:layout_toLeftOf="@+id/taskPlace"
+        android:hint="State" />
+    <Spinner
+        android:id="@+id/taskPlace"
+        android:layout_width="96dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/taskTitle"
+        android:layout_alignParentRight="true"
+        android:hint="Place" />
+    <TextView
+        android:id="@+id/taskDueDate"
+        style="@android:style/Widget.Holo.Light.Spinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/taskPlace"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/taskDueTime"
+        android:hint="Due Date" />
+    <TextView
+        android:id="@+id/taskDueTime"
+        style="@android:style/Widget.Holo.Light.Spinner"
+        android:layout_width="96dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/taskPlace"
+        android:layout_alignParentRight="true"
+        android:hint="Due Time" />-->
+    <EditText
+        android:id="@+id/taskNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:layout_below="@id/taskTitle"
+        android:hint="Note" />
+    <ListView
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/taskNote"
+        android:id="@+id/taskAlarmList" />
+</RelativeLayout>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string-array name="state_array">
+        <item>Unexecuted</item>
+        <item>In Progress</item>
+        <item>Done</item>
+    </string-array>
+    <string-array name="place_array">
+        <item>Home</item>
+        <item>Office</item>
+        <item>Telephone</item>
+        <item>Computer</item>
+        <item>Out</item>
+    </string-array>
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_go"
+          android:icon="@drawable/ic_action_play"
+          android:title="Go"
+          android:showAsAction="ifRoom"/>
+    <item android:id="@+id/menu_pause"
+          android:icon="@drawable/ic_action_pause"
+          android:title="Pause"
+          android:showAsAction="ifRoom" />
+    <item android:id="@+id/menu_resume"
+          android:icon="@drawable/ic_action_play"
+          android:title="Resume"
+          android:showAsAction="ifRoom" />
+    <item android:id="@+id/menu_finish"
+          android:icon="@drawable/ic_action_stop"
+          android:title="Finish"
+          android:showAsAction="ifRoom" />
+    <item android:id="@+id/menu_new"
+          android:icon="@drawable/ic_action_new"
+          android:title="New Task"
+          android:showAsAction="ifRoom"/>
+</menu>
+

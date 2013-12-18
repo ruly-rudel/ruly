@@ -51,7 +51,7 @@
       <HintPath>..\Components\json.net-4.5.11\lib\android\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Android.Support.v4" />
-    <Reference Include="OpenTK-1.0" />
+    <Reference Include="OpenTK" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.designer.cs" />
@@ -87,6 +87,8 @@
     <Compile Include="model\DataBase\Model.cs">
       <Gettext-ScanForTranslations>False</Gettext-ScanForTranslations>
     </Compile>
+    <Compile Include="view\View\ShellView.cs" />
+    <Compile Include="view\Activity\ShellActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -167,6 +169,8 @@
     <Folder Include="view\Fragment\" />
     <Folder Include="view\Activity\" />
     <Folder Include="model\DataBase\" />
+    <Folder Include="model\Shell\" />
+    <Folder Include="view\View\" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="sqlite-net">

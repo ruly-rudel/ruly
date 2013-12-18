@@ -16,7 +16,7 @@ using Android.Util;
 
 namespace Ruly.view
 {
-	[Activity (Label = "Ruly", MainLauncher = true, UiOptions = Android.Content.PM.UiOptions.SplitActionBarWhenNarrow)]
+	[Activity (Label = "Ruly", UiOptions = Android.Content.PM.UiOptions.SplitActionBarWhenNarrow)]
 	public class MainActivity : Android.Support.V4.App.FragmentActivity, ActionBar.ITabListener, ViewPager.IOnPageChangeListener
 	{
 		ViewPager viewPager;

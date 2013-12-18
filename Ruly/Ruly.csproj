@@ -51,22 +51,12 @@
       <HintPath>..\Components\json.net-4.5.11\lib\android\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Android.Support.v4" />
+    <Reference Include="OpenTK-1.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="model\TaskData.cs" />
     <Compile Include="viewmodel\ViewModel.cs" />
-    <Compile Include="model\TaskHistory.cs" />
-    <Compile Include="model\Model.cs">
-      <Gettext-ScanForTranslations>False</Gettext-ScanForTranslations>
-    </Compile>
-    <Compile Include="model\TaskAlarm.cs" />
-    <Compile Include="model\TaskCategory.cs" />
-    <Compile Include="model\TaskPlace.cs" />
-    <Compile Include="model\TaskCategoryRelation.cs" />
-    <Compile Include="model\PersistentModelData.cs" />
-    <Compile Include="model\CombinedTaskHistory.cs" />
     <Compile Include="view\Adapter\HomeViewPagerAdapter.cs" />
     <Compile Include="view\Adapter\TaskAdapter.cs" />
     <Compile Include="view\Adapter\TaskHistryAdapter.cs" />
@@ -86,6 +76,17 @@
       <DependentUpon>HomeViewPagerAdapter.cs</DependentUpon>
     </Compile>
     <Compile Include="view\Activity\AlarmReceiver.cs" />
+    <Compile Include="model\DataBase\CombinedTaskHistory.cs" />
+    <Compile Include="model\DataBase\PersistentModelData.cs" />
+    <Compile Include="model\DataBase\TaskAlarm.cs" />
+    <Compile Include="model\DataBase\TaskCategory.cs" />
+    <Compile Include="model\DataBase\TaskCategoryRelation.cs" />
+    <Compile Include="model\DataBase\TaskData.cs" />
+    <Compile Include="model\DataBase\TaskHistory.cs" />
+    <Compile Include="model\DataBase\TaskPlace.cs" />
+    <Compile Include="model\DataBase\Model.cs">
+      <Gettext-ScanForTranslations>False</Gettext-ScanForTranslations>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -165,6 +166,7 @@
     <Folder Include="view\Adapter\" />
     <Folder Include="view\Fragment\" />
     <Folder Include="view\Activity\" />
+    <Folder Include="model\DataBase\" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="sqlite-net">

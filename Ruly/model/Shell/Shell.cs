@@ -3,6 +3,7 @@ using System.Collections.Generic;
 //using Sce.PlayStation.Core.Graphics;
 using System.Linq;
 using Android.Util;
+using Java.Nio;
 
 namespace Ruly.model
 {
@@ -111,7 +112,7 @@ namespace Ruly.model
 		public float[]		Vertex;
 		public float[]		Normal;
 		public float[]		Uv;
-		public ushort[]	Index;
+		public short[]		Index;
 		public List<Material>				material	{ set; get; }
 		public Texture2D[]					toon		{ get; set; }
 		public Dictionary<string, TexInfo>	texture		{ get; set; }
@@ -163,18 +164,28 @@ namespace Ruly.model
 			Surface = new PMD (path);
 			RenderSets.Add(new RenderSet("builtin:nomotion", "screen"));
 
-			var buf = Java.Nio.ByteBuffer.AllocateDirect (Surface.Vertex.Count () * 4);
-			Surface.VertexBuffer = buf.AsFloatBuffer() as Java.Nio.FloatBuffer;
-			foreach (var i in Surface.Vertex) {
-				Surface.VertexBuffer.Put (i);
-			}
+			ByteBuffer buf = ByteBuffer.AllocateDirect (Surface.Vertex.Length * sizeof(float));
+			buf.Order (ByteOrder.NativeOrder ());
+			Surface.VertexBuffer = buf.AsFloatBuffer() as FloatBuffer;
+			Surface.VertexBuffer.Put (Surface.Vertex);
+//			foreach (var i in Surface.Vertex) {
+//				Surface.VertexBuffer.Put (i);
+//			}
+//			for (int i = 0; i < Surface.Vertex.Count (); i++) {
+//				Surface.VertexBuffer.Put (Surface.Vertex [i]);
+//			}
 			Surface.VertexBuffer.Position (0);
 
-			buf = Java.Nio.ByteBuffer.AllocateDirect (Surface.Index.Count () * 2);
+			buf = ByteBuffer.AllocateDirect (Surface.Index.Length * sizeof(short));
+			buf.Order (ByteOrder.NativeOrder ());
 			Surface.IndexBuffer = buf.AsShortBuffer() as Java.Nio.ShortBuffer;
-			foreach (var i in Surface.Index) {
-				Surface.IndexBuffer.Put ((short)i);
-			}
+//			foreach (var i in Surface.Index) {
+//				Surface.IndexBuffer.Put ((short)i);
+//			}
+//			for (int i = 0; i < Surface.Index.Length; i++) {
+//				Surface.IndexBuffer.Put (Surface.Index [i]);
+//			}
+			Surface.IndexBuffer.Put (Surface.Index);
 			Surface.IndexBuffer.Position (0);
 
 			Log.Debug ("Shell", "PMD load ends.");

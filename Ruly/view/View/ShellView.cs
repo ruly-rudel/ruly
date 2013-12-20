@@ -43,10 +43,6 @@ namespace Ruly.view
 
 			mRT["screen"].switchTargetFrameBuffer();
 			GLES20.GlClear(GL10.GlColorBufferBit | GL10.GlDepthBufferBit);
-//			initializeAllTexture(false);
-//			initializeAllSkinningTexture();
-
-//			int pos = mCoreLogic.applyCurrentMotion();
 
 			////////////////////////////////////////////////////////////////////
 			//// draw models
@@ -62,37 +58,13 @@ namespace Ruly.view
 							// Projection Matrix
 							GLES20.GlUniformMatrix4fv(glsl.muPMatrix, 1, false, ShellViewModel.ProjectionMatrix, 0);
 
-							// LightPosition
-//							GLES20.GlUniform3fv(glsl.muLightDir, 1, mLightDir, 0);
-//
-//							GLES20.GlUniform1i(glsl.msToonSampler, 0);
-//							GLES20.GlUniform1i(glsl.msTextureSampler, 1);
-//							GLES20.GlUniform1i(glsl.msSphereSampler, 2);
-
 							bindBuffer(shell.Surface, glsl);
 							drawAlpha(shell.Surface, glsl, true);							
-//							if(!rs.shader.EndsWith("alpha")) {
-//								drawNonAlpha(shell.Surface, glsl);							
-//								drawAlpha(shell.Surface, glsl, false);						
-//							} else {
-//								drawAlpha(shell.Surface, glsl, true);							
-//							}
 						}
 					}
 				}
 			}
 
-//			////////////////////////////////////////////////////////////////////
-//			//// draw BG
-//			String bg = mCoreLogic.getBG();
-//			if(bg != null) {
-//				GLSL glsl = mGLSL.get("builtin:bg");
-//				GLES20.glUseProgram(glsl.mProgram);
-//				GLES20.glUniform1i(glsl.msTextureSampler, 1);
-//
-//				bindBgBuffer(glsl);
-//				drawBg(bg);
-//			}
 
 			GLES20.GlFlush();
 			checkGlError(TAG);
@@ -132,20 +104,8 @@ namespace Ruly.view
 			// shader programs
 			mGLSL = new Dictionary<String, GLSL>();
 
-//			mGLSL.Add("builtin:default", 
-//				new GLSL(String.Format(Util.ReadAssetString("shader/vs.vsh"), bonenum), Util.ReadAssetString("shader/fs.fsh")));
-//			mGLSL.Add("builtin:default_alpha", 
-//				new GLSL(String.Format(mCoreLogic.getRawResourceString(R.raw.vs), bonenum), mCoreLogic.getRawResourceString(R.raw.fs_alpha)));
-//			mGLSL.Add("builtin:default_shadow", 
-//				new GLSL(String.Format(mCoreLogic.getRawResourceString(R.raw.vs_shadow), bonenum), mCoreLogic.getRawResourceString(R.raw.fs_shadow)));
 			mGLSL.Add("builtin:nomotion",
 				new GLSL(Util.ReadAssetString("shader/vs_notex.vsh"), Util.ReadAssetString("shader/fs_notex.fsh")));
-//			mGLSL.Add("builtin:nomotion_alpha",
-//				new GLSL(Util.ReadAssetString("shader/vs_notex.vsh"), Util.ReadAssetString("shader/fs_notex.fsh")));
-//			mGLSL.Add("builtin:bg",
-//				new GLSL(Util.ReadAssetString("shader/vs_bg.vsh"), Util.ReadAssetString("shader/fs_bg.fsh")));
-//			mGLSL.Add("builtin:post_diffusion", 
-//				new GLSL(mCoreLogic.getRawResourceString(R.raw.vs_bg), mCoreLogic.getRawResourceString(R.raw.fs_post_diffusion)));
 
 			// render targets
 			mRT = new Dictionary<String, RenderTarget>();
@@ -172,23 +132,17 @@ namespace Ruly.view
 		}
 
 		private void drawNonAlpha(ShellSurface surface, GLSL glsl) {
-//			ArrayList<Material> rendar = surface.mAnimation ? surface.mRendarList : surface.material;
 			var mats = surface.material;
 
 			int max = mats.Count;
 
 			// draw non-alpha material
 //			GLES20.GlEnable(GLES20.GlCullFace);
+			GLES20.GlEnable (2884);
+			GLES20.GlCullFace (GLES20.GlBack);
 			GLES20.GlDisable(GLES20.GlBlend);
 			for (int r = 0; r < max; r++) {
 				Material mat = mats[r];
-//				TexInfo tb = null;
-//				if (mat.texture != null) {
-//					tb = surface.texture[mat.texture];
-//				}
-//				if(mat.diffuse_color[3] >= 1.0 && (tb == null || !tb.has_alpha)) {
-//					drawOneMaterial(glsl, surface, mat);
-//				}
 				drawOneMaterial(glsl, surface, mat);
 			}
 		}
@@ -196,52 +150,6 @@ namespace Ruly.view
 		private void drawAlpha(ShellSurface miku, GLSL glsl, bool alpha_test) {
 			drawNonAlpha (miku, glsl);
 		}
-//		private void drawAlpha(MikuModel miku, GLSL glsl, boolean alpha_test) {
-//			ArrayList<Material> rendar = miku.mAnimation ? miku.mRendarList : miku.mMaterial;
-//
-//			int max = rendar.size();
-//
-//			// draw alpha material
-//			GLES20.glEnable(GLES20.GL_BLEND);
-//			for (int r = 0; r < max; r++) {
-//				Material mat = rendar.get(r);
-//				TexInfo tb = null;
-//				if (mat.texture != null) {
-//					tb = miku.mTexture.get(mat.texture);
-//				}
-//				if(alpha_test) {
-//					if(tb != null && tb.needs_alpha_test) {
-//						if(mat.diffuse_color[3] < 1.0) {
-//							GLES20.glDisable(GLES20.GL_CULL_FACE);
-//						} else {
-//							GLES20.glEnable(GLES20.GL_CULL_FACE);						
-//						}
-//						drawOneMaterial(glsl, miku, mat);					
-//					}
-//				} else {
-//					if(tb != null) { // has texture
-//						if(!tb.needs_alpha_test) {
-//							if(tb.has_alpha) {
-//								if(mat.diffuse_color[3] < 1.0) {
-//									GLES20.glDisable(GLES20.GL_CULL_FACE);
-//								} else {
-//									GLES20.glEnable(GLES20.GL_CULL_FACE);						
-//								}
-//								drawOneMaterial(glsl, miku, mat);						
-//							} else if(mat.diffuse_color[3] < 1.0) {
-//								GLES20.glDisable(GLES20.GL_CULL_FACE);
-//								drawOneMaterial(glsl, miku, mat);
-//							}
-//						}
-//					} else {
-//						if(mat.diffuse_color[3] < 1.0) {
-//							GLES20.glDisable(GLES20.GL_CULL_FACE);
-//							drawOneMaterial(glsl, miku, mat);
-//						}
-//					}
-//				}
-//			}
-//		}
 
 		private void drawOneMaterial(GLSL glsl, ShellSurface surface, Material mat) {
 			// initialize color
@@ -258,14 +166,7 @@ namespace Ruly.view
 //			Vector.min(mDifAmb, 1.0f);
 			GLES20.GlUniform4fv(glsl.muDif, 1, mDifAmb, 0);
 
-//			// speculation
-//			if (glsl.muPow >= 0) {
-//				GLES20.GlUniform4f(glsl.muSpec, mat.specular_color[0], mat.specular_color[1], mat.specular_color[2], 0);
-//				GLES20.GlUniform1f(glsl.muPow, mat.power);
-//			}
-
 			// draw
-//			surface.Index.position(mat.face_vert_offset);
 			surface.IndexBuffer.Position (mat.face_vert_offset);
 			GLES20.GlDrawElements(GLES20.GlTriangles, mat.face_vert_count, GLES20.GlUnsignedShort, surface.IndexBuffer);
 			checkGlError("glDrawElements");
@@ -277,16 +178,7 @@ namespace Ruly.view
 
 			GLES20.GlVertexAttribPointer (glsl.maPositionHandle, 3, GLES20.GlFloat, false, 0, surface.VertexBuffer);
 			checkGlError("drawGLES20 VertexAttribPointer vertex");
-
-//			GLES20.GlEnableVertexAttribArray(glsl.maNormalHandle);
-//			surface.NormalBuffer = Java.Nio.FloatBuffer.FromArray (surface.Normal) as Java.Nio.FloatBuffer;
-//			GLES20.GlVertexAttribPointer (glsl.maNormalHandle, 3, GLES20.GlFloat, false, 0, surface.NormalBuffer);
-//			checkGlError("drawGLES20 VertexAttribPointer normal");
-
-
 		}
-
-
 	}
 
 	public class ShellView : GLSurfaceView
@@ -307,8 +199,6 @@ namespace Ruly.view
 
 		void Initialize ()
 		{
-//			ShellViewModel.Width = Width;
-//			ShellViewModel.Height = Height;
 			SetEGLContextClientVersion (2);
 			shellRenderer = new ShellRenderer ();
 			SetRenderer (shellRenderer);

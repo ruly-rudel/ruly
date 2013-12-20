@@ -1,4 +1,4 @@
-precision highp float;
+precision mediump float;
 attribute vec3 aPosition;
 uniform mat4 uPMatrix;
 void main() {

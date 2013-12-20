@@ -40,8 +40,6 @@ namespace Ruly.model
 		
 		private void init (BinaryReader br, Stream fs, string path)
 		{
-//			CP932 cp = new CP932();
-			
 			parseHeader(br);
 			if(is_pmd) {
 				toon = new Texture2D[11];
@@ -134,9 +132,9 @@ namespace Ruly.model
 			int num = br.ReadInt32();
 			Log.Debug("PMD", "INDEX: " + num.ToString());
 			if(num > 0) {
-				Index = new ushort[num];
+				Index = new short[num];
 				for(int i = 0; i < num; i++) {
-					Index[i] = br.ReadUInt16();
+					Index [i] = br.ReadInt16 ();
 				}
 			} else {
 				Index = null;

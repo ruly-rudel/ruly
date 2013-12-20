@@ -51,7 +51,6 @@
       <HintPath>..\Components\json.net-4.5.11\lib\android\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Android.Support.v4" />
-    <Reference Include="OpenTK" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.designer.cs" />
@@ -89,6 +88,13 @@
     </Compile>
     <Compile Include="view\View\ShellView.cs" />
     <Compile Include="view\Activity\ShellActivity.cs" />
+    <Compile Include="viewmodel\GLSL.cs" />
+    <Compile Include="viewmodel\RenderTarget.cs" />
+    <Compile Include="viewmodel\ShellViewModel.cs" />
+    <Compile Include="misc\Util.cs" />
+    <Compile Include="misc\TextureFile.cs" />
+    <Compile Include="model\Shell\Shell.cs" />
+    <Compile Include="model\Shell\PMD.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -171,6 +177,12 @@
     <Folder Include="model\DataBase\" />
     <Folder Include="model\Shell\" />
     <Folder Include="view\View\" />
+    <Folder Include="misc\" />
+    <Folder Include="Assets\shader\" />
+    <Folder Include="Assets\Shell\" />
+    <Folder Include="Assets\toon\" />
+    <Folder Include="Assets\Shell\mikuXS\" />
+    <Folder Include="Assets\Shell\default\" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="sqlite-net">
@@ -181,5 +193,74 @@
       <Version>4.5.11</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\shader\vs.vsh" />
+    <AndroidAsset Include="Assets\shader\fs.fsh" />
+    <AndroidAsset Include="Assets\shader\vs_bg.vsh" />
+    <AndroidAsset Include="Assets\shader\fs_bg.fsh" />
+    <AndroidAsset Include="Assets\Shell\mikuXS\mikuXS.pmd" />
+    <AndroidAsset Include="Assets\Shell\mikuXS\toon_skinL.bmp" />
+    <AndroidAsset Include="Assets\Shell\mikuXS\f.spa" />
+    <AndroidAsset Include="Assets\Shell\mikuXS\o.spa" />
+    <AndroidAsset Include="Assets\Shell\mikuXS\s.spa" />
+    <AndroidAsset Include="Assets\Shell\mikuXS\skin.png" />
+    <AndroidAsset Include="Assets\Shell\mikuXS\eye.png" />
+    <AndroidAsset Include="Assets\Shell\mikuXS\gray.png" />
+    <AndroidAsset Include="Assets\Shell\mikuXS\hair.png" />
+    <AndroidAsset Include="Assets\Shell\mikuXS\toon_dark.bmp" />
+    <AndroidAsset Include="Assets\Shell\mikuXS\h.spa" />
+    <AndroidAsset Include="Assets\Shell\mikuXS\toon_skin.bmp" />
+    <AndroidAsset Include="Assets\Shell\mikuXS\outer.png" />
+    <AndroidAsset Include="Assets\toon\toon03.bmp" />
+    <AndroidAsset Include="Assets\toon\toon01.bmp" />
+    <AndroidAsset Include="Assets\toon\toon07.bmp" />
+    <AndroidAsset Include="Assets\toon\toon04.bmp" />
+    <AndroidAsset Include="Assets\toon\toon0.bmp" />
+    <AndroidAsset Include="Assets\toon\toon02.bmp" />
+    <AndroidAsset Include="Assets\toon\toon06.bmp" />
+    <AndroidAsset Include="Assets\toon\toon08.bmp" />
+    <AndroidAsset Include="Assets\toon\toon05.bmp" />
+    <AndroidAsset Include="Assets\toon\toon09.bmp" />
+    <AndroidAsset Include="Assets\toon\toon10.bmp" />
+    <AndroidAsset Include="Assets\shader\fs_nm.fsh" />
+    <AndroidAsset Include="Assets\shader\fs_nm_alpha.fsh" />
+    <AndroidAsset Include="Assets\shader\vs_nm.vsh" />
+    <AndroidAsset Include="Assets\shader\fs_notex.fsh" />
+    <AndroidAsset Include="Assets\shader\vs_notex.vsh" />
+    <AndroidAsset Include="Assets\Shell\default\eyeM2.bmp" />
+    <AndroidAsset Include="Assets\Shell\default\1052toon10.bmp" />
+    <AndroidAsset Include="Assets\Shell\default\miku1052C-Re.pmd" />
+    <AndroidAsset Include="Assets\Shell\default\eye2.bmp" />
+    <AndroidAsset Include="Assets\Shell\default\1052toon08.bmp" />
+    <AndroidAsset Include="Assets\Shell\default\1052toon07.bmp" />
+    <AndroidAsset Include="Assets\Shell\default\eye4.bmp" />
+    <AndroidAsset Include="Assets\Shell\default\eyeR2.bmp" />
+    <AndroidAsset Include="Assets\Shell\default\eyeKT.bmp" />
+    <AndroidAsset Include="Assets\Shell\default\miku.pmd" />
+    <AndroidAsset Include="Assets\Shell\default\eye3.bmp" />
+    <AndroidAsset Include="Assets\Shell\default\eye3Ne.bmp" />
+    <AndroidAsset Include="Assets\Shell\default\eyeMe2.bmp" />
+    <AndroidAsset Include="Assets\Shell\default\TX\m_body3.bmp" />
+    <AndroidAsset Include="Assets\Shell\default\TX\tex_Ns.png" />
+    <AndroidAsset Include="Assets\Shell\default\TX\m_body.bmp" />
+    <AndroidAsset Include="Assets\Shell\default\TX\tex_Fp.png" />
+    <AndroidAsset Include="Assets\Shell\default\TX\m_SW3.bmp" />
+    <AndroidAsset Include="Assets\Shell\default\TX\m_body2.bmp" />
+    <AndroidAsset Include="Assets\Shell\default\TX\tex_Swp.tga" />
+    <AndroidAsset Include="Assets\Shell\default\TX\tex_Fp.tga" />
+    <AndroidAsset Include="Assets\Shell\default\TX\m_body1.bmp" />
+    <AndroidAsset Include="Assets\Shell\default\TX\m_LD3.tga" />
+    <AndroidAsset Include="Assets\Shell\default\TX\m_head2a.tga" />
+    <AndroidAsset Include="Assets\Shell\default\TX\tex_Ns.tga" />
+    <AndroidAsset Include="Assets\Shell\default\TX\tex_01s.tga" />
+    <AndroidAsset Include="Assets\Shell\default\TX\m_head.bmp" />
+    <AndroidAsset Include="Assets\Shell\default\TX\m_BS_t.bmp" />
+    <AndroidAsset Include="Assets\Shell\default\TX\m_head1.tga" />
+    <AndroidAsset Include="Assets\Shell\default\TX\m_head1.png" />
+    <AndroidAsset Include="Assets\Shell\default\TX\m_LD3.png" />
+    <AndroidAsset Include="Assets\Shell\default\TX\m_head2.tga" />
+    <AndroidAsset Include="Assets\Shell\default\TX\m_head1.bmp" />
+    <AndroidAsset Include="Assets\Shell\default\TX\tex_01s.png" />
   </ItemGroup>
 </Project>

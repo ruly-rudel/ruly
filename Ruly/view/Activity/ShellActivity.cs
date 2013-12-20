@@ -8,8 +8,11 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Android.Util;
 
-namespace ruly.view
+using Ruly.viewmodel;
+
+namespace Ruly.view
 {
 	[Activity (Label = "ShellActivity", MainLauncher = true, Theme="@android:style/Theme.Holo.Light.NoActionBar")]			
 	public class ShellActivity : Activity
@@ -20,6 +23,9 @@ namespace ruly.view
 		{
 			base.OnCreate (bundle);
 
+//			ShellViewModel.LoadPMD ("Shell/mikuXS/mikuXS.pmd");
+			ShellViewModel.LoadPMD ("Shell/default/miku.pmd");
+//			ShellViewModel.LoadPMD ("Shell/default/miku1052C-Re.pmd");
 			shellView = new ShellView (this);
 			SetContentView (shellView);
 		}

@@ -102,10 +102,7 @@ namespace Ruly.model
 			set;
 		}
 
-		public float[]		Vertex;
-		public float[]		Normal;
-		public float[]		Uv;
-		public short[]		Index;
+
 		public List<Material>				material	{ set; get; }
 		public TexInfo[]					toon		{ get; set; }
 		public Dictionary<string, TexInfo>	texture		{ get; set; }
@@ -154,33 +151,22 @@ namespace Ruly.model
 
 		public void LoadPMD(string path)
 		{
-			Surface = new PMD (path);
+			var surface = new PMD (path);
 			RenderSets.Add(new RenderSet("builtin:nomotion", "screen"));
 
-			ByteBuffer buf = ByteBuffer.AllocateDirect (Surface.Vertex.Length * sizeof(float));
+			ByteBuffer buf = ByteBuffer.AllocateDirect (surface.Vertex.Length * sizeof(float));
 			buf.Order (ByteOrder.NativeOrder ());
-			Surface.VertexBuffer = buf.AsFloatBuffer() as FloatBuffer;
-			Surface.VertexBuffer.Put (Surface.Vertex);
-//			foreach (var i in Surface.Vertex) {
-//				Surface.VertexBuffer.Put (i);
-//			}
-//			for (int i = 0; i < Surface.Vertex.Count (); i++) {
-//				Surface.VertexBuffer.Put (Surface.Vertex [i]);
-//			}
-			Surface.VertexBuffer.Position (0);
+			surface.VertexBuffer = buf.AsFloatBuffer() as FloatBuffer;
+			surface.VertexBuffer.Put (surface.Vertex);
+			surface.VertexBuffer.Position (0);
 
-			buf = ByteBuffer.AllocateDirect (Surface.Index.Length * sizeof(short));
+			buf = ByteBuffer.AllocateDirect (surface.Index.Length * sizeof(short));
 			buf.Order (ByteOrder.NativeOrder ());
-			Surface.IndexBuffer = buf.AsShortBuffer() as Java.Nio.ShortBuffer;
-//			foreach (var i in Surface.Index) {
-//				Surface.IndexBuffer.Put ((short)i);
-//			}
-//			for (int i = 0; i < Surface.Index.Length; i++) {
-//				Surface.IndexBuffer.Put (Surface.Index [i]);
-//			}
-			Surface.IndexBuffer.Put (Surface.Index);
-			Surface.IndexBuffer.Position (0);
+			surface.IndexBuffer = buf.AsShortBuffer() as Java.Nio.ShortBuffer;
+			surface.IndexBuffer.Put (surface.Index);
+			surface.IndexBuffer.Position (0);
 
+			Surface = surface;
 			Log.Debug ("Shell", "PMD load ends.");
 
 			//			RenderSets.Add(new RenderSet("builtin:nomotion_alpha", "screen"));

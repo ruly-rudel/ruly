@@ -13,7 +13,7 @@ using Android.Util;
 using Android.Graphics;
 using Android.App;
 
-namespace Ruly
+namespace Ruly.viewmodel
 {
 	public class TextureFile
 	{
@@ -22,7 +22,6 @@ namespace Ruly
 //		public static Texture2D load (string basedir, byte[] src)
 		public static TexInfo load (string basedir, string src)
 		{
-			var asset = Application.Context.ApplicationContext.Assets;
 			String s = src;
 			String[] sp = s.Split("*".ToCharArray());
 			string path = System.IO.Path.Combine(basedir, sp[0]);
@@ -44,15 +43,13 @@ namespace Ruly
 				if(ext == ".tga") {
 					ret = texture2DTGA(path, 1);
 				} else {
-					using (var bs = Application.Context.ApplicationContext.Assets.Open (path)) {
+					using (var bs = File.OpenRead (path)) {
 						ret = CreateTexInfoFromBitmap (BitmapFactory.DecodeStream (bs));
 					}
 				}
 				m_texture[path] = ret;
 				return ret;
 			}		
-
-			return null;
 		}
 		
 		

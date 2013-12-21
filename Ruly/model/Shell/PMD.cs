@@ -18,7 +18,11 @@ namespace Ruly.model
 		public string		model_name	{ get; set; }
 		public string		description { get; set; }
 
-		
+		public float[]		Vertex;
+		public float[]		Normal;
+		public float[]		Uv;
+		public short[]		Index;	
+		public string[]		toon_name;
 
 		private Bone[]		m_bone;
 		private IK[]		m_IK;
@@ -31,7 +35,7 @@ namespace Ruly.model
 		{
 			string dir = Path.GetDirectoryName(path);
 			Log.Debug ("PMD", "base dir: " + dir);
-			using (var fs = Application.Context.ApplicationContext.Assets.Open (path, Android.Content.Res.Access.Random)) {
+			using (var fs = File.OpenRead(path)) {
 				using (var br = new BinaryReader (fs)) {
 					init(br, fs, dir + "/");
 				}
@@ -42,7 +46,14 @@ namespace Ruly.model
 		{
 			parseHeader(br);
 			if(is_pmd) {
-				toon[0] = TextureFile.load("toon/", "toon0.bmp");
+
+				// default toon filename
+				toon_name = new string[11];
+				toon_name[0] = "toon/toon0.bmp";
+				for(int i = 1; i < 10; i++) {
+					toon_name[i] = "toon/toon0" + i.ToString() + ".bmp";
+				}
+				toon_name[10] = "toon/toon10.bmp";
 				
 				parseVertexList			( br );
 				parseIndexList			( br );
@@ -159,9 +170,9 @@ namespace Ruly.model
 					m.face_vert_count	= br.ReadInt32();
 					m.texture			= readString(br, 20);
 					
-					if(m.texture != null) {
-						TextureFile.load(path, m.texture);
-					}
+//					if(m.texture != null) {
+//						TextureFile.load(path, m.texture);
+//					}
 					
 					m.face_vert_offset	= acc;
 					acc = acc + m.face_vert_count;
@@ -352,8 +363,7 @@ namespace Ruly.model
 		private void parseToonFileName(BinaryReader br, string path)
 		{
 			for (int i = 1; i < 11; i++) {
-				string str = readString(br, 100);
-				toon[i] = TextureFile.load(path, str);
+				toon_name[i] = readString(br, 100);
 			}
 		}
 		

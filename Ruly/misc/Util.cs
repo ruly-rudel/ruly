@@ -17,8 +17,11 @@ namespace Ruly
 		public static string ReadAssetString(string name)
 		{
 			string content;
-			using (StreamReader sr = new StreamReader (Application.Context.ApplicationContext.Assets.Open (name)))
+			using (var st = Application.Context.ApplicationContext.Assets.Open (name))
+			using (var sr = new StreamReader (st))
 				content = sr.ReadToEnd ();
+//			using (StreamReader sr = new StreamReader (Application.Context.ApplicationContext.Assets.Open (name)))
+//				content = sr.ReadToEnd ();
 
 			return content;
 		}

@@ -46,13 +46,6 @@ namespace Ruly.model
 		}
 	}
 
-	public class Texture2D {
-		public int id {
-			get;
-			set;
-		}
-	}
-
 	public class Material {
 		public float[]		diffuse_color;
 		public float 		power;
@@ -63,8 +56,8 @@ namespace Ruly.model
 		public int			face_vert_count;
 		public string 		texture;
 		
-		public float[]		vertex;
-		public Texture2D 	texture2d;
+//		public float[]		vertex;
+//		public TexInfo		texture_info;
 
 		public int 			face_vert_offset;
 	}
@@ -114,7 +107,7 @@ namespace Ruly.model
 		public float[]		Uv;
 		public short[]		Index;
 		public List<Material>				material	{ set; get; }
-		public Texture2D[]					toon		{ get; set; }
+		public TexInfo[]					toon		{ get; set; }
 		public Dictionary<string, TexInfo>	texture		{ get; set; }
 
 		public Java.Nio.FloatBuffer VertexBuffer;
@@ -126,7 +119,7 @@ namespace Ruly.model
 		public ShellSurface ()
 		{
 			material = new List<Material>();
-			toon = new Texture2D[11];
+			toon = new TexInfo[11];
 			texture = new Dictionary<string, TexInfo> ();
 			TextureLoaded = false;
 		}

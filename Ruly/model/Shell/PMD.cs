@@ -42,7 +42,6 @@ namespace Ruly.model
 		{
 			parseHeader(br);
 			if(is_pmd) {
-				toon = new Texture2D[11];
 				toon[0] = TextureFile.load("toon/", "toon0.bmp");
 				
 				parseVertexList			( br );
@@ -161,7 +160,7 @@ namespace Ruly.model
 					m.texture			= readString(br, 20);
 					
 					if(m.texture != null) {
-						m.texture2d = TextureFile.load(path, m.texture);
+						TextureFile.load(path, m.texture);
 					}
 					
 					m.face_vert_offset	= acc;

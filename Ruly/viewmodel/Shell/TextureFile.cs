@@ -13,43 +13,58 @@ using Android.Util;
 using Android.Graphics;
 using Android.App;
 
+using System.Drawing;
+
 namespace Ruly.viewmodel
 {
 	public class TextureFile
 	{
 		public static Dictionary<string, TexInfo> m_texture = new Dictionary<string, TexInfo>();
 
-//		public static Texture2D load (string basedir, byte[] src)
-		public static TexInfo load (string basedir, string src)
+		public static string SearchTextureFilePath(string root, string dir, string src)
 		{
-			String s = src;
-			String[] sp = s.Split("*".ToCharArray());
-			string path = System.IO.Path.Combine(basedir, sp[0]);
-			
-			if(!File.Exists(path)) {
-				path = System.IO.Path.Combine("toon/", sp[0]);
-				if(!File.Exists(path)) {
-					Log.Debug("TextureFile", "cannot find texture file " + System.IO.Path.Combine(basedir, sp[0]) + " or " + path);
+			String[] sp = src.Split("*".ToCharArray());
+			string path = System.IO.Path.Combine(root + dir, sp[0]);
+
+			if (!File.Exists (path)) {
+				path = System.IO.Path.Combine (root + "/toon/", sp [0]);
+				if (!File.Exists (path)) {
+					Log.Debug ("TextureFile", "cannot find texture file " + System.IO.Path.Combine (dir, sp [0]) + " or " + path);
 					return null;
 				}
+			} else {
+				// ad-hock: pre-generated png file
+				if(File.Exists(System.IO.Path.ChangeExtension(path, "png"))) {
+					path = System.IO.Path.ChangeExtension(path, "png");
+				}
 			}
-			
-			Log.Debug("TextureFile", "Loading " + path);
-			try {
-				return m_texture[path];
-			} catch(Exception e) {
+
+			return path;
+		}
+
+		public static void AddTexture(string path)
+		{
+			m_texture [path] = null;
+		}
+		
+		public static TexInfo FetchTexInfo (string path)
+		{
+			if (m_texture [path] == null) {
+				Log.Debug("TextureFile", "Loading " + path);
 				string ext = System.IO.Path.GetExtension(path);
 				TexInfo ret;
 				if(ext == ".tga") {
 					ret = texture2DTGA(path, 1);
 				} else {
-					using (var bs = File.OpenRead (path)) {
-						ret = CreateTexInfoFromBitmap (BitmapFactory.DecodeStream (bs));
+					using (var bs = File.OpenRead (path))
+					using (var bbs = new BufferedStream(bs)) {
+						ret = CreateTexInfoFromBitmap (BitmapFactory.DecodeStream (bbs));
 					}
 				}
 				m_texture[path] = ret;
-				return ret;
-			}		
+			}
+
+			return m_texture [path];
 		}
 		
 		

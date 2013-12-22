@@ -23,6 +23,7 @@ namespace Ruly.viewmodel
 		// Attributes
 		public int maPositionHandle;
 		public int maNormalHandle;
+		public int maUvHandle;
 		public int maBlendHandle;
 
 		// Uniforms
@@ -55,6 +56,7 @@ namespace Ruly.viewmodel
 			// attribute & uniform handles
 			maPositionHandle	= GLES20.GlGetAttribLocation(mProgram, "aPosition");
 			maNormalHandle		= GLES20.GlGetAttribLocation(mProgram, "aNormal");
+			maUvHandle			= GLES20.GlGetAttribLocation(mProgram, "aUv");
 			maBlendHandle		= GLES20.GlGetAttribLocation(mProgram, "aBlend");
 			checkGlError("glGetAttribLocation");
 

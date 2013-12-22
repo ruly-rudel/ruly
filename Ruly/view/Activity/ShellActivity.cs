@@ -25,24 +25,23 @@ namespace Ruly.view
 		{
 			base.OnCreate (bundle);
 
-			var dir = System.Environment.GetFolderPath (System.Environment.SpecialFolder.Personal);
+			var root = System.Environment.GetFolderPath (System.Environment.SpecialFolder.Personal);
 
-//			if (!Directory.Exists (dir + "/default")) {
-//				Log.Debug ("Ruly.dirdoesnotexist", dir + "/default");
+//			if (!Directory.Exists (root + "/default")) {
+//				Log.Debug ("Ruly.dirdoesnotexist", root + "/default");
 //			} else {
-//				Log.Debug ("Ruly.dir", dir);
-//				foreach (var i in Directory.GetFiles(dir + "/default"))
+//				Log.Debug ("Ruly.dir", root);
+//				foreach (var i in Directory.GetFiles(root + "/default"))
 //					Log.Debug("Ruly.dirList", i);
 //			}
-//
+
 			SetupShell ();
 //			ShellViewModel.LoadPMD ("Shell/mikuXS/mikuXS.pmd");
-			ShellViewModel.LoadPMD (dir + "/default/miku.pmd");
-//			ShellViewModel.LoadPMD (dir + "/default/miku1052C-Re.pmd");
+			ShellViewModel.LoadPMD (root, "/default", "/miku.pmd");
+//			ShellViewModel.LoadPMD (root, "/default", "/miku1052C-Re.pmd");
+
 			shellView = new ShellView (this);
 			SetContentView (shellView);
-
-
 		}
 
 		private void SetupShell()

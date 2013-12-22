@@ -21,8 +21,7 @@ namespace Ruly.model
 		public float[]		Vertex;
 		public float[]		Normal;
 		public float[]		Uv;
-		public short[]		Index;	
-		public string[]		toon_name;
+		public short[]		Index;
 
 		private Bone[]		m_bone;
 		private IK[]		m_IK;
@@ -49,11 +48,11 @@ namespace Ruly.model
 
 				// default toon filename
 				toon_name = new string[11];
-				toon_name[0] = "toon/toon0.bmp";
+				toon_name[0] = "toon0.bmp";
 				for(int i = 1; i < 10; i++) {
-					toon_name[i] = "toon/toon0" + i.ToString() + ".bmp";
+					toon_name[i] = "toon0" + i.ToString() + ".bmp";
 				}
-				toon_name[10] = "toon/toon10.bmp";
+				toon_name[10] = "toon10.bmp";
 				
 				parseVertexList			( br );
 				parseIndexList			( br );
@@ -65,21 +64,16 @@ namespace Ruly.model
 				parseBoneDispName		( br );
 				parseBoneDisp			( br );
 
-//				if(br.BaseStream.Position != br.BaseStream.Length) {
-//					Log.Debug ("PMD", "has more data...");
-//					Log.Debug ("PMD", "position = " + fs.Position.ToString() + ", length = " + fs.Length.ToString());
-//					parseEnglish		( br );
-//					parseToonFileName	( br, path );
-//					/*
-//					parseRigidBody();
-//					parseJoint();
-//					*/
-//				} else {	// load default toon textures
-//					for(int i = 1; i < 10; i++) {
-//						toon[i] = TextureFile.load("toon/", "toon0" + i.ToString() + ".bmp");
-//					}
-//					toon[10] = TextureFile.load("toon/", "toon10.bmp");
-//				}
+				if(br.BaseStream.Position != br.BaseStream.Length) {
+					Log.Debug ("PMD", "has more data...");
+					Log.Debug ("PMD", "position = " + fs.Position.ToString() + ", length = " + fs.Length.ToString());
+					parseEnglish		( br );
+					parseToonFileName	( br, path );
+					/*
+					parseRigidBody();
+					parseJoint();
+					*/
+				}
 			}
 		}
 				

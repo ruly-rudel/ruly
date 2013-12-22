@@ -5,6 +5,8 @@ using System.Linq;
 using Android.Util;
 using Java.Nio;
 
+using Ruly.viewmodel;
+
 namespace Ruly.model
 {
 	public class Vector2 {
@@ -104,20 +106,23 @@ namespace Ruly.model
 
 
 		public List<Material>				material	{ set; get; }
-		public TexInfo[]					toon		{ get; set; }
-		public Dictionary<string, TexInfo>	texture		{ get; set; }
+		public string[]						toon_name;
+//		public TexInfo[]					toon		{ get; set; }
+//		public Dictionary<string, TexInfo>	texture		{ get; set; }
 
 		public Java.Nio.FloatBuffer VertexBuffer;
 
 		public Java.Nio.FloatBuffer NormalBuffer;
+
+		public Java.Nio.FloatBuffer UvBuffer;
 
 		public Java.Nio.ShortBuffer IndexBuffer;
 				
 		public ShellSurface ()
 		{
 			material = new List<Material>();
-			toon = new TexInfo[11];
-			texture = new Dictionary<string, TexInfo> ();
+//			toon = new TexInfo[11];
+//			texture = new Dictionary<string, TexInfo> ();
 			TextureLoaded = false;
 		}
 	}
@@ -149,22 +154,46 @@ namespace Ruly.model
 			RenderSets = new List<RenderSet> ();
 		}
 
-		public void LoadPMD(string path)
+		public void LoadPMD(string root, string dir, string name)
 		{
+			string path = root + dir + name;
 			var surface = new PMD (path);
 			RenderSets.Add(new RenderSet("builtin:nomotion", "screen"));
 
+			// create buffers for render
 			ByteBuffer buf = ByteBuffer.AllocateDirect (surface.Vertex.Length * sizeof(float));
 			buf.Order (ByteOrder.NativeOrder ());
 			surface.VertexBuffer = buf.AsFloatBuffer() as FloatBuffer;
 			surface.VertexBuffer.Put (surface.Vertex);
 			surface.VertexBuffer.Position (0);
 
+			buf = ByteBuffer.AllocateDirect (surface.Uv.Length * sizeof(float));
+			buf.Order (ByteOrder.NativeOrder ());
+			surface.UvBuffer = buf.AsFloatBuffer() as Java.Nio.FloatBuffer;
+			surface.UvBuffer.Put (surface.Uv);
+			surface.UvBuffer.Position (0);
+
 			buf = ByteBuffer.AllocateDirect (surface.Index.Length * sizeof(short));
 			buf.Order (ByteOrder.NativeOrder ());
 			surface.IndexBuffer = buf.AsShortBuffer() as Java.Nio.ShortBuffer;
 			surface.IndexBuffer.Put (surface.Index);
 			surface.IndexBuffer.Position (0);
+
+			// create texture entry for future texture read
+			foreach (var m in surface.material) {
+				if (m.texture != null) {
+					m.texture = TextureFile.SearchTextureFilePath (root, dir, m.texture);
+					if (m.texture != null) {
+						TextureFile.AddTexture (m.texture);
+					}
+				}
+			}
+			for (int i = 0; i < surface.toon_name.Length; i++) {
+				surface.toon_name [i] = TextureFile.SearchTextureFilePath (root, dir, surface.toon_name [i]);
+				if (surface.toon_name [i] != null) {
+					TextureFile.AddTexture (surface.toon_name [i]);
+				}
+			}
 
 			Surface = surface;
 			Log.Debug ("Shell", "PMD load ends.");

@@ -164,6 +164,26 @@ namespace Ruly.viewmodel
 //			Vector.min(mDifAmb, 1.0f);
 			GLES20.GlUniform4fv(glsl.muDif, 1, mDifAmb, 0);
 
+			// texture
+			GLES20.GlUniform1i(glsl.msTextureSampler, 1);
+			GLES20.GlActiveTexture(GLES20.GlTexture1);
+			if (mat.texture != null) {
+				TexInfo tb = TextureFile.FetchTexInfo(mat.texture);
+				if(tb != null) {
+					GLES20.GlBindTexture(GLES20.GlTexture2d, tb.tex);
+				} else {	// avoid crash
+					GLES20.GlBindTexture(GLES20.GlTexture2d, TextureFile.FetchTexInfo(surface.toon_name[0]).tex);	// white texture using toon0.bmp
+					for(int i = 0; i < 3; i++) {	// for emulate premultiplied alpha
+						mDifAmb[i] *= mat.diffuse_color[3];
+					}
+				}
+			} else {
+				GLES20.GlBindTexture(GLES20.GlTexture2d, TextureFile.FetchTexInfo(surface.toon_name[0]).tex);	// white texture using toon0.bmp
+				for(int i = 0; i < 3; i++) {	// for emulate premultiplied alpha
+					mDifAmb[i] *= mat.diffuse_color[3];
+				}
+			}
+
 			// draw
 			surface.IndexBuffer.Position (mat.face_vert_offset);
 			GLES20.GlDrawElements(GLES20.GlTriangles, mat.face_vert_count, GLES20.GlUnsignedShort, surface.IndexBuffer);
@@ -172,8 +192,10 @@ namespace Ruly.viewmodel
 
 		private void bindBuffer(ShellSurface surface, GLSL glsl) {
 			GLES20.GlEnableVertexAttribArray(glsl.maPositionHandle);
-
 			GLES20.GlVertexAttribPointer (glsl.maPositionHandle, 3, GLES20.GlFloat, false, 0, surface.VertexBuffer);
+
+			GLES20.GlEnableVertexAttribArray(glsl.maUvHandle);
+			GLES20.GlVertexAttribPointer (glsl.maUvHandle, 2, GLES20.GlFloat, false, 0, surface.UvBuffer);
 			checkGlError("drawGLES20 VertexAttribPointer vertex");
 		}
 	}

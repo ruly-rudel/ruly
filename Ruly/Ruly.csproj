@@ -181,7 +181,6 @@
     <Folder Include="misc\" />
     <Folder Include="Assets\shader\" />
     <Folder Include="Assets\Shell\" />
-    <Folder Include="Assets\toon\" />
     <Folder Include="viewmodel\Shell\" />
   </ItemGroup>
   <ItemGroup>
@@ -199,17 +198,6 @@
     <AndroidAsset Include="Assets\shader\fs.fsh" />
     <AndroidAsset Include="Assets\shader\vs_bg.vsh" />
     <AndroidAsset Include="Assets\shader\fs_bg.fsh" />
-    <AndroidAsset Include="Assets\toon\toon03.bmp" />
-    <AndroidAsset Include="Assets\toon\toon01.bmp" />
-    <AndroidAsset Include="Assets\toon\toon07.bmp" />
-    <AndroidAsset Include="Assets\toon\toon04.bmp" />
-    <AndroidAsset Include="Assets\toon\toon0.bmp" />
-    <AndroidAsset Include="Assets\toon\toon02.bmp" />
-    <AndroidAsset Include="Assets\toon\toon06.bmp" />
-    <AndroidAsset Include="Assets\toon\toon08.bmp" />
-    <AndroidAsset Include="Assets\toon\toon05.bmp" />
-    <AndroidAsset Include="Assets\toon\toon09.bmp" />
-    <AndroidAsset Include="Assets\toon\toon10.bmp" />
     <AndroidAsset Include="Assets\shader\fs_nm.fsh" />
     <AndroidAsset Include="Assets\shader\fs_nm_alpha.fsh" />
     <AndroidAsset Include="Assets\shader\vs_nm.vsh" />

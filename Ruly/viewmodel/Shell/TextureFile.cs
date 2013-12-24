@@ -26,7 +26,8 @@ namespace Ruly.viewmodel
 			String[] sp = src.Split("*".ToCharArray());
 			string path = System.IO.Path.Combine(root + dir, sp[0]);
 
-			if (!File.Exists (path)) {
+
+			if (!File.Exists (path) && !File.Exists(System.IO.Path.ChangeExtension(path, "png"))) {
 				path = System.IO.Path.Combine (root + "/toon/", sp [0]);
 				if (!File.Exists (path)) {
 					Log.Debug ("TextureFile", "cannot find texture file " + System.IO.Path.Combine (dir, sp [0]) + " or " + path);
@@ -38,6 +39,11 @@ namespace Ruly.viewmodel
 					path = System.IO.Path.ChangeExtension(path, "png");
 				}
 			}
+
+			if (path == null)
+				Log.Debug ("Ruly.TextureFile", "texture path is null");
+			else
+				Log.Debug ("Ruly.TextureFile", "texture " + src + " at " + path);
 
 			return path;
 		}
@@ -192,7 +198,7 @@ namespace Ruly.viewmodel
 				buf[3] = br.ReadByte();
 			}
 			
-			return (int)((buf [3] << 24) | (buf [2] << 16) | (buf [1] << 8) | buf [0]);
+			return (int)((buf [3] << 24) | (buf [0] << 16) | (buf [1] << 8) | buf [2]);
 		}
 		
 		private static void setPixel(int[] buf, int pos, short w, short h, int mode, int color, int scale) {

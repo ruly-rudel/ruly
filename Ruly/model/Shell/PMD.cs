@@ -105,7 +105,6 @@ namespace Ruly.model
 			int num = br.ReadInt32 ();
 			Log.Debug("PMD", "VERTEX: " + num.ToString());
 			if (num > 0) {
-//				Vertex = new float[num * 8];
 				Vertex = new float[num * 3];
 				Normal = new float[num * 3];
 				Uv = new float[num * 2];
@@ -154,28 +153,18 @@ namespace Ruly.model
 				for (int i = 0; i < num; i++) {
 					Material m = new Material();
 										
-					m.diffuse_color		= readVector4(br);
+					m.diffuse_color		= readFloats(br, 4);
 					m.power				= br.ReadSingle();
-					m.specular_color	= readVector3(br);
-					m.emmisive_color	= readVector3(br);
+					m.specular_color	= readFloats(br, 3);
+					m.emmisive_color	= readFloats(br, 3);
 					
 					m.toon_index		= (byte)(br.ReadByte() + 1);
 					m.edge_flag			= br.ReadByte();
 					m.face_vert_count	= br.ReadInt32();
 					m.texture			= readString(br, 20);
 					
-//					if(m.texture != null) {
-//						TextureFile.load(path, m.texture);
-//					}
-					
 					m.face_vert_offset	= acc;
 					acc = acc + m.face_vert_count;
-					
-//					m.vertex = new VertexBuffer(m_vertex.Length / 8, m.face_vert_count, VertexFormat.Float3, VertexFormat.Float3, VertexFormat.Float2);			
-//					m.vertex.SetVertices(0, m_vertex, 0,  32);
-//					m.vertex.SetVertices(1, m_vertex, 12, 32);
-//					m.vertex.SetVertices(2, m_vertex, 24, 32);
-//					m.vertex.SetIndices(m_index, 0, m.face_vert_offset, m.face_vert_count);
 					
 					material.Add(m);
 				}
@@ -191,7 +180,6 @@ namespace Ruly.model
 			Log.Debug("PMDParser", "BONE: " + num.ToString());
 			if (num > 0) {
 				m_bone = new Bone[num];
-//				br.ReadBytes (num * (20 + 2 + 2 + 1 + 2 + 4 + 4 + 4));
 				for (int i = 0; i < num; i++) {
 					Bone bone = new Bone();
 
@@ -201,7 +189,7 @@ namespace Ruly.model
 					bone.type = br.ReadByte();
 					bone.ik = br.ReadInt16();
 
-					bone.head_pos = readVector3(br);
+					bone.head_pos = readFloats(br, 3);
 //					bone.is_leg = bone.name.contains("ひざ");
 				
 					if (bone.tail != -1) {
@@ -251,11 +239,11 @@ namespace Ruly.model
 					face.face_vert_count	= br.ReadInt32();
 					face.face_type			= br.ReadByte();
 					face.face_vert_index	= new int[face.face_vert_count];
-					face.face_vert_offset	= new Vector3[face.face_vert_count];
+					face.face_vert_offset	= new float[face.face_vert_count][];
 					
 					for (int j = 0; j < face.face_vert_count; j++) {
 						face.face_vert_index[j]		= br.ReadInt32();
-						face.face_vert_offset[j]	= readVector3V(br);
+						face.face_vert_offset[j]	= readFloats(br, 3);
 					}
 					
 					acc += face.face_vert_count;					
@@ -360,41 +348,7 @@ namespace Ruly.model
 				toon_name[i] = readString(br, 100);
 			}
 		}
-		
-		
-		/*
-		private void constructVertexBuffer()
-		{
-			// position, normal, uv
-			vertex = new VertexBuffer(m_vertex.Length / 8, m_index.Length, VertexFormat.Float3, VertexFormat.Float3, VertexFormat.Float2);			
-			vertex.SetVertices(0, m_vertex, 0,  32);
-			vertex.SetVertices(1, m_vertex, 12, 32);
-			vertex.SetVertices(2, m_vertex, 24, 32);
-			vertex.SetIndices(m_index);
-		}
-		*/
-		
-//		private byte[] readString(BinaryReader br, int num)
-//		{
-//			byte [] buf = br.ReadBytes(num);
-//			for(int i = 0; i < num; i++) {
-//				if(buf[i] == 0) {
-//					if(i == 0) {
-//						return null;
-//					} else {
-//						byte [] r = new byte[i];
-//						for(int j = 0; j < i; j++) {
-//							r[j] = buf[j];
-//						}
-//
-//						return r;
-//					}	
-//				}
-//			}
-//
-//			return buf;
-//		}		
-		
+
 		private string readString(BinaryReader br, int num)
 		{
 			byte [] buf = br.ReadBytes(num);
@@ -422,50 +376,14 @@ namespace Ruly.model
 			return new string (rn);
 		}
 	
-		private Vector2 readVector2(BinaryReader br)
+		private float[] readFloats(BinaryReader br, int num)
 		{
-			float x = br.ReadSingle();
-			float y = br.ReadSingle();
+			float[] tmp = new float[num];
+			for (int i = 0; i < num; i++) {
+				tmp [i] = br.ReadSingle ();
+			}
 
-			return new Vector2(x, y);
-		}
-		
-		private Vector3 readVector3V(BinaryReader br)
-		{
-			float x = br.ReadSingle();
-			float y = br.ReadSingle();
-			float z = br.ReadSingle();
-
-			return new Vector3(x, y, z);
-		}
-
-		private float[] readVector3(BinaryReader br)
-		{
-			float x = br.ReadSingle();
-			float y = br.ReadSingle();
-			float z = br.ReadSingle();
-
-			return new float[]{x, y, z};
-		}
-		
-//		private Vector4 readVector4(BinaryReader br)
-//		{
-//			float x = br.ReadSingle();
-//			float y = br.ReadSingle();
-//			float z = br.ReadSingle();
-//			float w = br.ReadSingle();
-//
-//			return new Vector4(x, y, z, w);
-//		}
-
-		private float[] readVector4(BinaryReader br)
-		{
-			float x = br.ReadSingle();
-			float y = br.ReadSingle();
-			float z = br.ReadSingle();
-			float w = br.ReadSingle();
-
-			return new float[] { x, y, z, w };
+			return tmp;
 		}
 	}
 }

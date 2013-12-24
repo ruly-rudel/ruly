@@ -38,26 +38,32 @@ namespace Ruly.viewmodel
 		public void OnDrawFrame (IGL10 gl)
 		{
 			mLightDir[0] = -0.5f; mLightDir[1] = -1.0f; mLightDir[2] = -0.5f;	// in left-handed region
-//			Vector.normalize(mLightDir);
+			Vector.normalize(mLightDir);
 
 			mRT["screen"].switchTargetFrameBuffer();
 			GLES20.GlClear(GL10.GlColorBufferBit | GL10.GlDepthBufferBit);
 
 			////////////////////////////////////////////////////////////////////
 			//// draw models
-			if (ShellViewModel.Shells != null) {
-				foreach (var shell in ShellViewModel.Shells) {
-					if(shell.Surface.TextureLoaded) {
-						foreach(var rs in shell.RenderSets) {
-							mRT[rs.target].switchTargetFrameBuffer();
-							GLSL glsl = mGLSL[rs.shader];
+			foreach (var shell in ShellViewModel.Shells) {
+				if(shell.Surface.Loaded) {
+					foreach(var rs in shell.RenderSets) {
+						mRT[rs.target].switchTargetFrameBuffer();
+						GLSL glsl = mGLSL[rs.shader];
 
-							GLES20.GlUseProgram(glsl.mProgram);
+						GLES20.GlUseProgram(glsl.mProgram);
 
-							// Projection Matrix
-							GLES20.GlUniformMatrix4fv(glsl.muPMatrix, 1, false, ShellViewModel.ProjectionMatrix, 0);
+						// Projection Matrix
+						GLES20.GlUniformMatrix4fv(glsl.muPMatrix, 1, false, ShellViewModel.ProjectionMatrix, 0);
 
-							bindBuffer(shell.Surface, glsl);
+						// LightPosition
+						GLES20.GlUniform3fv(glsl.muLightDir, 1, mLightDir, 0);
+
+						bindBuffer(shell.Surface, glsl);
+						if(!rs.shader.EndsWith("alpha")) {
+							drawNonAlpha(shell.Surface, glsl);							
+							drawAlpha(shell.Surface, glsl, false);						
+						} else {
 							drawAlpha(shell.Surface, glsl, true);							
 						}
 					}
@@ -105,16 +111,17 @@ namespace Ruly.viewmodel
 			mGLSL.Add("builtin:nomotion",
 				new GLSL(Util.ReadAssetString("shader/vs_notex.vsh"), Util.ReadAssetString("shader/fs_notex.fsh")));
 
+			mGLSL.Add("builtin:nomotion_alpha",
+				new GLSL(Util.ReadAssetString("shader/vs_notex.vsh"), Util.ReadAssetString("shader/fs_notex_alpha.fsh")));
+
 			// render targets
 			mRT = new Dictionary<String, RenderTarget>();
 			mRT.Add("screen", new RenderTarget());
 
 			GLES20.GlBindFramebuffer(GLES20.GlFramebuffer, 0);
 
-			// bind textures
-//			initializeAllTexture(true);
-//			initializeAllSkinningTexture();
-			ShellViewModel.Shells [0].Surface.TextureLoaded = true;	// ad-hock
+			// Load ends
+			ShellViewModel.Shells [0].Surface.Loaded = true;	// ad-hock
 		}
 
 		private bool hasExt(String extension) {
@@ -141,12 +148,65 @@ namespace Ruly.viewmodel
 			GLES20.GlDisable(GLES20.GlBlend);
 			for (int r = 0; r < max; r++) {
 				Material mat = mats[r];
-				drawOneMaterial(glsl, surface, mat);
+				TexInfo tb = null;
+				if (mat.texture != null) {
+					tb = TextureFile.FetchTexInfo(mat.texture);
+				}
+				if(mat.diffuse_color[3] >= 1.0 && (tb == null || !tb.has_alpha)) {
+					drawOneMaterial(glsl, surface, mat);
+				}
 			}
 		}
 
-		private void drawAlpha(ShellSurface miku, GLSL glsl, bool alpha_test) {
-			drawNonAlpha (miku, glsl);
+		private void drawAlpha(ShellSurface surface, GLSL glsl, bool alpha_test) {
+			int max = surface.material.Count ();
+
+			// draw alpha material
+			GLES20.GlEnable(GLES20.GlBlend);
+			for (int r = 0; r < max; r++) {
+				Material mat = surface.material[r];
+				TexInfo tb = null;
+				if (mat.texture != null) {
+					tb = TextureFile.FetchTexInfo(mat.texture);
+				}
+				if(alpha_test) {
+					if(tb != null && tb.needs_alpha_test) {
+						if(mat.diffuse_color[3] < 1.0) {
+//							GLES20.GlDisable(GLES20.GL_CULL_FACE);
+							GLES20.GlDisable (2884);
+						} else {
+//							GLES20.GlEnable(GLES20.GL_CULL_FACE);
+							GLES20.GlEnable (2884);
+						}
+						drawOneMaterial(glsl, surface, mat);					
+					}
+				} else {
+					if(tb != null) { // has texture
+						if(!tb.needs_alpha_test) {
+							if(tb.has_alpha) {
+								if(mat.diffuse_color[3] < 1.0) {
+//									GLES20.GlDisable(GLES20.GL_CULL_FACE);
+									GLES20.GlDisable (2884);
+								} else {
+//									GLES20.GlEnable(GLES20.GL_CULL_FACE);						
+									GLES20.GlEnable (2884);
+								}
+								drawOneMaterial(glsl, surface, mat);						
+							} else if(mat.diffuse_color[3] < 1.0) {
+//								GLES20.GlDisable(GLES20.GL_CULL_FACE);
+								GLES20.GlDisable (2884);
+								drawOneMaterial(glsl, surface, mat);
+							}
+						}
+					} else {
+						if(mat.diffuse_color[3] < 1.0) {
+//							GLES20.GlDisable(GLES20.GL_CULL_FACE);
+							GLES20.GlDisable (2884);
+							drawOneMaterial(glsl, surface, mat);
+						}
+					}
+				}
+			}
 		}
 
 		private void drawOneMaterial(GLSL glsl, ShellSurface surface, Material mat) {
@@ -161,8 +221,13 @@ namespace Ruly.viewmodel
 				mDifAmb[i] *= mat.diffuse_color[i] * wi + mat.emmisive_color[i];
 			}
 			mDifAmb[3] *= mat.diffuse_color[3];
-//			Vector.min(mDifAmb, 1.0f);
+			Vector.min(mDifAmb, 1.0f);
 			GLES20.GlUniform4fv(glsl.muDif, 1, mDifAmb, 0);
+
+			// toon
+			GLES20.GlUniform1i(glsl.msToonSampler, 0);
+			GLES20.GlActiveTexture(GLES20.GlTexture0);
+			GLES20.GlBindTexture(GLES20.GlTexture2d, TextureFile.FetchTexInfo(surface.toon_name[mat.toon_index]).tex);
 
 			// texture
 			GLES20.GlUniform1i(glsl.msTextureSampler, 1);

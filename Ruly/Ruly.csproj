@@ -96,6 +96,7 @@
     <Compile Include="viewmodel\Shell\ShellViewModel.cs" />
     <Compile Include="viewmodel\Shell\TextureFile.cs" />
     <Compile Include="viewmodel\Shell\ShellRenderer.cs" />
+    <Compile Include="misc\Vector.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -204,5 +205,7 @@
     <AndroidAsset Include="Assets\shader\fs_notex.fsh" />
     <AndroidAsset Include="Assets\shader\vs_notex.vsh" />
     <AndroidAsset Include="Assets\Shell\default.zip" />
+    <AndroidAsset Include="Assets\shader\fs_notex_alpha.fsh" />
+    <AndroidAsset Include="Assets\Shell\Lat.zip" />
   </ItemGroup>
 </Project>

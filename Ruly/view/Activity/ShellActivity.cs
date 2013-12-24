@@ -35,21 +35,23 @@ namespace Ruly.view
 //					Log.Debug("Ruly.dirList", i);
 //			}
 
-			SetupShell ();
 //			ShellViewModel.LoadPMD ("Shell/mikuXS/mikuXS.pmd");
-			ShellViewModel.LoadPMD (root, "/default", "/miku.pmd");
-//			ShellViewModel.LoadPMD (root, "/default", "/miku1052C-Re.pmd");
+			SetupShell ("default");
+//			ShellViewModel.LoadPMD (root, "/default", "/miku.pmd");
+			ShellViewModel.LoadPMD (root, "/default", "/miku1052C-Re.pmd");
+//			SetupShell ("Lat");
+//			ShellViewModel.LoadPMD (root, "/Lat", "/LatVer2.3_Normal.pmd");
 
 			shellView = new ShellView (this);
 			SetContentView (shellView);
 		}
 
-		private void SetupShell()
+		private void SetupShell(string target)
 		{
 			var root = System.Environment.GetFolderPath (System.Environment.SpecialFolder.Personal);
-			if(!Directory.Exists(root + "/default")) {
+			if(!Directory.Exists(root + "/" + target)) {
 				Log.Debug ("Ruly", "extracting default Shell...");
-				using (var s = Assets.Open ("Shell/default.zip")) 
+				using (var s = Assets.Open ("Shell/" + target + ".zip")) 
 				using (var z = new ZipInputStream(s))
 				{
 					ZipEntry ze;

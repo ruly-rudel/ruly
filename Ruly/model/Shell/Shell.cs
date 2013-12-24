@@ -9,44 +9,6 @@ using Ruly.viewmodel;
 
 namespace Ruly.model
 {
-	public class Vector2 {
-		public float x;
-		public float y;
-
-		public Vector2(float x, float y)
-		{
-			this.x = x;
-			this.y = y;
-		}
-	}
-
-	public class Vector3 {
-		public float x;
-		public float y;
-		public float z;
-
-		public Vector3(float x, float y, float z)
-		{
-			this.x = x;
-			this.y = y;
-			this.z = z;
-		}
-	}
-
-	public class Vector4 {
-		public float x;
-		public float y;
-		public float z;
-		public float w;
-
-		public Vector4(float x, float y, float z, float w)
-		{
-			this.x = x;
-			this.y = y;
-			this.z = z;
-			this.w = w;
-		}
-	}
 
 	public class Material {
 		public float[]		diffuse_color;
@@ -58,9 +20,6 @@ namespace Ruly.model
 		public int			face_vert_count;
 		public string 		texture;
 		
-//		public float[]		vertex;
-//		public TexInfo		texture_info;
-
 		public int 			face_vert_offset;
 	}
 	
@@ -88,7 +47,7 @@ namespace Ruly.model
 		public int			face_vert_count;
 		public byte			face_type;
 		public int[]		face_vert_index;
-		public Vector3[]	face_vert_offset;
+		public float[][]	face_vert_offset;
 	}
 
 	public class TexInfo {
@@ -99,7 +58,7 @@ namespace Ruly.model
 	
 	public class ShellSurface
 	{
-		public bool TextureLoaded {
+		public bool Loaded {
 			get;
 			set;
 		}
@@ -107,8 +66,6 @@ namespace Ruly.model
 
 		public List<Material>				material	{ set; get; }
 		public string[]						toon_name;
-//		public TexInfo[]					toon		{ get; set; }
-//		public Dictionary<string, TexInfo>	texture		{ get; set; }
 
 		public Java.Nio.FloatBuffer VertexBuffer;
 
@@ -121,9 +78,7 @@ namespace Ruly.model
 		public ShellSurface ()
 		{
 			material = new List<Material>();
-//			toon = new TexInfo[11];
-//			texture = new Dictionary<string, TexInfo> ();
-			TextureLoaded = false;
+			Loaded = false;
 		}
 	}
 
@@ -179,6 +134,11 @@ namespace Ruly.model
 			surface.IndexBuffer.Put (surface.Index);
 			surface.IndexBuffer.Position (0);
 
+			// clearnup buffers
+			surface.Vertex = null;
+			surface.Uv = null;
+			surface.Index = null;
+
 			// create texture entry for future texture read
 			foreach (var m in surface.material) {
 				if (m.texture != null) {
@@ -196,6 +156,7 @@ namespace Ruly.model
 			}
 
 			Surface = surface;
+
 			Log.Debug ("Shell", "PMD load ends.");
 
 			//			RenderSets.Add(new RenderSet("builtin:nomotion_alpha", "screen"));

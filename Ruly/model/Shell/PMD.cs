@@ -2,9 +2,6 @@ using System;
 using System.IO;
 using System.Text;
 
-//using Sce.PlayStation.Core;
-//using Sce.PlayStation.Core.Graphics;
-//using I18N.CJK;
 using Android.Util;
 using Android.App;
 

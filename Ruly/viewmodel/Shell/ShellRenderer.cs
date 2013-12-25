@@ -96,7 +96,6 @@ namespace Ruly.viewmodel
 			GLES20.GlClearColor(1, 1, 1, 1);
 			GLES20.GlEnable(GLES20.GlDepthTest);
 			GLES20.GlEnable(GLES20.GlBlend);
-//			GLES20.GlEnable (GLES20.GlCullFaceMode);
 			checkGlError ("GlEnable");
 
 			// GLUtils.texImage2D generates premultiplied-alpha texture. so we use GL_ONE instead of GL_ALPHA
@@ -223,6 +222,12 @@ namespace Ruly.viewmodel
 			mDifAmb[3] *= mat.diffuse_color[3];
 			Vector.min(mDifAmb, 1.0f);
 			GLES20.GlUniform4fv(glsl.muDif, 1, mDifAmb, 0);
+
+			// speculation
+			if (glsl.muPow >= 0) {
+				GLES20.GlUniform4f(glsl.muSpec, mat.specular_color[0], mat.specular_color[1], mat.specular_color[2], 0);
+				GLES20.GlUniform1f(glsl.muPow, mat.power);
+			}
 
 			// toon
 			GLES20.GlUniform1i(glsl.msToonSampler, 0);

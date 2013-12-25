@@ -1,9 +1,6 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
-//using Sce.PlayStation.Core.Graphics;
-//using Sce.PlayStation.Core.Imaging;
-//using I18N.CJK;
 using Android.Opengl;
 using Javax.Microedition.Khronos.Egl;
 using Javax.Microedition.Khronos.Opengles;
@@ -219,10 +216,6 @@ namespace Ruly.viewmodel
 	
 			if ((x % scale) == 0 && (y % scale) == 0) {
 				buf [y * w + x] = color;
-//				buf[y * w * 4 + x * 4 + 0] = color[0];
-//				buf[y * w * 4 + x * 4 + 1] = color[1];
-//				buf[y * w * 4 + x * 4 + 2] = color[2];
-//				buf[y * w * 4 + x * 4 + 3] = color[3];	
 			}			
 		}
 	}

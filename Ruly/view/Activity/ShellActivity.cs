@@ -36,11 +36,11 @@ namespace Ruly.view
 //			}
 
 //			ShellViewModel.LoadPMD ("Shell/mikuXS/mikuXS.pmd");
-			SetupShell ("default");
+//			SetupShell ("default");
 //			ShellViewModel.LoadPMD (root, "/default", "/miku.pmd");
-			ShellViewModel.LoadPMD (root, "/default", "/miku1052C-Re.pmd");
-//			SetupShell ("Lat");
-//			ShellViewModel.LoadPMD (root, "/Lat", "/LatVer2.3_Normal.pmd");
+//			ShellViewModel.LoadPMD (root, "/default", "/miku1052C-Re.pmd");
+			SetupShell ("Lat");
+			ShellViewModel.LoadPMD (root, "/Lat", "/LatVer2.3_White.pmd");
 
 			shellView = new ShellView (this);
 			SetContentView (shellView);
@@ -55,14 +55,18 @@ namespace Ruly.view
 				using (var z = new ZipInputStream(s))
 				{
 					ZipEntry ze;
+					byte[] buf = new byte[1024];
 					while ((ze = z.NextEntry) != null) {
 						if (!ze.IsDirectory) {
 							string name = root + "/" + ze.Name;
 							EnsureDirectory (System.IO.Path.GetDirectoryName(name));
 							using (var ws = File.OpenWrite (name)) 
 							{
-								for (int i = 0; i < ze.Size; i++) {
-									ws.WriteByte ((byte)z.Read());
+								var i = 0;
+								while (i < ze.Size) {
+									int num = z.Read (buf, 0, 1024);
+									ws.Write (buf, 0, num);
+									i += num;
 								}
 								z.CloseEntry ();
 								Log.Debug ("Ruly", "Extract File " + ze.Name);

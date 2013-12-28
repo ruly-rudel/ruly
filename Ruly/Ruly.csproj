@@ -24,7 +24,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;XSc;</DefineConstants>
+    <DefineConstants>DEBUG;LAT;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>None</AndroidLinkMode>
@@ -199,17 +199,11 @@
   <ItemGroup>
     <AndroidAsset Include="Assets\shader\vs.vsh" />
     <AndroidAsset Include="Assets\shader\fs.fsh" />
-    <AndroidAsset Include="Assets\shader\vs_bg.vsh" />
-    <AndroidAsset Include="Assets\shader\fs_bg.fsh" />
-    <AndroidAsset Include="Assets\shader\fs_nm.fsh" />
-    <AndroidAsset Include="Assets\shader\fs_nm_alpha.fsh" />
-    <AndroidAsset Include="Assets\shader\vs_nm.vsh" />
-    <AndroidAsset Include="Assets\shader\fs_notex.fsh" />
-    <AndroidAsset Include="Assets\shader\vs_notex.vsh" />
     <AndroidAsset Include="Assets\Shell\default.zip" />
-    <AndroidAsset Include="Assets\shader\fs_notex_alpha.fsh" />
     <AndroidAsset Include="Assets\Shell\Lat.zip" />
     <AndroidAsset Include="Assets\Shell\mikuXS.zip" />
     <AndroidAsset Include="Assets\Shell\mikuXSc.zip" />
+    <AndroidAsset Include="Assets\shader\vs_nm.vsh" />
+    <AndroidAsset Include="Assets\shader\fs_alpha.fsh" />
   </ItemGroup>
 </Project>

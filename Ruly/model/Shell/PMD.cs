@@ -17,9 +17,9 @@ namespace Ruly.model
 		public float[]		Vertex;
 		public float[]		Normal;
 		public float[]		Uv;
+		public short[]		Weight;
 		public short[]		Index;
 
-		private Bone[]		m_bone;
 		private IK[]		m_IK;
 		private Face[]		m_face;
 		
@@ -104,6 +104,7 @@ namespace Ruly.model
 				Vertex = new float[num * 3];
 				Normal = new float[num * 3];
 				Uv = new float[num * 2];
+				Weight = new short[num * 3];
 				for(int i = 0; i < num; i++) {
 					Vertex [i * 3 + 0] = br.ReadSingle ();
 					Vertex [i * 3 + 1] = br.ReadSingle ();
@@ -116,10 +117,11 @@ namespace Ruly.model
 					Uv [i * 2 + 0] = br.ReadSingle ();
 					Uv [i * 2 + 1] = br.ReadSingle ();
 
-//					for(int j = 0; j < 8; j++) {
-//						Vertex[i * 8 + j] = br.ReadSingle();
-//					}
-					br.ReadBytes (6);
+					Weight [i * 3 + 0] = br.ReadInt16 ();
+					Weight [i * 3 + 1] = br.ReadInt16 ();
+					Weight [i * 3 + 2] = (short)br.ReadByte ();
+
+					br.ReadBytes (1);	// edge flag
 				}
 			} else {
 				Vertex = null;
@@ -175,21 +177,21 @@ namespace Ruly.model
 			short num = br.ReadInt16();
 			Log.Debug("PMD", "BONE: " + num.ToString());
 			if (num > 0) {
-				m_bone = new Bone[num];
+				bone = new Bone[num];
 				for (int i = 0; i < num; i++) {
-					Bone bone = new Bone();
+					Bone b = new Bone();
 
-					bone.name = Util.ReadString(br, 20);
-					bone.parent = br.ReadInt16();
-					bone.tail = br.ReadInt16();
-					bone.type = br.ReadByte();
-					bone.ik = br.ReadInt16();
+					b.name = Util.ReadString(br, 20);
+					b.parent = br.ReadInt16();
+					b.tail = br.ReadInt16();
+					b.type = br.ReadByte();
+					b.ik = br.ReadInt16();
 
-					bone.head_pos = Util.ReadFloats(br, 3);
-//					bone.is_leg = bone.name.contains("ひざ");
+					b.head_pos = Util.ReadFloats(br, 3);
+					b.is_leg = b.name.Contains("ひざ");
 				
-					if (bone.tail != -1) {
-						m_bone[i] = bone;
+					if (b.tail != -1) {
+						bone[i] = b;
 					}
 				}
 			}
@@ -294,7 +296,7 @@ namespace Ruly.model
 		}
 		
 		private void parseEnglishBoneList(BinaryReader br) {
-			int num = m_bone.Length;
+			int num = bone.Length;
 			Log.Debug("PMD", "EnglishBoneName: " + num.ToString());
 			if(num > 0) {
 				br.ReadBytes(20 * num);

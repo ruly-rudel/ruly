@@ -9,6 +9,7 @@ void main() {
   vec4 tex;
   vec4 spec;
   vec4 difamb;
+
   toon = texture2D(sToon, vec2(0.5, vTexCoord.z));
   tex  = texture2D(sTex,  vTexCoord.xy);
   spec   = uSpec * vTexCoord.w;

@@ -65,6 +65,7 @@ namespace Ruly.model
 
 
 		public List<Material>				material	{ set; get; }
+		public Bone[]						bone;
 		public string[]						toon_name;
 
 		public string Description {
@@ -77,6 +78,8 @@ namespace Ruly.model
 		public Java.Nio.FloatBuffer NormalBuffer;
 
 		public Java.Nio.FloatBuffer UvBuffer;
+
+		public Java.Nio.ShortBuffer WeightBuffer;
 
 		public Java.Nio.ShortBuffer IndexBuffer;
 				
@@ -172,11 +175,23 @@ namespace Ruly.model
 			surface.VertexBuffer.Put (surface.Vertex);
 			surface.VertexBuffer.Position (0);
 
+			buf = ByteBuffer.AllocateDirect (surface.Normal.Length * sizeof(float));
+			buf.Order (ByteOrder.NativeOrder ());
+			surface.NormalBuffer = buf.AsFloatBuffer() as Java.Nio.FloatBuffer;
+			surface.NormalBuffer.Put (surface.Normal);
+			surface.NormalBuffer.Position (0);
+
 			buf = ByteBuffer.AllocateDirect (surface.Uv.Length * sizeof(float));
 			buf.Order (ByteOrder.NativeOrder ());
 			surface.UvBuffer = buf.AsFloatBuffer() as Java.Nio.FloatBuffer;
 			surface.UvBuffer.Put (surface.Uv);
 			surface.UvBuffer.Position (0);
+
+			buf = ByteBuffer.AllocateDirect (surface.Weight.Length * sizeof(short));
+			buf.Order (ByteOrder.NativeOrder ());
+			surface.WeightBuffer = buf.AsShortBuffer() as Java.Nio.ShortBuffer;
+			surface.WeightBuffer.Put (surface.Weight);
+			surface.WeightBuffer.Position (0);
 
 			buf = ByteBuffer.AllocateDirect (surface.Index.Length * sizeof(short));
 			buf.Order (ByteOrder.NativeOrder ());

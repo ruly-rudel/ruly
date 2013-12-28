@@ -1,19 +1,23 @@
 precision highp float;
-attribute vec4 aPosition;
-attribute vec4 aNormal;
+attribute vec3 aPosition;
+attribute vec3 aNormal;
+attribute vec2 aUv;
 uniform vec3 uLightDir;
 uniform mat4 uPMatrix;
-varying vec3 vTexCoord;
+uniform float uPow;
+varying vec4 vTexCoord;
 void main() {
   float v;
-  vec3 n;
+  float spec;
   vec4 pos;
+  vec3 n;
 
   pos = vec4(aPosition.xyz, 1.0);
   gl_Position = uPMatrix * pos;
 
-  n = vec3(aPosition.w, aNormal.x, -aNormal.y);
+  n = vec3(aNormal.xy, -aNormal.z);
   v = dot(n, uLightDir);
   v = v * 0.5 + 0.5;
-  vTexCoord = vec3(aNormal.zw, v);
+  spec = min(1.0, pow(max(v, 0.0), uPow));
+  vTexCoord = vec4(aUv, v, spec);
 }

@@ -107,11 +107,19 @@ namespace Ruly.viewmodel
 			// shader programs
 			mGLSL = new Dictionary<String, GLSL>();
 
+			mGLSL.Add("builtin:default",
+				new GLSL(String.Format(Util.ReadAssetString("shader/vs.vsh"), ShellViewModel.GLConfig), 
+					Util.ReadAssetString("shader/fs.fsh")));
+
+			mGLSL.Add("builtin:default_alpha",
+				new GLSL(String.Format(Util.ReadAssetString("shader/vs.vsh"), ShellViewModel.GLConfig),
+					Util.ReadAssetString("shader/fs_alpha.fsh")));
+
 			mGLSL.Add("builtin:nomotion",
-				new GLSL(Util.ReadAssetString("shader/vs_notex.vsh"), Util.ReadAssetString("shader/fs_notex.fsh")));
+				new GLSL(Util.ReadAssetString("shader/vs_nm.vsh"), Util.ReadAssetString("shader/fs.fsh")));
 
 			mGLSL.Add("builtin:nomotion_alpha",
-				new GLSL(Util.ReadAssetString("shader/vs_notex.vsh"), Util.ReadAssetString("shader/fs_notex_alpha.fsh")));
+				new GLSL(Util.ReadAssetString("shader/vs_nm.vsh"), Util.ReadAssetString("shader/fs_alpha.fsh")));
 
 			// render targets
 			mRT = new Dictionary<String, RenderTarget>();
@@ -264,8 +272,14 @@ namespace Ruly.viewmodel
 			GLES20.GlEnableVertexAttribArray(glsl.maPositionHandle);
 			GLES20.GlVertexAttribPointer (glsl.maPositionHandle, 3, GLES20.GlFloat, false, 0, surface.VertexBuffer);
 
+			GLES20.GlEnableVertexAttribArray(glsl.maNormalHandle);
+			GLES20.GlVertexAttribPointer (glsl.maNormalHandle, 3, GLES20.GlFloat, false, 0, surface.NormalBuffer);
+
 			GLES20.GlEnableVertexAttribArray(glsl.maUvHandle);
 			GLES20.GlVertexAttribPointer (glsl.maUvHandle, 2, GLES20.GlFloat, false, 0, surface.UvBuffer);
+
+			GLES20.GlEnableVertexAttribArray(glsl.maBlendHandle);
+			GLES20.GlVertexAttribPointer (glsl.maBlendHandle, 3, GLES20.GlShort, false, 0, surface.WeightBuffer);
 			checkGlError("drawGLES20 VertexAttribPointer vertex");
 		}
 	}

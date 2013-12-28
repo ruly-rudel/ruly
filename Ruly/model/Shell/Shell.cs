@@ -67,6 +67,11 @@ namespace Ruly.model
 		public List<Material>				material	{ set; get; }
 		public string[]						toon_name;
 
+		public string Description {
+			get;
+			set;
+		}
+
 		public Java.Nio.FloatBuffer VertexBuffer;
 
 		public Java.Nio.FloatBuffer NormalBuffer;
@@ -79,6 +84,38 @@ namespace Ruly.model
 		{
 			material = new List<Material>();
 			Loaded = false;
+		}
+	}
+
+	public class BoneMotion
+	{
+		public int frame_no;
+		public float[] location;
+		public float[] rotation;
+		public byte[] interp;
+	}
+
+	public class Morphing
+	{
+		public int frame_no;
+		public float weight;
+	}
+
+	public class ShellMotion
+	{
+		public Dictionary<string, List<BoneMotion>> Bone {
+			get;
+			set;
+		}
+
+		public Dictionary<string, List<Morphing>> Morph {
+			get;
+			set;
+		}
+
+		public int max_frame {
+			get;
+			protected set;
 		}
 	}
 
@@ -98,6 +135,11 @@ namespace Ruly.model
 			private set;
 		}
 
+		public Dictionary<string, ShellMotion> Motions {
+			get;
+			private set;
+		}
+
 		public List<RenderSet> RenderSets {
 			get;
 			private set;
@@ -107,7 +149,15 @@ namespace Ruly.model
 		{
 			Surface = null;
 			RenderSets = new List<RenderSet> ();
+			Motions = new Dictionary<string, ShellMotion> ();
 		}
+
+		public void LoadVMD (string root, string dir, string name)
+		{
+			string path = root + dir + name;
+			Motions[path] = new VMD (path);
+		}
+
 
 		public void LoadPMD(string root, string dir, string name)
 		{

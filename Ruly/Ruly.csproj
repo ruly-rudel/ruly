@@ -24,7 +24,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <DefineConstants>DEBUG;XSc;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>None</AndroidLinkMode>
@@ -44,13 +44,13 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
+    <Reference Include="Mono.Android.Support.v4" />
     <Reference Include="SQLite">
       <HintPath>..\Components\sqlite-net-1.0.1\lib\android\SQLite.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\Components\json.net-4.5.11\lib\android\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Android.Support.v4" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.designer.cs" />
@@ -97,6 +97,7 @@
     <Compile Include="viewmodel\Shell\TextureFile.cs" />
     <Compile Include="viewmodel\Shell\ShellRenderer.cs" />
     <Compile Include="misc\Vector.cs" />
+    <Compile Include="model\Shell\VMD.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -166,6 +167,7 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_expand.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_expand.png" />
     <AndroidResource Include="Resources\layout\TaskAlarm.axml" />
+    <AndroidResource Include="Resources\layout\ShellActivity.axml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
@@ -207,5 +209,7 @@
     <AndroidAsset Include="Assets\Shell\default.zip" />
     <AndroidAsset Include="Assets\shader\fs_notex_alpha.fsh" />
     <AndroidAsset Include="Assets\Shell\Lat.zip" />
+    <AndroidAsset Include="Assets\Shell\mikuXS.zip" />
+    <AndroidAsset Include="Assets\Shell\mikuXSc.zip" />
   </ItemGroup>
 </Project>

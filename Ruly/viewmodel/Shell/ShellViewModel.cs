@@ -59,6 +59,11 @@ namespace Ruly.viewmodel
 			Shells.Add(shell);
 		}
 
+		public static void LoadVMD (string root, string dir, string name)
+		{
+			Shells[0].LoadVMD(root, dir, name);
+		}
+
 		public static void setCamera(float d, float[] pos, float[] rot, float angle, int width, int height) {
 			// Projection Matrix
 			float s = (float) Math.Sin(angle * Math.PI / 360);

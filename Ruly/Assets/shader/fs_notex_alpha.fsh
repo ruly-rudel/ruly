@@ -1,20 +1,23 @@
 precision mediump float;
-varying vec3 vTexCoord;
+varying vec4 vTexCoord;
 uniform sampler2D sToon;
 uniform sampler2D sTex;
 uniform vec4 uDif;
+uniform vec4 uSpec;
 void main() {
   vec4 toon;
   vec4 tex;
-  vec4 color;
+  vec4 spec;
+  vec4 difamb;
 
   toon = texture2D(sToon, vec2(0.5, vTexCoord.z));
   tex  = texture2D(sTex,  vTexCoord.xy);
-  color = uDif * toon * tex;
-  if(color.a == 0.0) {
+  spec   = uSpec * vTexCoord.w;
+  difamb = uDif  * toon;
+  if(difamb.a == 0.0) {
   	discard;
   } else {
-  	gl_FragColor = color;
+  	gl_FragColor = difamb;
   }
 }
 

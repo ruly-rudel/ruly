@@ -14,6 +14,9 @@ namespace Ruly
 {
 	public static class Util
 	{
+
+		private static Encoding sjisEnc = Encoding.GetEncoding("Shift_JIS");
+
 		public static string ReadAssetString(string name)
 		{
 			string content;
@@ -24,6 +27,43 @@ namespace Ruly
 //				content = sr.ReadToEnd ();
 
 			return content;
+		}
+
+		public static string ReadString(BinaryReader br, int num)
+		{
+			byte [] buf = br.ReadBytes(num);
+			for(int i = 0; i < num; i++) {
+				if(buf[i] == 0) {
+					if(i == 0) {
+						return null;
+					} else {
+						var r = new byte[i];
+						for(int j = 0; j < i; j++) {
+							r[j] = buf[j];
+						}
+
+						return sjisEnc.GetString (r);
+					}	
+				}
+			}
+
+			var rn = new byte[num + 1];
+			for(int i = 0; i < num; i++) {
+				rn [i] = buf [i];
+			}
+			rn [num] = (byte)'\0';
+
+			return sjisEnc.GetString (rn);
+		}
+
+		public static float[] ReadFloats(BinaryReader br, int num)
+		{
+			float[] tmp = new float[num];
+			for (int i = 0; i < num; i++) {
+				tmp [i] = br.ReadSingle ();
+			}
+
+			return tmp;
 		}
 	}
 }

@@ -19,7 +19,7 @@ namespace Ruly.view
 	[Activity (Label = "ShellActivity", MainLauncher = true, Theme="@android:style/Theme.Holo.Light.NoActionBar")]			
 	public class ShellActivity : Activity
 	{
-		ShellView shellView;
+		TextView textView;
 
 		protected override void OnCreate (Bundle bundle)
 		{
@@ -36,18 +36,39 @@ namespace Ruly.view
 //			}
 
 //			ShellViewModel.LoadPMD ("Shell/mikuXS/mikuXS.pmd");
-//			SetupShell ("default");
+
+			#if MIKU1052
+			SetupShell ("default");
 //			ShellViewModel.LoadPMD (root, "/default", "/miku.pmd");
-//			ShellViewModel.LoadPMD (root, "/default", "/miku1052C-Re.pmd");
+			ShellViewModel.LoadPMD (root, "/default", "/miku1052C-Re.pmd");
+			#elif LAT
 			SetupShell ("Lat");
 			ShellViewModel.LoadPMD (root, "/Lat", "/LatVer2.3_White.pmd");
+			#elif XSc
+			SetupShell("mikuXSc");
+			ShellViewModel.LoadPMD(root, "/mikuXSc", "/mikuXS.pmd");
+			#elif XS
+			SetupShell("mikuXS");
+			ShellViewModel.LoadPMD(root, "/mikuXS", "/mikuXS.pmd");
+			#endif
+			ShellViewModel.LoadVMD (root, "/motion", "/stand.vmd");
 
-			shellView = new ShellView (this);
-			SetContentView (shellView);
+			//			shellView = new ShellView (this);
+
+			SetContentView (Resource.Layout.ShellActivity);
+			textView = FindViewById<TextView> (Resource.Id.ShellFrameTitle);
+			textView.Text = ShellViewModel.Shells[0].Surface.Description;
+		}
+
+		protected override void OnResume ()
+		{
+			base.OnResume ();
+			Toast.MakeText (this, ShellViewModel.Shells [0].Surface.Description, ToastLength.Long);
 		}
 
 		private void SetupShell(string target)
 		{
+			// Unzip
 			var root = System.Environment.GetFolderPath (System.Environment.SpecialFolder.Personal);
 			if(!Directory.Exists(root + "/" + target)) {
 				Log.Debug ("Ruly", "extracting default Shell...");

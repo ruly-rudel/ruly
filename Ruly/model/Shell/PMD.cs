@@ -13,7 +13,6 @@ namespace Ruly.model
 		public  bool  		 is_pmd		{ get { return _is_pmd; } }
 		
 		public string		model_name	{ get; set; }
-		public string		description { get; set; }
 
 		public float[]		Vertex;
 		public float[]		Normal;
@@ -33,12 +32,12 @@ namespace Ruly.model
 			Log.Debug ("PMD", "base dir: " + dir);
 			using (var fs = File.OpenRead(path)) {
 				using (var br = new BinaryReader (fs)) {
-					init(br, fs, dir + "/");
+					init(br, dir + "/");
 				}
 			}
 		}
 		
-		private void init (BinaryReader br, Stream fs, string path)
+		private void init (BinaryReader br, string path)
 		{
 			parseHeader(br);
 			if(is_pmd) {
@@ -63,7 +62,7 @@ namespace Ruly.model
 
 				if(br.BaseStream.Position != br.BaseStream.Length) {
 					Log.Debug ("PMD", "has more data...");
-					Log.Debug ("PMD", "position = " + fs.Position.ToString() + ", length = " + fs.Length.ToString());
+					Log.Debug ("PMD", "position = " + br.BaseStream.Position.ToString() + ", length = " + br.BaseStream.Length.ToString());
 					parseEnglish		( br );
 					parseToonFileName	( br, path );
 					/*
@@ -87,14 +86,14 @@ namespace Ruly.model
 			Log.Debug("PMD", "VERSION: " + f.ToString());
 
 			// Model Name
-			model_name = readString(br, 20);
+			model_name = Util.ReadString(br, 20);
 			Log.Debug("PMD", "MODEL NAME: ");
 			Log.Debug("PMD", model_name);
 
 			// description
-			description = readString (br, 256);
+			Description = Util.ReadString (br, 256);
 			Log.Debug("PMD", "DESCRIPTION: ");
-			Log.Debug("PMD", description);
+			Log.Debug("PMD", Description);
 		}
 		
 		private void parseVertexList(BinaryReader br) {
@@ -150,15 +149,15 @@ namespace Ruly.model
 				for (int i = 0; i < num; i++) {
 					Material m = new Material();
 										
-					m.diffuse_color		= readFloats(br, 4);
+					m.diffuse_color		= Util.ReadFloats(br, 4);
 					m.power				= br.ReadSingle();
-					m.specular_color	= readFloats(br, 3);
-					m.emmisive_color	= readFloats(br, 3);
+					m.specular_color	= Util.ReadFloats(br, 3);
+					m.emmisive_color	= Util.ReadFloats(br, 3);
 					
 					m.toon_index		= (byte)(br.ReadByte() + 1);
 					m.edge_flag			= br.ReadByte();
 					m.face_vert_count	= br.ReadInt32();
-					m.texture			= readString(br, 20);
+					m.texture			= Util.ReadString(br, 20);
 					
 					m.face_vert_offset	= acc;
 					acc = acc + m.face_vert_count;
@@ -174,19 +173,19 @@ namespace Ruly.model
 		private void parseBoneList(BinaryReader br) {
 			// the number of Vertexes
 			short num = br.ReadInt16();
-			Log.Debug("PMDParser", "BONE: " + num.ToString());
+			Log.Debug("PMD", "BONE: " + num.ToString());
 			if (num > 0) {
 				m_bone = new Bone[num];
 				for (int i = 0; i < num; i++) {
 					Bone bone = new Bone();
 
-					bone.name = readString(br, 20);
+					bone.name = Util.ReadString(br, 20);
 					bone.parent = br.ReadInt16();
 					bone.tail = br.ReadInt16();
 					bone.type = br.ReadByte();
 					bone.ik = br.ReadInt16();
 
-					bone.head_pos = readFloats(br, 3);
+					bone.head_pos = Util.ReadFloats(br, 3);
 //					bone.is_leg = bone.name.contains("ひざ");
 				
 					if (bone.tail != -1) {
@@ -199,7 +198,7 @@ namespace Ruly.model
 		private void parseIKList(BinaryReader br) {
 			// the number of Vertexes
 			short num = br.ReadInt16();
-			Log.Debug("PMDParser", "IK: " + num.ToString());
+			Log.Debug("PMD", "IK: " + num.ToString());
 			if (num > 0) {
 				m_IK = new IK[num];
 				for (int i = 0; i < num; i++) {
@@ -227,12 +226,12 @@ namespace Ruly.model
 		{
 			short num = br.ReadInt16();
 			int acc = 0;
-			Log.Debug("PMDParser", "Face: " + num.ToString());
+			Log.Debug("PMD", "Face: " + num.ToString());
 			if (num > 0) {
 				m_face = new Face[num];
 				for (int i = 0; i < num; i++) {
 					Face face = new Face();
-					face.name				= readString(br, 20);
+					face.name				= Util.ReadString(br, 20);
 					face.face_vert_count	= br.ReadInt32();
 					face.face_type			= br.ReadByte();
 					face.face_vert_index	= new int[face.face_vert_count];
@@ -240,13 +239,13 @@ namespace Ruly.model
 					
 					for (int j = 0; j < face.face_vert_count; j++) {
 						face.face_vert_index[j]		= br.ReadInt32();
-						face.face_vert_offset[j]	= readFloats(br, 3);
+						face.face_vert_offset[j]	= Util.ReadFloats(br, 3);
 					}
 					
 					acc += face.face_vert_count;					
 					m_face[i] = face;
 				}
-				Log.Debug("PMDParser", "Total Face Vert: " + acc.ToString());
+				Log.Debug("PMD", "Total Face Vert: " + acc.ToString());
 			} else {
 				m_face = null;
 			}
@@ -255,7 +254,7 @@ namespace Ruly.model
 		private void parseSkinDisp(BinaryReader br) {
 			byte num = br.ReadByte();
 			m_skin_disp_num = num;
-			Log.Debug("PMDParser", "SkinDisp: " + num.ToString());
+			Log.Debug("PMD", "SkinDisp: " + num.ToString());
 			if (num > 0) {
 				br.ReadBytes (2 * num);
 			}
@@ -264,7 +263,7 @@ namespace Ruly.model
 		private void parseBoneDispName(BinaryReader br) {
 			byte num = br.ReadByte();
 			m_bone_disp_name_num = num;
-			Log.Debug("PMDParser", "BoneDispName: " + num.ToString());
+			Log.Debug("PMD", "BoneDispName: " + num.ToString());
 			if (num > 0) {
 				br.ReadBytes (50 * num);
 			}
@@ -272,7 +271,7 @@ namespace Ruly.model
 		
 		private void parseBoneDisp(BinaryReader br) {
 			int num = br.ReadInt32();
-			Log.Debug("PMDParser", "BoneDisp: " + num.ToString());
+			Log.Debug("PMD", "BoneDisp: " + num.ToString());
 			if (num > 0) {
 				br.ReadBytes (3 * num);
 			}
@@ -281,7 +280,7 @@ namespace Ruly.model
 		private void parseEnglish(BinaryReader br)
 		{
 			byte has_english = br.ReadByte();
-			Log.Debug("PMDParser", "HasEnglishName: " + has_english.ToString());
+			Log.Debug("PMD", "HasEnglishName: " + has_english.ToString());
 			if (has_english == 1) {
 				parseEnglishName(br);
 				parseEnglishBoneList(br);
@@ -296,7 +295,7 @@ namespace Ruly.model
 		
 		private void parseEnglishBoneList(BinaryReader br) {
 			int num = m_bone.Length;
-			Log.Debug("PMDParser", "EnglishBoneName: " + num.ToString());
+			Log.Debug("PMD", "EnglishBoneName: " + num.ToString());
 			if(num > 0) {
 				br.ReadBytes(20 * num);
 				/*
@@ -311,7 +310,7 @@ namespace Ruly.model
 
 		private void parseEnglishSkinList(BinaryReader br) {
 			int num = m_skin_disp_num;
-			Log.Debug("PMDParser", "EnglishSkinName: " + num.ToString());
+			Log.Debug("PMD", "EnglishSkinName: " + num.ToString());
 			if(num > 0) {
 				br.ReadBytes(20 * num);
 				/*
@@ -342,45 +341,8 @@ namespace Ruly.model
 		private void parseToonFileName(BinaryReader br, string path)
 		{
 			for (int i = 1; i < 11; i++) {
-				toon_name[i] = readString(br, 100);
+				toon_name[i] = Util.ReadString(br, 100);
 			}
-		}
-
-		private string readString(BinaryReader br, int num)
-		{
-			byte [] buf = br.ReadBytes(num);
-			for(int i = 0; i < num; i++) {
-				if(buf[i] == 0) {
-					if(i == 0) {
-						return null;
-					} else {
-						char [] r = new char[i];
-						for(int j = 0; j < i; j++) {
-							r[j] = (char)buf[j];
-						}
-					
-						return new string (r);
-					}	
-				}
-			}
-
-			char [] rn = new char[num + 1];
-			for(int i = 0; i < num; i++) {
-				rn [i] = (char)buf [i];
-			}
-			rn [num] = '\0';
-
-			return new string (rn);
-		}
-	
-		private float[] readFloats(BinaryReader br, int num)
-		{
-			float[] tmp = new float[num];
-			for (int i = 0; i < num; i++) {
-				tmp [i] = br.ReadSingle ();
-			}
-
-			return tmp;
 		}
 	}
 }

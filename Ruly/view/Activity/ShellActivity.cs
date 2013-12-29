@@ -35,12 +35,13 @@ namespace Ruly.view
 //					Log.Debug("Ruly.dirList", i);
 //			}
 
-//			ShellViewModel.LoadPMD ("Shell/mikuXS/mikuXS.pmd");
 
 			#if MIKU1052
 			SetupShell ("default");
-//			ShellViewModel.LoadPMD (root, "/default", "/miku.pmd");
 			ShellViewModel.LoadPMD (root, "/default", "/miku1052C-Re.pmd");
+			#elif MIKU
+			SetupShell ("default");
+			ShellViewModel.LoadPMD (root, "/default", "/miku.pmd");
 			#elif LAT
 			SetupShell ("Lat");
 			ShellViewModel.LoadPMD (root, "/Lat", "/LatVer2.3_White.pmd");
@@ -51,19 +52,11 @@ namespace Ruly.view
 			SetupShell("mikuXS");
 			ShellViewModel.LoadPMD(root, "/mikuXS", "/mikuXS.pmd");
 			#endif
-			ShellViewModel.LoadVMD (root, "/motion", "/stand.vmd");
-
-			//			shellView = new ShellView (this);
+//			ShellViewModel.LoadVMD (root, "/motion", "/stand.vmd");
 
 			SetContentView (Resource.Layout.ShellActivity);
 			textView = FindViewById<TextView> (Resource.Id.ShellFrameTitle);
-			textView.Text = ShellViewModel.Shells[0].Surface.Description;
-		}
-
-		protected override void OnResume ()
-		{
-			base.OnResume ();
-			Toast.MakeText (this, ShellViewModel.Shells [0].Surface.Description, ToastLength.Long);
+			textView.Text = ShellViewModel.Shells[0].Surface.ModelName;
 		}
 
 		private void SetupShell(string target)

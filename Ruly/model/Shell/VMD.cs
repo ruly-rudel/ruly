@@ -73,9 +73,9 @@ namespace Ruly.model
 					br.BaseStream.Position = br.BaseStream.Position + 48;
 
 					List<BoneMotion> mi;
-					try {
+					if (mh.ContainsKey (bone_name)) {
 						mi = mh [bone_name];
-					} catch (Exception e) {
+					} else {
 						mi = new List<BoneMotion> ();
 
 						// set default
@@ -126,9 +126,9 @@ namespace Ruly.model
 					m.weight = br.ReadSingle();
 
 					List<Morphing> fi;
-					try{
+					if(mh.ContainsKey(name)) {
 						fi = mh[name];
-					} catch(Exception e) {
+					} else {
 						fi = new List<Morphing>();
 
 						// default face

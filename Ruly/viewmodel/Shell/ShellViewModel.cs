@@ -52,11 +52,12 @@ namespace Ruly.viewmodel
 			get { return me.shells; }
 		}
 
-		public static void LoadPMD (string root, string dir, string name)
+		public static Shell LoadPMD (string root, string dir, string name)
 		{
 			var shell = new Shell ();
 			shell.LoadPMD (root, dir, name);
 			Shells.Add(shell);
+			return shell;
 		}
 
 		public static void LoadVMD (string root, string dir, string name)

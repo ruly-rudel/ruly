@@ -126,9 +126,6 @@ namespace Ruly.viewmodel
 			mRT.Add("screen", new RenderTarget());
 
 			GLES20.GlBindFramebuffer(GLES20.GlFramebuffer, 0);
-
-			// Load ends
-			ShellViewModel.Shells [0].Surface.Loaded = true;	// ad-hock
 		}
 
 		private bool hasExt(String extension) {
@@ -144,7 +141,7 @@ namespace Ruly.viewmodel
 		}
 
 		private void drawNonAlpha(ShellSurface surface, GLSL glsl) {
-			var mats = surface.material;
+			var mats = surface.RenderLists;
 
 			int max = mats.Count;
 
@@ -154,31 +151,31 @@ namespace Ruly.viewmodel
 			GLES20.GlCullFace (GLES20.GlBack);
 			GLES20.GlDisable(GLES20.GlBlend);
 			for (int r = 0; r < max; r++) {
-				Material mat = mats[r];
+				var mat = mats[r];
 				TexInfo tb = null;
-				if (mat.texture != null) {
-					tb = TextureFile.FetchTexInfo(mat.texture);
+				if (mat.material.texture != null) {
+					tb = TextureFile.FetchTexInfo(mat.material.texture);
 				}
-				if(mat.diffuse_color[3] >= 1.0 && (tb == null || !tb.has_alpha)) {
+				if(mat.material.diffuse_color[3] >= 1.0 && (tb == null || !tb.has_alpha)) {
 					drawOneMaterial(glsl, surface, mat);
 				}
 			}
 		}
 
 		private void drawAlpha(ShellSurface surface, GLSL glsl, bool alpha_test) {
-			int max = surface.material.Count ();
+			int max = surface.RenderLists.Count ();
 
 			// draw alpha material
 			GLES20.GlEnable(GLES20.GlBlend);
 			for (int r = 0; r < max; r++) {
-				Material mat = surface.material[r];
+				var mat = surface.RenderLists[r];
 				TexInfo tb = null;
-				if (mat.texture != null) {
-					tb = TextureFile.FetchTexInfo(mat.texture);
+				if (mat.material.texture != null) {
+					tb = TextureFile.FetchTexInfo(mat.material.texture);
 				}
 				if(alpha_test) {
 					if(tb != null && tb.needs_alpha_test) {
-						if(mat.diffuse_color[3] < 1.0) {
+						if(mat.material.diffuse_color[3] < 1.0) {
 //							GLES20.GlDisable(GLES20.GL_CULL_FACE);
 							GLES20.GlDisable (2884);
 						} else {
@@ -191,7 +188,7 @@ namespace Ruly.viewmodel
 					if(tb != null) { // has texture
 						if(!tb.needs_alpha_test) {
 							if(tb.has_alpha) {
-								if(mat.diffuse_color[3] < 1.0) {
+								if(mat.material.diffuse_color[3] < 1.0) {
 //									GLES20.GlDisable(GLES20.GL_CULL_FACE);
 									GLES20.GlDisable (2884);
 								} else {
@@ -199,14 +196,14 @@ namespace Ruly.viewmodel
 									GLES20.GlEnable (2884);
 								}
 								drawOneMaterial(glsl, surface, mat);						
-							} else if(mat.diffuse_color[3] < 1.0) {
+							} else if(mat.material.diffuse_color[3] < 1.0) {
 //								GLES20.GlDisable(GLES20.GL_CULL_FACE);
 								GLES20.GlDisable (2884);
 								drawOneMaterial(glsl, surface, mat);
 							}
 						}
 					} else {
-						if(mat.diffuse_color[3] < 1.0) {
+						if(mat.material.diffuse_color[3] < 1.0) {
 //							GLES20.GlDisable(GLES20.GL_CULL_FACE);
 							GLES20.GlDisable (2884);
 							drawOneMaterial(glsl, surface, mat);
@@ -216,7 +213,33 @@ namespace Ruly.viewmodel
 			}
 		}
 
-		private void drawOneMaterial(GLSL glsl, ShellSurface surface, Material mat) {
+		private void drawOneMaterial(GLSL glsl, ShellSurface surface, RenderList mat) {
+			// set motion
+			if (surface.Animation) {
+				if(mat.bone_inv_map == null) {
+					for (int j = 0; j < surface.RenderBones.Count; j++) {
+						var b = surface.RenderBones[j];
+						if(b != null) {
+//							System.arraycopy(b.matrix, 0, mBoneMatrix, j * 16, 16);
+							Array.Copy(b.matrix, 0, mBoneMatrix, j * 16, 16);
+						}
+					}
+				} else {
+					for (int j = 0; j < mat.bone_inv_map.Length; j++) {
+						int inv = mat.bone_inv_map[j];
+						if (inv >= 0) {
+							var b = surface.RenderBones[inv];
+//							System.arraycopy(b.matrix, 0, mBoneMatrix, j * 16, 16);
+							Array.Copy(b.matrix, 0, mBoneMatrix, j * 16, 16);
+						}
+					}
+				}
+				GLES20.GlUniformMatrix4fv(glsl.muMBone, mat.bone_num, false, mBoneMatrix, 0);
+
+				GLES20.GlEnableVertexAttribArray(glsl.maBlendHandle);
+				GLES20.GlVertexAttribPointer(glsl.maBlendHandle, 3, GLES20.GlUnsignedByte, false, 0, mat.weight);
+			}
+
 			// initialize color
 			for(int i = 0; i < mDifAmb.Count(); i++) {
 				mDifAmb[i] = 1.0f;
@@ -225,40 +248,40 @@ namespace Ruly.viewmodel
 			// diffusion and ambient
 			float wi = 0.6f;	// light color = (0.6, 0.6, 0.6)
 			for(int i = 0; i < 3; i++) {
-				mDifAmb[i] *= mat.diffuse_color[i] * wi + mat.emmisive_color[i];
+				mDifAmb[i] *= mat.material.diffuse_color[i] * wi + mat.material.emmisive_color[i];
 			}
-			mDifAmb[3] *= mat.diffuse_color[3];
+			mDifAmb[3] *= mat.material.diffuse_color[3];
 			Vector.min(mDifAmb, 1.0f);
 			GLES20.GlUniform4fv(glsl.muDif, 1, mDifAmb, 0);
 
 			// speculation
 			if (glsl.muPow >= 0) {
-				GLES20.GlUniform4f(glsl.muSpec, mat.specular_color[0], mat.specular_color[1], mat.specular_color[2], 0);
-				GLES20.GlUniform1f(glsl.muPow, mat.power);
+				GLES20.GlUniform4f(glsl.muSpec, mat.material.specular_color[0], mat.material.specular_color[1], mat.material.specular_color[2], 0);
+				GLES20.GlUniform1f(glsl.muPow, mat.material.power);
 			}
 
 			// toon
 			GLES20.GlUniform1i(glsl.msToonSampler, 0);
 			GLES20.GlActiveTexture(GLES20.GlTexture0);
-			GLES20.GlBindTexture(GLES20.GlTexture2d, TextureFile.FetchTexInfo(surface.toon_name[mat.toon_index]).tex);
+			GLES20.GlBindTexture(GLES20.GlTexture2d, TextureFile.FetchTexInfo(surface.toon_name[mat.material.toon_index]).tex);
 
 			// texture
 			GLES20.GlUniform1i(glsl.msTextureSampler, 1);
 			GLES20.GlActiveTexture(GLES20.GlTexture1);
-			if (mat.texture != null) {
-				TexInfo tb = TextureFile.FetchTexInfo(mat.texture);
+			if (mat.material.texture != null) {
+				TexInfo tb = TextureFile.FetchTexInfo(mat.material.texture);
 				if(tb != null) {
 					GLES20.GlBindTexture(GLES20.GlTexture2d, tb.tex);
 				} else {	// avoid crash
 					GLES20.GlBindTexture(GLES20.GlTexture2d, TextureFile.FetchTexInfo(surface.toon_name[0]).tex);	// white texture using toon0.bmp
 					for(int i = 0; i < 3; i++) {	// for emulate premultiplied alpha
-						mDifAmb[i] *= mat.diffuse_color[3];
+						mDifAmb[i] *= mat.material.diffuse_color[3];
 					}
 				}
 			} else {
 				GLES20.GlBindTexture(GLES20.GlTexture2d, TextureFile.FetchTexInfo(surface.toon_name[0]).tex);	// white texture using toon0.bmp
 				for(int i = 0; i < 3; i++) {	// for emulate premultiplied alpha
-					mDifAmb[i] *= mat.diffuse_color[3];
+					mDifAmb[i] *= mat.material.diffuse_color[3];
 				}
 			}
 
@@ -278,8 +301,6 @@ namespace Ruly.viewmodel
 			GLES20.GlEnableVertexAttribArray(glsl.maUvHandle);
 			GLES20.GlVertexAttribPointer (glsl.maUvHandle, 2, GLES20.GlFloat, false, 0, surface.UvBuffer);
 
-			GLES20.GlEnableVertexAttribArray(glsl.maBlendHandle);
-			GLES20.GlVertexAttribPointer (glsl.maBlendHandle, 3, GLES20.GlShort, false, 0, surface.WeightBuffer);
 			checkGlError("drawGLES20 VertexAttribPointer vertex");
 		}
 	}

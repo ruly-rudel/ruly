@@ -32,47 +32,140 @@ namespace Ruly.model
 
 		#region implemented abstract members of ShellMotion
 
-		public override BoneMotion BoneMotionAt (RenderBone b, float time)
+		public override BoneMotion BoneMotionAt (RenderBone b, float frame)
 		{
 			if (Bone.ContainsKey (b.bone.name)) {
 				var bones = Bone [b.bone.name];
 				var m0 = from x in bones
-					         where x.frame_no >= time
+					         where x.frame_no >= frame
 				     select x;
+				var m1 = from x in bones
+					         where x.frame_no <= frame
+				         select x;
 
 				if (m0.Count () == 0) {
 					return null;
 				} else {
-					return m0.First ();
-				}
+					var b0 = m0.First ();
+					if (m1.Count () == 0) {
+						return b0;
+					} else {
+						var b1 = m1.Last ();
+						if (b0.Equals (b1)) {
+							return b0;
+						} else {	// interpolate
+							int dif = b1.frame_no - b0.frame_no;
+							float a0 = frame - b0.frame_no;
+							float ratio = a0 / dif;
 
-//				var m1 = from x in bones
-//					     where x.frame_no >= time
-//				     select x;
-//
-//				BoneMotion bm1, bm2;
-//
-//				if (m0.Count () > 0) {
-//					if (m1.Count () > 0) {
-//						bm1 = m0.Last;
-//						bm2 = m1.First;
-//					} else {
-//						throw new KeyNotFoundException ();
-//					}
-//				} else {
-//					if (m1.Count () > 0) {
-//						bm1 = null;
-//						bm2 = m1.First;
-//					} else {
-//						throw new KeyNotFoundException ();
-//					}
-//				}
+							var m = new BoneMotion ();
+							m.location = new float[3];
+							m.rotation = new float[4];
+							double t = bazier(b0.interp, 0, 1, ratio);
+							m.location[0] = (float) (b0.location[0] + (b1.location[0] - b0.location[0]) * t);
+							t = bazier(b0.interp, 1, 1, ratio);
+							m.location[1] = (float) (b0.location[1] + (b1.location[1] - b0.location[1]) * t);
+							t = bazier(b0.interp, 2, 1, ratio);
+							m.location[2] = (float) (b0.location[2] + (b1.location[2] - b0.location[2]) * t);
+
+							slerp(m.rotation, b0.rotation, b1.rotation, 0, 0, bazier(b0.interp, 3, 1, ratio));
+
+							return m;
+						}
+					}
+				}
 			} else {
 				return null;
 			}
 		}
 
 		#endregion
+
+		private void slerp(float[] p, float[] q, float[] r, int m0, int m1, double t) {
+			double qr = q[m0 + 0] * r[m1 + 0] + q[m0 + 1] * r[m1 + 1] + q[m0 + 2] * r[m1 + 2] + q[m0 + 3] * r[m1 + 3];
+			double ss = 1.0 - qr * qr;
+
+			if (qr < 0) {
+				qr = -qr;
+
+				double sp = Math.Sqrt(ss);
+				double ph = Math.Acos(qr);
+				double pt = ph * t;
+				double t1 = Math.Sin(pt) / sp;
+				double t0 = Math.Sin(ph - pt) / sp;
+
+				if (double.IsNaN(t0) || double.IsNaN(t1)) {
+					p[0] = q[m0 + 0];
+					p[1] = q[m0 + 1];
+					p[2] = q[m0 + 2];
+					p[3] = q[m0 + 3];
+				} else {
+					p[0] = (float) (q[m0 + 0] * t0 - r[m1 + 0] * t1);
+					p[1] = (float) (q[m0 + 1] * t0 - r[m1 + 1] * t1);
+					p[2] = (float) (q[m0 + 2] * t0 - r[m1 + 2] * t1);
+					p[3] = (float) (q[m0 + 3] * t0 - r[m1 + 3] * t1);
+				}
+
+			} else {
+				double sp = Math.Sqrt(ss);
+				double ph = Math.Acos(qr);
+				double pt = ph * t;
+				double t1 = Math.Sin(pt) / sp;
+				double t0 = Math.Sin(ph - pt) / sp;
+
+				if (double.IsNaN(t0) || double.IsNaN(t1)) {
+					p[0] = q[m0 + 0];
+					p[1] = q[m0 + 1];
+					p[2] = q[m0 + 2];
+					p[3] = q[m0 + 3];
+				} else {
+					p[0] = (float) (q[m0 + 0] * t0 + r[m1 + 0] * t1);
+					p[1] = (float) (q[m0 + 1] * t0 + r[m1 + 1] * t1);
+					p[2] = (float) (q[m0 + 2] * t0 + r[m1 + 2] * t1);
+					p[3] = (float) (q[m0 + 3] * t0 + r[m1 + 3] * t1);
+				}
+			}
+		}
+
+		private double bazier(byte[] ip, int ofs, int size, float t) {
+			double xa = ip[ofs] / 256;
+			double xb = ip[size * 2 + ofs] / 256;
+			double ya = ip[size + ofs] / 256;
+			double yb = ip[size * 3 + ofs] / 256;
+
+			double min = 0;
+			double max = 1;
+
+			double ct = t;
+			while (true) {
+				double x11 = xa * ct;
+				double x12 = xa + (xb - xa) * ct;
+				double x13 = xb + (1 - xb) * ct;
+
+				double x21 = x11 + (x12 - x11) * ct;
+				double x22 = x12 + (x13 - x12) * ct;
+
+				double x3 = x21 + (x22 - x21) * ct;
+
+				if (Math.Abs(x3 - t) < 0.0001) {
+					double y11 = ya * ct;
+					double y12 = ya + (yb - ya) * ct;
+					double y13 = yb + (1 - yb) * ct;
+
+					double y21 = y11 + (y12 - y11) * ct;
+					double y22 = y12 + (y13 - y12) * ct;
+
+					double y3 = y21 + (y22 - y21) * ct;
+
+					return y3;
+				} else if (x3 < t) {
+					min = ct;
+				} else {
+					max = ct;
+				}
+				ct = min * 0.5 + max * 0.5;
+			}
+		}
 
 		private void init (BinaryReader br, string path)
 		{
@@ -195,74 +288,6 @@ namespace Ruly.model
 				Morph = null;
 			}
 		}
-
-
-//		private MotionPair findMotion(Bone b, float frame, MotionPair mp) {
-//			if (b != null && b.motion != null) {
-//				int[] frame_no = b.motion.frame_no;
-//				mp.m0 = 0;
-//				mp.m1 = b.motion.frame_no.length - 1;
-//				if(frame >= frame_no[mp.m1]) {
-//					mp.m0 = mp.m1;
-//					b.current_motion = mp.m1;
-//					mp.m1 = -1;
-//					return mp;
-//				}
-//
-//				while(true) {
-//					int center = (mp.m0 + mp.m1) / 2;
-//					if(center == mp.m0) {
-//						b.current_motion = center;
-//						return mp;
-//					}
-//					if(frame_no[center] == frame) {
-//						mp.m0 = center;
-//						mp.m1 = -1;
-//						b.current_motion = center;
-//						return mp;
-//					} else if(frame_no[center] > frame) {
-//						mp.m1 = center;
-//					} else {
-//						mp.m0 = center;
-//					}
-//				}
-//			}
-//			return null;
-//		}
-//
-//		private MotionIndex interpolateLinear(MotionPair mp, MotionIndexA mi, float frame, MotionIndex m) {
-//			if (mp == null) {
-//				return null;
-//			} else if (mp.m1 == -1) {
-//				System.arraycopy(mi.location, mp.m0 * 3, m.location, 0, 3);
-//				System.arraycopy(mi.rotation, mp.m0 * 4, m.rotation, 0, 4);
-//				return m;
-//			} else {
-//				int dif = mi.frame_no[mp.m1] - mi.frame_no[mp.m0];
-//				float a0 = frame - mi.frame_no[mp.m0];
-//				float ratio = a0 / dif;
-//
-//				if (mi.interp_x == null || mi.interp_x[mp.m0 * 4] == -1) { // calcurated in preCalcIK
-//					float t = ratio;
-//					m.location[0] = mi.location[mp.m0 * 3 + 0] + (mi.location[mp.m1 * 3 + 0] - mi.location[mp.m0 * 3 + 0]) * t;
-//					m.location[1] = mi.location[mp.m0 * 3 + 1] + (mi.location[mp.m1 * 3 + 1] - mi.location[mp.m0 * 3 + 1]) * t;
-//					m.location[2] = mi.location[mp.m0 * 3 + 2] + (mi.location[mp.m1 * 3 + 2] - mi.location[mp.m0 * 3 + 2]) * t;
-//					slerp(m.rotation, mi.rotation, mi.rotation, mp.m0 * 4, mp.m1 * 4, t);
-//				} else {
-//					double t = bazier(mi.interp_x, mp.m0 * 4, 1, ratio);
-//					m.location[0] = (float) (mi.location[mp.m0 * 3 + 0] + (mi.location[mp.m1 * 3 + 0] - mi.location[mp.m0 * 3 + 0]) * t);
-//					t = bazier(mi.interp_y, mp.m0 * 4, 1, ratio);
-//					m.location[1] = (float) (mi.location[mp.m0 * 3 + 1] + (mi.location[mp.m1 * 3 + 1] - mi.location[mp.m0 * 3 + 1]) * t);
-//					t = bazier(mi.interp_z, mp.m0 * 4, 1, ratio);
-//					m.location[2] = (float) (mi.location[mp.m0 * 3 + 2] + (mi.location[mp.m1 * 3 + 2] - mi.location[mp.m0 * 3 + 2]) * t);
-//
-//					slerp(m.rotation, mi.rotation, mi.rotation, mp.m0 * 4, mp.m1 * 4, bazier(mi.interp_a, mp.m0 * 4, 1, ratio));
-//				}
-//
-//				return m;
-//			}
-//		}
-
 	}
 
 }

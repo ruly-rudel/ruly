@@ -106,7 +106,7 @@ namespace Ruly.model
 			var ba = Surface.RenderBones;
 			if(ba != null) {
 				int max = ba.Count;
-				Log.Debug ("Ruly.Shell", "MoveBoneAtFrame " + i.ToString ());
+//				Log.Debug ("Ruly.Shell", "MoveBoneAtFrame " + i.ToString ());
 
 				for (int r = 0; r < max; r++) {
 					var b = ba[r];

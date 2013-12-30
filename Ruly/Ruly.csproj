@@ -24,7 +24,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;MIKU1052;</DefineConstants>
+    <DefineConstants>DEBUG;LAT;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>None</AndroidLinkMode>
@@ -99,6 +99,8 @@
     <Compile Include="misc\Vector.cs" />
     <Compile Include="model\Shell\VMD.cs" />
     <Compile Include="misc\Quaternion.cs" />
+    <Compile Include="model\Shell\ShellSurface.cs" />
+    <Compile Include="model\Shell\ShellMotion.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

@@ -37,6 +37,9 @@ namespace Ruly.viewmodel
 
 		public void OnDrawFrame (IGL10 gl)
 		{
+			// Move
+			ShellViewModel.Animate ();
+
 			mLightDir[0] = -0.5f; mLightDir[1] = -1.0f; mLightDir[2] = -0.5f;	// in left-handed region
 			Vector.normalize(mLightDir);
 
@@ -217,6 +220,7 @@ namespace Ruly.viewmodel
 			// set motion
 			if (surface.Animation) {
 				if(mat.bone_inv_map == null) {
+					Log.Debug ("Ruly.ShellRenderer", "Set Bone Animation not Invert");
 					for (int j = 0; j < surface.RenderBones.Count; j++) {
 						var b = surface.RenderBones[j];
 						if(b != null) {
@@ -225,9 +229,11 @@ namespace Ruly.viewmodel
 						}
 					}
 				} else {
+					Log.Debug ("Ruly.ShellRenderer", "Set Bone Animation: count " + mat.bone_inv_map.Length.ToString());
 					for (int j = 0; j < mat.bone_inv_map.Length; j++) {
 						int inv = mat.bone_inv_map[j];
 						if (inv >= 0) {
+							Log.Debug ("Ruly.ShellRenderer", String.Format("  from {0} to {1}", j, inv));
 							var b = surface.RenderBones[inv];
 //							System.arraycopy(b.matrix, 0, mBoneMatrix, j * 16, 16);
 							Array.Copy(b.matrix, 0, mBoneMatrix, j * 16, 16);

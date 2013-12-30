@@ -10,6 +10,47 @@ using System.Collections.Generic;
 
 namespace Ruly.model
 {
+	public class Material {
+		public float[]		diffuse_color;
+		public float 		power;
+		public float[]		specular_color;
+		public float[]		emmisive_color;
+		public byte			toon_index;
+		public byte			edge_flag;
+		public int			face_vert_count;
+		public string 		texture;
+
+		public int 			face_vert_offset;
+	}
+
+	public class Bone {
+		public string		name;
+		public short		parent;
+		public short		tail;
+		public byte			type;
+		public short		ik;
+		public float[]		head_pos;
+		public bool			is_leg;
+	}
+
+	public class IK {
+		public int			ik_bone_index;
+		public int			ik_target_bone_index;
+		public byte			ik_chain_length;
+		public int			iterations;
+		public float		control_weight;
+		public short[]		ik_child_bone_index;
+	}
+
+	public class Face {
+		public string		name;
+		public int			face_vert_count;
+		public byte			face_type;
+		public int[]		face_vert_index;
+		public float[][]	face_vert_offset;
+	}
+
+
 	public class PMD : ShellSurface
 	{
 		private bool 		_is_pmd = false;
@@ -114,6 +155,15 @@ namespace Ruly.model
 			base.IndexBuffer.Put (Index);
 			base.IndexBuffer.Position (0);
 
+			foreach (var i in Bone) {
+				RenderBones.Add (new RenderBone () {
+					bone = i,
+					matrix = new float[16],
+					matrix_current = new float[16],
+					quaternion = new double[4],
+					updated = false
+				});
+			}
 			CreateRenderList ();
 
 			// clearnup buffers

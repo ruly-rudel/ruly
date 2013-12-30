@@ -52,7 +52,7 @@ namespace Ruly.view
 			SetupShell("mikuXS");
 			ShellViewModel.LoadPMD(root, "/mikuXS", "/mikuXS.pmd");
 			#endif
-//			ShellViewModel.LoadVMD (root, "/motion", "/stand.vmd");
+			ShellViewModel.LoadVMD (root, "/motion", "/stand_pose.vmd");
 
 			SetContentView (Resource.Layout.ShellActivity);
 			textView = FindViewById<TextView> (Resource.Id.ShellFrameTitle);

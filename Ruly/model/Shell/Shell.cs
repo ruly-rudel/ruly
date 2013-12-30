@@ -11,149 +11,6 @@ using System;
 
 namespace Ruly.model
 {
-
-	public class Material {
-		public float[]		diffuse_color;
-		public float 		power;
-		public float[]		specular_color;
-		public float[]		emmisive_color;
-		public byte			toon_index;
-		public byte			edge_flag;
-		public int			face_vert_count;
-		public string 		texture;
-		
-		public int 			face_vert_offset;
-	}
-
-	public class RenderList {
-		public Material		material;
-
-		public int			face_vert_offset;
-		public int			face_vert_count;
-		public int			bone_num;
-		public ByteBuffer	weight;
-		public int[]		bone_inv_map;
-	}
-	
-	public class Bone {
-		public string		name;
-		public short		parent;
-		public short		tail;
-		public byte			type;
-		public short		ik;
-		public float[]		head_pos;
-		public bool			is_leg;
-	}
-
-	public class RenderBone {
-		public Bone			bone;
-		public float[]		matrix;
-		public float[]		matrix_current;
-		public double[]		quaternion;
-		public bool updated;
-	}
-	
-	public class IK {
-		public int			ik_bone_index;
-		public int			ik_target_bone_index;
-		public byte			ik_chain_length;
-		public int			iterations;
-		public float		control_weight;
-		public short[]		ik_child_bone_index;
-	}
-	
-	public class Face {
-		public string		name;
-		public int			face_vert_count;
-		public byte			face_type;
-		public int[]		face_vert_index;
-		public float[][]	face_vert_offset;
-	}
-
-	public class TexInfo {
-		public int		tex;
-		public bool		has_alpha;
-		public bool		needs_alpha_test;
-	}
-	
-	public abstract class ShellSurface
-	{
-		public bool Loaded {
-			get;
-			set;
-		}
-
-		public bool Animation {
-			get;
-			set;
-		}
-
-
-		public string						ModelName	{ get; set; }
-		public List<RenderList>				RenderLists	{ set; get; }
-		public List<RenderBone>				RenderBones { set; get; }
-		public IK[]							IK;
-		public string[]						toon_name;
-
-		public FloatBuffer VertexBuffer;
-
-		public FloatBuffer NormalBuffer;
-
-		public FloatBuffer UvBuffer;
-
-		public ShortBuffer WeightBuffer;
-
-		public ShortBuffer IndexBuffer;
-
-				
-		public ShellSurface ()
-		{
-			RenderLists = new List<RenderList>();
-			RenderBones = new List<RenderBone> ();
-			Loaded = false;
-		}
-
-		public abstract void SetupShellSurface ();
-	}
-
-	public class BoneMotion
-	{
-		public int frame_no;
-		public float[] location;
-		public float[] rotation;
-		public byte[] interp;
-	}
-
-	public class Morphing
-	{
-		public int frame_no;
-		public float weight;
-	}
-
-	public class ShellMotion
-	{
-		public Dictionary<string, List<BoneMotion>> Bone {
-			get;
-			set;
-		}
-
-		public Dictionary<string, List<Morphing>> Morph {
-			get;
-			set;
-		}
-
-		public int max_frame {
-			get;
-			protected set;
-		}
-
-		public BoneMotion BoneMotionAt(float time)
-		{
-			throw new NotImplementedException ();
-//			return Bone.First().Value[0];
-		}
-	}
-
 	public class RenderSet {
 		public string shader;
 		public string target;
@@ -194,6 +51,10 @@ namespace Ruly.model
 
 		public void LoadVMD (string root, string dir, string name)
 		{
+			RenderSets.Clear ();
+			RenderSets.Add(new RenderSet("builtin:default", "screen"));
+			RenderSets.Add(new RenderSet("builtin:default_alpha", "screen"));
+
 			string path = root + dir + name;
 			Motions[path] = new VMD (path);
 			CurrentMotion = path;
@@ -241,10 +102,11 @@ namespace Ruly.model
 		}
 
 
-		public void setBonePosByVMDFrame(float i) {
+		public void MoveBoneAtFrame(float i) {
 			var ba = Surface.RenderBones;
 			if(ba != null) {
 				int max = ba.Count;
+				Log.Debug ("Ruly.Shell", "MoveBoneAtFrame " + i.ToString ());
 
 				for (int r = 0; r < max; r++) {
 					var b = ba[r];
@@ -269,7 +131,7 @@ namespace Ruly.model
 		}
 
 		private void setBoneMatrix(RenderBone b, float idx) {
-			var m = Motions [CurrentMotion].BoneMotionAt (idx);
+			var m = Motions [CurrentMotion].BoneMotionAt (b, idx);
 //			MotionPair mp = mMotion.findMotion(b, idx, mMpWork);
 //			MotionIndex m = mMotion.interpolateLinear(mp, b.motion, idx, mMwork);
 			if (m != null) {

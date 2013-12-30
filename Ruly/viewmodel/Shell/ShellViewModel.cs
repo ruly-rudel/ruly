@@ -65,6 +65,17 @@ namespace Ruly.viewmodel
 			Shells[0].LoadVMD(root, dir, name);
 		}
 
+		public static void Animate ()
+		{
+			var ts = (DateTime.Now - new DateTime (0)).TotalSeconds * 60.0;
+			foreach (var i in Shells) {
+				if (i.Surface.Animation) {
+					double fr =  ts % i.Motions [i.CurrentMotion].max_frame;
+					i.MoveBoneAtFrame ((float)fr);
+				}
+			}
+		}
+
 		public static void setCamera(float d, float[] pos, float[] rot, float angle, int width, int height) {
 			// Projection Matrix
 			float s = (float) Math.Sin(angle * Math.PI / 360);

@@ -14,6 +14,12 @@ using System.Drawing;
 
 namespace Ruly.viewmodel
 {
+	public class TexInfo {
+		public int		tex;
+		public bool		has_alpha;
+		public bool		needs_alpha_test;
+	}
+
 	public class TextureFile
 	{
 		public static Dictionary<string, TexInfo> m_texture = new Dictionary<string, TexInfo>();

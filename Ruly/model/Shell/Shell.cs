@@ -132,8 +132,7 @@ namespace Ruly.model
 
 		private void setBoneMatrix(RenderBone b, float idx) {
 			var m = Motions [CurrentMotion].BoneMotionAt (b, idx);
-//			MotionPair mp = mMotion.findMotion(b, idx, mMpWork);
-//			MotionIndex m = mMotion.interpolateLinear(mp, b.motion, idx, mMwork);
+
 			if (m != null) {
 				b.quaternion[0] = m.rotation[0];
 				b.quaternion[1] = m.rotation[1];
@@ -252,8 +251,6 @@ namespace Ruly.model
 						Vector.cross(axis, targetInvs, effecterInvs);
 						Vector.normalize(axis);
 
-						// rotateM(mMatworks, 0, b.matrix_current, 0, degree, axis[0], axis[1], axis[2]);
-						// System.arraycopy(mMatworks, 0, b.matrix_current, 0, 16);
 						if (!double.IsNaN(axis[0]) && !double.IsNaN(axis[1]) && !double.IsNaN(axis[2])) {
 							Quaternion.createFromAngleAxis(mQuatworks, angle2, axis);
 							Quaternion.mul(b.quaternion, b.quaternion, mQuatworks);
@@ -282,7 +279,6 @@ namespace Ruly.model
 
 		private void getCurrentPosition(float[] v, RenderBone b) {
 			float[] current = getCurrentMatrix(b);
-//			System.arraycopy(current, 12, v, 0, 3);
 			Array.Copy(current, 12, v, 0, 3);
 			v[3] = 1;
 		}

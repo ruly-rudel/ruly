@@ -16,7 +16,7 @@ using Java.Util.Zip;
 
 namespace Ruly.view
 {
-	[Activity (Label = "ShellActivity", MainLauncher = true, Theme="@android:style/Theme.Holo.Light.NoActionBar")]			
+	[Activity (Label = "Ruly.Shell", MainLauncher = true, Theme="@android:style/Theme.Holo.Light.NoActionBar")]			
 	public class ShellActivity : Activity
 	{
 		TextView textView;

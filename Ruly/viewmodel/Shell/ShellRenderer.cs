@@ -75,7 +75,6 @@ namespace Ruly.viewmodel
 
 			GLES20.GlFlush();
 			checkGlError(TAG);
-//			mCoreLogic.onDraw(pos);
 		}
 
 		public void OnSurfaceChanged (IGL10 gl, int width, int height)
@@ -223,7 +222,6 @@ namespace Ruly.viewmodel
 					for (int j = 0; j < surface.RenderBones.Count; j++) {
 						var b = surface.RenderBones[j];
 						if(b != null) {
-//							System.arraycopy(b.matrix, 0, mBoneMatrix, j * 16, 16);
 							Array.Copy(b.matrix, 0, mBoneMatrix, j * 16, 16);
 						}
 					}
@@ -232,7 +230,6 @@ namespace Ruly.viewmodel
 						int inv = mat.bone_inv_map[j];
 						if (inv >= 0) {
 							var b = surface.RenderBones[inv];
-//							System.arraycopy(b.matrix, 0, mBoneMatrix, j * 16, 16);
 							Array.Copy(b.matrix, 0, mBoneMatrix, j * 16, 16);
 						}
 					}

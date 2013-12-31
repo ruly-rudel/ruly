@@ -113,9 +113,9 @@ namespace Ruly.model
 					setBoneMatrix(b, i);
 				}
 
-//				if(Surface.IK != null && mMotion.getIKMotion() == null) {
-//					ccdIK();
-//				}
+				if(Surface.IK != null) {
+					ccdIK();
+				}
 
 				for (int r = 0; r < max; r++) {
 					var b = ba[r];
@@ -187,77 +187,85 @@ namespace Ruly.model
 		}
 
 		private void ccdIK1(IK ik) {
-//			var effecter = Surface.RenderBones[ik.ik_bone_index];
-//			var target = Surface.RenderBones[ik.ik_target_bone_index];
-//
-//			getCurrentPosition(effecterVecs, effecter);
-//
-//			for (int i = 0; i < ik.iterations; i++) {
-//				for (int j = 0; j < ik.ik_chain_length; j++) {
-//					var b = Surface.RenderBones[ik.ik_child_bone_index[j]];
-//
-//					clearUpdateFlags(b, target);
-//					getCurrentPosition(targetVecs, target);
-//
-//					if (b.is_leg) {
-//						if (i == 0) {
-//							var ba = Surface.RenderBones[ik.ik_child_bone_index[ik.ik_chain_length - 1]];
-//							getCurrentPosition(targetInvs, b);
-//							getCurrentPosition(effecterInvs, ba);
-//
-//							double eff_len = Matrix.Length(effecterVecs[0] - effecterInvs[0], effecterVecs[1] - effecterInvs[1], effecterVecs[2] - effecterInvs[2]);
-//							double b_len = Matrix.Length(targetInvs[0] - effecterInvs[0], targetInvs[1] - effecterInvs[1], targetInvs[2] - effecterInvs[2]);
-//							double t_len = Matrix.Length(targetVecs[0] - targetInvs[0], targetVecs[1] - targetInvs[1], targetVecs[2] - targetInvs[2]);
-//
-//							double angle = Math.Acos((eff_len * eff_len - b_len * b_len - t_len * t_len) / (2 * b_len * t_len));
-//							if (!double.IsNaN(angle)) {
-//								axis[0] = -1;
-//								axis[1] = axis[2] = 0;
-//								Quaternion.createFromAngleAxis(mQuatworks, angle, axis);
-//								Quaternion.mul(b.quaternion, b.quaternion, mQuatworks);
-//								Quaternion.toMatrixPreserveTranslate(b.matrix_current, b.quaternion);
-//							}
-//						}
-//						continue;
-//					}
-//
-//					if (Matrix.Length(targetVecs[0] - effecterVecs[0], targetVecs[1] - effecterVecs[1], targetVecs[2] - effecterVecs[2]) < 0.001f) {
-//						// clear all
-//						foreach (var c in Surface.RenderBones) {
-//							c.updated = false;
-//						}
-//						return;
-//					}
-//
-//					float[] current = getCurrentMatrix(b);
-//					Vector.invertM(mMatworks, 0, current, 0);
-//					Matrix.MultiplyMV(effecterInvs, 0, mMatworks, 0, effecterVecs, 0);
-//					Matrix.MultiplyMV(targetInvs, 0, mMatworks, 0, targetVecs, 0);
-//
-//					// calculate rotation angle/axis
-//					Vector.normalize(effecterInvs);
-//					Vector.normalize(targetInvs);
-//					double angle = Math.Acos(Vector.dot(effecterInvs, targetInvs));
-//					angle *= ik.control_weight;
-//
-//					if (!double.IsNaN(angle)) {
-//						Vector.cross(axis, targetInvs, effecterInvs);
-//						Vector.normalize(axis);
-//
-//						// rotateM(mMatworks, 0, b.matrix_current, 0, degree, axis[0], axis[1], axis[2]);
-//						// System.arraycopy(mMatworks, 0, b.matrix_current, 0, 16);
-//						if (!double.IsNaN(axis[0]) && !double.IsNaN(axis[1]) && !double.IsNaN(axis[2])) {
-//							Quaternion.createFromAngleAxis(mQuatworks, angle, axis);
-//							Quaternion.mul(b.quaternion, b.quaternion, mQuatworks);
-//							Quaternion.toMatrixPreserveTranslate(b.matrix_current, b.quaternion);
-//						}
-//					}
-//				}
-//			}
-//			// clear all
-//			foreach (var b in Surface.RenderBones) {
-//				b.updated = false;
-//			}
+			var effecterVecs = new float[4];
+			var targetVecs = new float[4];
+			var targetInvs = new float[4];
+			var effecterInvs = new float[4];
+			var axis = new float[3];
+			var mQuatworks = new double[4];
+			var mMatworks = new float[16];
+
+			var effecter = Surface.RenderBones[ik.ik_bone_index];
+			var target = Surface.RenderBones[ik.ik_target_bone_index];
+
+			getCurrentPosition(effecterVecs, effecter);
+
+			for (int i = 0; i < ik.iterations; i++) {
+				for (int j = 0; j < ik.ik_chain_length; j++) {
+					var b = Surface.RenderBones[ik.ik_child_bone_index[j]];
+
+					clearUpdateFlags(b, target);
+					getCurrentPosition(targetVecs, target);
+
+					if (b.bone.is_leg) {
+						if (i == 0) {
+							var ba = Surface.RenderBones[ik.ik_child_bone_index[ik.ik_chain_length - 1]];
+							getCurrentPosition(targetInvs, b);
+							getCurrentPosition(effecterInvs, ba);
+
+							double eff_len = Matrix.Length(effecterVecs[0] - effecterInvs[0], effecterVecs[1] - effecterInvs[1], effecterVecs[2] - effecterInvs[2]);
+							double b_len = Matrix.Length(targetInvs[0] - effecterInvs[0], targetInvs[1] - effecterInvs[1], targetInvs[2] - effecterInvs[2]);
+							double t_len = Matrix.Length(targetVecs[0] - targetInvs[0], targetVecs[1] - targetInvs[1], targetVecs[2] - targetInvs[2]);
+
+							double angle1 = Math.Acos((eff_len * eff_len - b_len * b_len - t_len * t_len) / (2 * b_len * t_len));
+							if (!double.IsNaN(angle1)) {
+								axis[0] = -1;
+								axis[1] = axis[2] = 0;
+								Quaternion.createFromAngleAxis(mQuatworks, angle1, axis);
+								Quaternion.mul(b.quaternion, b.quaternion, mQuatworks);
+								Quaternion.toMatrixPreserveTranslate(b.matrix_current, b.quaternion);
+							}
+						}
+						continue;
+					}
+
+					if (Matrix.Length(targetVecs[0] - effecterVecs[0], targetVecs[1] - effecterVecs[1], targetVecs[2] - effecterVecs[2]) < 0.001f) {
+						// clear all
+						foreach (var c in Surface.RenderBones) {
+							c.updated = false;
+						}
+						return;
+					}
+
+					float[] current = getCurrentMatrix(b);
+					Vector.invertM(mMatworks, 0, current, 0);
+					Matrix.MultiplyMV(effecterInvs, 0, mMatworks, 0, effecterVecs, 0);
+					Matrix.MultiplyMV(targetInvs, 0, mMatworks, 0, targetVecs, 0);
+
+					// calculate rotation angle/axis
+					Vector.normalize(effecterInvs);
+					Vector.normalize(targetInvs);
+					double angle2 = Math.Acos(Vector.dot(effecterInvs, targetInvs));
+					angle2 *= ik.control_weight;
+
+					if (!double.IsNaN(angle2)) {
+						Vector.cross(axis, targetInvs, effecterInvs);
+						Vector.normalize(axis);
+
+						// rotateM(mMatworks, 0, b.matrix_current, 0, degree, axis[0], axis[1], axis[2]);
+						// System.arraycopy(mMatworks, 0, b.matrix_current, 0, 16);
+						if (!double.IsNaN(axis[0]) && !double.IsNaN(axis[1]) && !double.IsNaN(axis[2])) {
+							Quaternion.createFromAngleAxis(mQuatworks, angle2, axis);
+							Quaternion.mul(b.quaternion, b.quaternion, mQuatworks);
+							Quaternion.toMatrixPreserveTranslate(b.matrix_current, b.quaternion);
+						}
+					}
+				}
+			}
+			// clear all
+			foreach (var b in Surface.RenderBones) {
+				b.updated = false;
+			}
 		}
 
 		private void clearUpdateFlags(RenderBone root, RenderBone b) {

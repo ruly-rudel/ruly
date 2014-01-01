@@ -101,6 +101,7 @@
     <Compile Include="misc\Quaternion.cs" />
     <Compile Include="model\Shell\ShellSurface.cs" />
     <Compile Include="model\Shell\ShellMotion.cs" />
+    <Compile Include="viewmodel\Shell\ShellViewModelData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

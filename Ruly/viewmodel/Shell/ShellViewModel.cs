@@ -12,15 +12,18 @@ using Android.Widget;
 using Ruly.model;
 using Android.Opengl;
 
+
 namespace Ruly.viewmodel
 {
 	public class ShellViewModel
 	{
 		private static ShellViewModel me = new ShellViewModel ();
 		private List<Shell> shells = new List<Shell>();
+		private ShellViewModelData data = new ShellViewModelData();
 		private float[]				mPMatrix = new float[16];
-		public float[] location = new float[3];
-		public float[] rotation = new float[3];
+		private float[] location = new float[3];
+		private float[] rotation = new float[3];
+
 
 		public ShellViewModel()
 		{
@@ -37,7 +40,7 @@ namespace Ruly.viewmodel
 		}
 
 		// the number of bones
-		public static int GLConfig {
+		public static int MaxBone {
 			get;
 			set;
 		}
@@ -50,6 +53,10 @@ namespace Ruly.viewmodel
 
 		public static List<Shell> Shells {
 			get { return me.shells; }
+		}
+
+		public static ShellViewModelData Data {
+			get { return me.data; }
 		}
 
 		public static Shell LoadPMD (string root, string dir, string name)
@@ -67,13 +74,19 @@ namespace Ruly.viewmodel
 
 		public static void Animate ()
 		{
+			// motion
 			var ts = (DateTime.Now - new DateTime (0)).TotalSeconds * 60.0;
 			foreach (var i in Shells) {
-				if (i.Surface.Animation) {
+				if (i != null && i.Loaded && i.Surface.Animation) {
 					double fr =  ts % i.Motions [i.CurrentMotion].max_frame;
 					i.MoveBoneAtFrame ((float)fr);
 				}
 			}
+
+			// set time
+			Data.TodayTime = DateTime.Now.ToLongTimeString();
+			Data.TodayDate = DateTime.Today.ToShortDateString ();
+			Data.TodayDay = DateTime.Today.DayOfWeek.ToString ();
 		}
 
 		public static void setCamera(float d, float[] pos, float[] rot, float angle, int width, int height) {
@@ -103,12 +116,12 @@ namespace Ruly.viewmodel
 		public static void setDefaultCamera() {
 //			Matrix.SetIdentityM(mRMatrix, 0);
 			me.location[0] = 0;
-			me.location[1] = 10; // 13
+			me.location[1] = 16; // 10
 			me.location[2] = 0;
 			me.rotation[0] = 0;
 			me.rotation[1] = 0;
 			me.rotation[2] = 0;
-			setCamera(-35f, me.location, me.rotation, 45, Width, Height); // -38f
+			setCamera(-15f, me.location, me.rotation, 45, Width, Height); // -38f
 //			if (mAngle == 0) {
 //				mCameraIndex.location[0] = 0;
 //				mCameraIndex.location[1] = 10; // 13
@@ -127,6 +140,7 @@ namespace Ruly.viewmodel
 //				setCamera(-30f, mCameraIndex.location, mCameraIndex.rotation, 45, mWidth, mHeight);
 //			}
 		}
+
 	}
 }
 

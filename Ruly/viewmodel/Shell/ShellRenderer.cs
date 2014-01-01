@@ -49,7 +49,7 @@ namespace Ruly.viewmodel
 			////////////////////////////////////////////////////////////////////
 			//// draw models
 			foreach (var shell in ShellViewModel.Shells) {
-				if(shell.Surface.Loaded) {
+				if(shell.Loaded) {
 					foreach(var rs in shell.RenderSets) {
 						mRT[rs.target].switchTargetFrameBuffer();
 						GLSL glsl = mGLSL[rs.shader];
@@ -91,7 +91,7 @@ namespace Ruly.viewmodel
 			// GL configurations
 			int bonenum = 48;
 			GLES20.GlGetIntegerv(GLES20.GlMaxTextureSize, mTexSize, 0);
-			ShellViewModel.GLConfig = bonenum;
+			ShellViewModel.MaxBone = bonenum;
 			mNpot = hasExt("GL_OES_texture_npot");
 
 			// initialize
@@ -110,11 +110,11 @@ namespace Ruly.viewmodel
 			mGLSL = new Dictionary<String, GLSL>();
 
 			mGLSL.Add("builtin:default",
-				new GLSL(String.Format(Util.ReadAssetString("shader/vs.vsh"), ShellViewModel.GLConfig), 
+				new GLSL(String.Format(Util.ReadAssetString("shader/vs.vsh"), ShellViewModel.MaxBone), 
 					Util.ReadAssetString("shader/fs.fsh")));
 
 			mGLSL.Add("builtin:default_alpha",
-				new GLSL(String.Format(Util.ReadAssetString("shader/vs.vsh"), ShellViewModel.GLConfig),
+				new GLSL(String.Format(Util.ReadAssetString("shader/vs.vsh"), ShellViewModel.MaxBone),
 					Util.ReadAssetString("shader/fs_alpha.fsh")));
 
 			mGLSL.Add("builtin:nomotion",

@@ -42,11 +42,17 @@ namespace Ruly.model
 			private set;
 		}
 
+		public bool Loaded {
+			get;
+			set;
+		}
+
 		public Shell()
 		{
 			Surface = null;
 			RenderSets = new List<RenderSet> ();
 			Motions = new Dictionary<string, ShellMotion> ();
+			Loaded = false;
 		}
 
 		public void LoadVMD (string root, string dir, string name)
@@ -59,6 +65,7 @@ namespace Ruly.model
 			Motions[path] = new VMD (path);
 			CurrentMotion = path;
 			Surface.Animation = true;
+			Loaded = true;
 		}
 
 
@@ -287,7 +294,6 @@ namespace Ruly.model
 			updateBoneMatrix(b);
 			return b.matrix;
 		}
-
 
 	}
 }

@@ -13,13 +13,18 @@ using Android.Util;
 using Ruly.viewmodel;
 using System.IO;
 using Java.Util.Zip;
+using System.Threading.Tasks;
 
 namespace Ruly.view
 {
 	[Activity (Label = "Ruly.Shell", MainLauncher = true, Theme="@android:style/Theme.Holo.Light.NoActionBar")]			
 	public class ShellActivity : Activity
 	{
-		TextView textView;
+//		TextView textView;
+		TextView todayDate;
+		TextView todayDay;
+		TextView todayTime;
+		Handler handle = new Handler();
 
 		protected override void OnCreate (Bundle bundle)
 		{
@@ -36,27 +41,48 @@ namespace Ruly.view
 //			}
 
 
-			#if MIKU1052
-			SetupShell ("default");
-			ShellViewModel.LoadPMD (root, "/default", "/miku1052C-Re.pmd");
-			#elif MIKU
-			SetupShell ("default");
-			ShellViewModel.LoadPMD (root, "/default", "/miku.pmd");
-			#elif LAT
-			SetupShell ("Lat");
-			ShellViewModel.LoadPMD (root, "/Lat", "/LatVer2.3_White.pmd");
-			#elif XSc
-			SetupShell("mikuXSc");
-			ShellViewModel.LoadPMD(root, "/mikuXSc", "/mikuXS.pmd");
-			#elif XS
-			SetupShell("mikuXS");
-			ShellViewModel.LoadPMD(root, "/mikuXS", "/mikuXS.pmd");
-			#endif
-			ShellViewModel.LoadVMD (root, "/motion", "/stand_pose.vmd");
+			Task.Run (() => {
+				#if MIKU1052
+				SetupShell ("default");
+				ShellViewModel.LoadPMD (root, "/default", "/miku1052C-Re.pmd");
+				#elif MIKU
+				SetupShell ("default");
+				ShellViewModel.LoadPMD (root, "/default", "/miku.pmd");
+				#elif LAT
+				SetupShell ("Lat");
+				ShellViewModel.LoadPMD (root, "/Lat", "/LatVer2.3_White.pmd");
+				#elif XSc
+				SetupShell ("mikuXSc");
+				ShellViewModel.LoadPMD (root, "/mikuXSc", "/mikuXS.pmd");
+				#elif XS
+				SetupShell("mikuXS");
+				ShellViewModel.LoadPMD(root, "/mikuXS", "/mikuXS.pmd");
+				#endif
+				ShellViewModel.LoadVMD (root, "/motion", "/stand_pose.vmd");
+			});
 
 			SetContentView (Resource.Layout.ShellActivity);
-			textView = FindViewById<TextView> (Resource.Id.ShellFrameTitle);
-			textView.Text = ShellViewModel.Shells[0].Surface.ModelName;
+			todayDate = FindViewById<TextView> (Resource.Id.TodayDate);
+			todayDay  = FindViewById<TextView> (Resource.Id.TodayDay);
+			todayTime = FindViewById<TextView> (Resource.Id.TodayTime);
+			ShellViewModel.Data.PropertyChanged += (object sender, System.ComponentModel.PropertyChangedEventArgs e) => {
+				handle.Post(() => {
+					todayDate.Text = ShellViewModel.Data.TodayDate;
+					todayDay.Text = ShellViewModel.Data.TodayDay;
+					todayTime.Text = ShellViewModel.Data.TodayTime;
+				});
+			};
+
+//			textView = FindViewById<TextView> (Resource.Id.ShellFrameTitle);
+//			textView.Text = ShellViewModel.Shells[0].Surface.ModelName;
+		}
+
+		public override bool OnTouchEvent (MotionEvent e)
+		{
+			if (e.Action == MotionEventActions.Up && e.DownTime >= 1000) {
+				StartActivity (typeof(MainActivity));
+			}
+			return true;
 		}
 
 		private void SetupShell(string target)
@@ -73,7 +99,7 @@ namespace Ruly.view
 					while ((ze = z.NextEntry) != null) {
 						if (!ze.IsDirectory) {
 							string name = root + "/" + ze.Name;
-							EnsureDirectory (System.IO.Path.GetDirectoryName(name));
+							Util.EnsureDirectory (System.IO.Path.GetDirectoryName(name));
 							using (var ws = File.OpenWrite (name)) 
 							{
 								var i = 0;
@@ -91,13 +117,7 @@ namespace Ruly.view
 			}
 		}
 
-		void EnsureDirectory (string str)
-		{
-			if (str != System.Environment.GetFolderPath (System.Environment.SpecialFolder.Personal) && !Directory.Exists (str)) {
-				EnsureDirectory (System.IO.Path.GetDirectoryName(str));
-				Directory.CreateDirectory (str);
-			}
-		}
+
 	}
 }
 

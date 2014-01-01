@@ -27,8 +27,11 @@ namespace Ruly.model
 			m_data = new PersistentModelData ();
 
 			// prepare DB
-			string folder = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
-			m_db = new SQLiteConnection (System.IO.Path.Combine (folder, "ruly.db"));
+//			Log.Debug ("Ruly", "ext sd: " + Android.OS.Environment.ExternalStorageDirectory);
+//			string folder = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
+			string folder = Android.OS.Environment.ExternalStorageDirectory + "/ruly/ruly.db";
+			Util.EnsureDirectory (System.IO.Path.GetDirectoryName (folder));
+			m_db = new SQLiteConnection (folder);
 			m_db.CreateTable<TaskData>();
 			m_db.CreateTable<TaskHistory>();
 			m_db.CreateTable<TaskAlarm> ();
@@ -388,7 +391,8 @@ namespace Ruly.model
 
 		public void SaveState()
 		{
-			string folder = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
+			string folder = Android.OS.Environment.ExternalStorageDirectory + "/ruly/";
+//			string folder = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
 			var path = System.IO.Path.Combine (folder, "model_data.json");
 
 			try {
@@ -404,7 +408,8 @@ namespace Ruly.model
 
 		public void LoadState()
 		{
-			string folder = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
+			string folder = Android.OS.Environment.ExternalStorageDirectory + "/ruly/";
+//			string folder = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
 			var path = System.IO.Path.Combine (folder, "model_data.json");
 
 			try {

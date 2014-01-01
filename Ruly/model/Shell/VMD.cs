@@ -44,7 +44,11 @@ namespace Ruly.model
 				         select x;
 
 				if (m0.Count () == 0) {
-					return null;
+					if (m1.Count () == 0) { 
+						return null;
+					} else {
+						return m1.Last ();
+					}
 				} else {
 					var b0 = m0.First ();
 					if (m1.Count () == 0) {

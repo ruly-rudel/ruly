@@ -65,6 +65,14 @@ namespace Ruly
 
 			return tmp;
 		}
+
+		public static void EnsureDirectory (string str)
+		{
+			if (str != System.Environment.GetFolderPath (System.Environment.SpecialFolder.Personal) && !Directory.Exists (str)) {
+				EnsureDirectory (System.IO.Path.GetDirectoryName(str));
+				Directory.CreateDirectory (str);
+			}
+		}
 	}
 }
 

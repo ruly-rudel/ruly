@@ -11,6 +11,7 @@ using Android.Widget;
 
 using Ruly.model;
 using Android.Opengl;
+using Android.Util;
 
 
 namespace Ruly.viewmodel
@@ -67,9 +68,24 @@ namespace Ruly.viewmodel
 			return shell;
 		}
 
+		public static Shell LoadPMF (string root, string dir, string name)
+		{
+			var shell = new Shell ();
+			shell.LoadPMF (root, dir, name);
+			Shells.Add(shell);
+			return shell;
+		}
+
 		public static void LoadVMD (string root, string dir, string name)
 		{
 			Shells[0].LoadVMD(root, dir, name);
+		}
+
+		public static void CommitShell ()
+		{
+			foreach (var i in Shells) {
+				i.Loaded = true;
+			}
 		}
 
 		public static void Animate ()
@@ -122,6 +138,7 @@ namespace Ruly.viewmodel
 			me.rotation[1] = 0;
 			me.rotation[2] = 0;
 			setCamera(-15f, me.location, me.rotation, 45, Width, Height); // -38f
+//			setCamera(-38f, me.location, me.rotation, 45, Width, Height); // -15f
 //			if (mAngle == 0) {
 //				mCameraIndex.location[0] = 0;
 //				mCameraIndex.location[1] = 10; // 13

@@ -53,12 +53,14 @@ namespace Ruly.view
 				ShellViewModel.LoadPMD (root, "/Lat", "/LatVer2.3_White.pmd");
 				#elif XSc
 				SetupShell ("mikuXSc");
-				ShellViewModel.LoadPMD (root, "/mikuXSc", "/mikuXS.pmd");
+//				ShellViewModel.LoadPMD (root, "/mikuXSc", "/mikuXS.pmd");
+				ShellViewModel.LoadPMF (root, "/mikuXSc", "/mikuXS.pmf");
 				#elif XS
 				SetupShell("mikuXS");
 				ShellViewModel.LoadPMD(root, "/mikuXS", "/mikuXS.pmd");
 				#endif
 				ShellViewModel.LoadVMD (root, "/motion", "/stand_pose.vmd");
+				ShellViewModel.CommitShell();
 			});
 
 			SetContentView (Resource.Layout.ShellActivity);

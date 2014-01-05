@@ -65,7 +65,6 @@ namespace Ruly.model
 			Motions[path] = new VMD (path);
 			CurrentMotion = path;
 			Surface.Animation = true;
-			Loaded = true;
 		}
 
 
@@ -86,6 +85,27 @@ namespace Ruly.model
 			Surface.Loaded = true;
 
 			Log.Debug ("Shell", "PMD load ends.");
+		}
+
+		public void LoadPMF (string root, string dir, string name)
+		{
+			RenderSets.Add(new RenderSet("builtin:nomotion", "screen"));
+			RenderSets.Add(new RenderSet("builtin:nomotion_alpha", "screen"));
+
+			string path = root + dir + name;
+			var surface = new PMF ();
+			surface.Load (path);
+			Log.Debug("Ruly", "PMF load ends.");
+			surface.SetupShellSurface ();
+			Surface = surface;
+
+			AddTextures (root, dir);
+
+			// Load ends
+			Surface.Animation = false;
+			Surface.Loaded = true;
+
+			Log.Debug ("Shell", "PMF load ends.");
 		}
 
 		private void AddTextures(string root, string dir)

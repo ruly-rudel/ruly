@@ -125,29 +125,38 @@ namespace Ruly.model
 		public override void SetupShellSurface ()
 		{
 			// create buffers for render
-			ByteBuffer buf = ByteBuffer.AllocateDirect (Vertex.Length * sizeof(float));
-			buf.Order (ByteOrder.NativeOrder ());
-			base.VertexBuffer = buf.AsFloatBuffer() as FloatBuffer;
-			base.VertexBuffer.Put (Vertex);
-			base.VertexBuffer.Position (0);
+//			ByteBuffer buf = ByteBuffer.AllocateDirect (Vertex.Length * sizeof(float));
+//			buf.Order (ByteOrder.NativeOrder ());
+//			base.VertexBuffer = buf.AsFloatBuffer() as FloatBuffer;
+//			base.VertexBuffer.Put (Vertex);
+//			base.VertexBuffer.Position (0);
+//
+//			buf = ByteBuffer.AllocateDirect (Normal.Length * sizeof(float));
+//			buf.Order (ByteOrder.NativeOrder ());
+//			base.NormalBuffer = buf.AsFloatBuffer() as Java.Nio.FloatBuffer;
+//			base.NormalBuffer.Put (Normal);
+//			base.NormalBuffer.Position (0);
+//
+//			buf = ByteBuffer.AllocateDirect (Uv.Length * sizeof(float));
+//			buf.Order (ByteOrder.NativeOrder ());
+//			base.UvBuffer = buf.AsFloatBuffer() as Java.Nio.FloatBuffer;
+//			base.UvBuffer.Put (Uv);
+//			base.UvBuffer.Position (0);
 
-			buf = ByteBuffer.AllocateDirect (Normal.Length * sizeof(float));
+			ByteBuffer buf = ByteBuffer.AllocateDirect (Vertex.Length / 3 * 8 * sizeof(float));
 			buf.Order (ByteOrder.NativeOrder ());
-			base.NormalBuffer = buf.AsFloatBuffer() as Java.Nio.FloatBuffer;
-			base.NormalBuffer.Put (Normal);
-			base.NormalBuffer.Position (0);
-
-			buf = ByteBuffer.AllocateDirect (Uv.Length * sizeof(float));
-			buf.Order (ByteOrder.NativeOrder ());
-			base.UvBuffer = buf.AsFloatBuffer() as Java.Nio.FloatBuffer;
-			base.UvBuffer.Put (Uv);
-			base.UvBuffer.Position (0);
-
-			buf = ByteBuffer.AllocateDirect (Weight.Length * sizeof(short));
-			buf.Order (ByteOrder.NativeOrder ());
-			base.WeightBuffer = buf.AsShortBuffer() as Java.Nio.ShortBuffer;
-			base.WeightBuffer.Put (Weight);
-			base.WeightBuffer.Position (0);
+			base.VertNormUvBuffer = buf.AsFloatBuffer() as FloatBuffer;
+			for (int i = 0; i < Vertex.Length / 3; i++) {
+				base.VertNormUvBuffer.Put (Vertex[i * 3 + 0]);
+				base.VertNormUvBuffer.Put (Vertex[i * 3 + 1]);
+				base.VertNormUvBuffer.Put (Vertex[i * 3 + 2]);
+				base.VertNormUvBuffer.Put (Normal[i * 3 + 0]);
+				base.VertNormUvBuffer.Put (Normal[i * 3 + 1]);
+				base.VertNormUvBuffer.Put (Normal[i * 3 + 2]);
+				base.VertNormUvBuffer.Put (Uv[i * 2 + 0]);
+				base.VertNormUvBuffer.Put (Uv[i * 2 + 1]);
+			}
+			base.VertNormUvBuffer.Position (0);
 
 			buf = ByteBuffer.AllocateDirect (Index.Length * sizeof(short));
 			buf.Order (ByteOrder.NativeOrder ());

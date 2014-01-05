@@ -48,13 +48,7 @@ namespace Ruly.model
 		public IK[]							IK;
 		public string[]						toon_name;
 
-		public FloatBuffer VertexBuffer;
-
-		public FloatBuffer NormalBuffer;
-
-		public FloatBuffer UvBuffer;
-
-		public ShortBuffer WeightBuffer;
+		public FloatBuffer VertNormUvBuffer;
 
 		public ShortBuffer IndexBuffer;
 				

@@ -49,7 +49,7 @@ namespace Ruly.viewmodel
 			////////////////////////////////////////////////////////////////////
 			//// draw models
 			foreach (var shell in ShellViewModel.Shells) {
-				if(shell.Loaded) {
+				if(shell != null && shell.Loaded) {
 					foreach(var rs in shell.RenderSets) {
 						mRT[rs.target].switchTargetFrameBuffer();
 						GLSL glsl = mGLSL[rs.shader];
@@ -293,14 +293,21 @@ namespace Ruly.viewmodel
 
 		private void bindBuffer(ShellSurface surface, GLSL glsl) {
 			GLES20.GlEnableVertexAttribArray(glsl.maPositionHandle);
-			GLES20.GlVertexAttribPointer (glsl.maPositionHandle, 3, GLES20.GlFloat, false, 0, surface.VertexBuffer);
+//			GLES20.GlVertexAttribPointer (glsl.maPositionHandle, 3, GLES20.GlFloat, false, 0, surface.VertexBuffer);
+			surface.VertNormUvBuffer.Position (0);
+			GLES20.GlVertexAttribPointer (glsl.maPositionHandle, 3, GLES20.GlFloat, false, 8*sizeof(float), surface.VertNormUvBuffer);
 
 			GLES20.GlEnableVertexAttribArray(glsl.maNormalHandle);
-			GLES20.GlVertexAttribPointer (glsl.maNormalHandle, 3, GLES20.GlFloat, false, 0, surface.NormalBuffer);
+			surface.VertNormUvBuffer.Position (3);
+			GLES20.GlVertexAttribPointer (glsl.maNormalHandle, 3, GLES20.GlFloat, false, 8*sizeof(float), surface.VertNormUvBuffer);
+//			GLES20.GlVertexAttribPointer (glsl.maNormalHandle, 3, GLES20.GlFloat, false, 0, surface.NormalBuffer);
 
 			GLES20.GlEnableVertexAttribArray(glsl.maUvHandle);
-			GLES20.GlVertexAttribPointer (glsl.maUvHandle, 2, GLES20.GlFloat, false, 0, surface.UvBuffer);
+			surface.VertNormUvBuffer.Position (6);
+			GLES20.GlVertexAttribPointer (glsl.maUvHandle, 2, GLES20.GlFloat, false, 8*sizeof(float), surface.VertNormUvBuffer);
+//			GLES20.GlVertexAttribPointer (glsl.maUvHandle, 2, GLES20.GlFloat, false, 0, surface.UvBuffer);
 
+			surface.VertNormUvBuffer.Position (0);
 			checkGlError("drawGLES20 VertexAttribPointer vertex");
 		}
 	}

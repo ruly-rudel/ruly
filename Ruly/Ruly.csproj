@@ -102,6 +102,7 @@
     <Compile Include="model\Shell\ShellSurface.cs" />
     <Compile Include="model\Shell\ShellMotion.cs" />
     <Compile Include="viewmodel\Shell\ShellViewModelData.cs" />
+    <Compile Include="model\Shell\PMF.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

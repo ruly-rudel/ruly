@@ -60,7 +60,7 @@ namespace Ruly.view
 		{
 			var alarm = ViewModel.GetAlarmFromId (id);
 			var task = ViewModel.GetTaskFromId (alarm.TaskId);
-			var pendingIntent = PendingIntent.GetActivity (context, 0, new Intent (context, typeof(MainActivity)), 0);
+			var pendingIntent = PendingIntent.GetActivity (context, 0, new Intent (context, typeof(ShellActivity)), 0);
 
 			var builder = new NotificationCompat.Builder (context);
 			builder.SetSmallIcon (Resource.Drawable.Icon);

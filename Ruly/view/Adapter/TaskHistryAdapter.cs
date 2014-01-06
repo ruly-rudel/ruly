@@ -71,16 +71,18 @@ namespace Ruly.view
 				if (items [position].End == new DateTime ()) {
 					view.FindViewById<TextView> (Resource.Id.taskHistoryTo).Text = "current";
 					var span = DateTime.Now - items [position].Begin;
-					view.SetMinimumHeight ((int)span.TotalMinutes); 
+					view.SetMinimumHeight ((int)span.TotalMinutes * 3); 
 				} else {
 					view.FindViewById<TextView> (Resource.Id.taskHistoryTo).Text = items [position].End.ToShortTimeString ();
 					var span = items [position].End - items [position].Begin;
-					view.SetMinimumHeight ((int)span.TotalMinutes); 
+					view.SetMinimumHeight ((int)span.TotalMinutes * 3); 
 				}
 			} else {
 				view.FindViewById<TextView> (Resource.Id.taskHistoryFrom).Text = "";
 				view.FindViewById<TextView> (Resource.Id.taskHistoryTo).Text = "";
 				view.FindViewById<TextView>(Resource.Id.taskHistoryName).SetBackgroundColor (Android.Graphics.Color.White);
+				var span = items [position].End - items [position].Begin;
+				view.SetMinimumHeight ((int)span.TotalMinutes * 3); 
 			}
 		}
 

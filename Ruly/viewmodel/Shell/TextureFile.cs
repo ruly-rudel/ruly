@@ -11,6 +11,7 @@ using Android.Graphics;
 using Android.App;
 
 using System.Drawing;
+using System.Linq;
 
 namespace Ruly.viewmodel
 {
@@ -74,6 +75,16 @@ namespace Ruly.viewmodel
 			}
 
 			return m_texture [path];
+		}
+
+		public static void Reset()
+		{
+			var q = from x in m_texture
+			           select x.Key;
+			var list = q.ToList ();
+			foreach (var i in list) {
+				m_texture [i] = null;
+			}
 		}
 		
 		

@@ -40,28 +40,31 @@ namespace Ruly.view
 //					Log.Debug("Ruly.dirList", i);
 //			}
 
-
-			Task.Run (() => {
-				#if MIKU1052
-				SetupShell ("default");
-				ShellViewModel.LoadPMD (root, "/default", "/miku1052C-Re.pmd");
-				#elif MIKU
-				SetupShell ("default");
-				ShellViewModel.LoadPMD (root, "/default", "/miku.pmd");
-				#elif LAT
-				SetupShell ("Lat");
-				ShellViewModel.LoadPMD (root, "/Lat", "/LatVer2.3_White.pmd");
-				#elif XSc
-				SetupShell ("mikuXSc");
-//				ShellViewModel.LoadPMD (root, "/mikuXSc", "/mikuXS.pmd");
-				ShellViewModel.LoadPMF (root, "/mikuXSc", "/mikuXS.pmf");
-				#elif XS
-				SetupShell("mikuXS");
-				ShellViewModel.LoadPMD(root, "/mikuXS", "/mikuXS.pmd");
-				#endif
-				ShellViewModel.LoadVMD (root, "/motion", "/stand_pose.vmd");
-				ShellViewModel.CommitShell();
-			});
+			if (!ShellViewModel.Loaded) {
+				Task.Run (() => {
+					#if MIKU1052
+					SetupShell ("default");
+					ShellViewModel.LoadPMD (root, "/default", "/miku1052C-Re.pmd");
+					#elif MIKU
+					SetupShell ("default");
+					ShellViewModel.LoadPMD (root, "/default", "/miku.pmd");
+					#elif LAT
+					SetupShell ("Lat");
+					ShellViewModel.LoadPMD (root, "/Lat", "/LatVer2.3_White.pmd");
+					#elif XSc
+					SetupShell ("mikuXSc");
+//				    ShellViewModel.LoadPMD (root, "/mikuXSc", "/mikuXS.pmd");
+					ShellViewModel.LoadPMF (root, "/mikuXSc", "/mikuXS.pmf");
+					#elif XS
+					SetupShell("mikuXS");
+					ShellViewModel.LoadPMD(root, "/mikuXS", "/mikuXS.pmd");
+					#endif
+					ShellViewModel.LoadVMD (root, "/motion", "/stand_pose.vmd");
+					ShellViewModel.CommitShell ();
+				});
+			} else {
+				TextureFile.Reset ();
+			}
 
 			SetContentView (Resource.Layout.ShellActivity);
 			todayDate = FindViewById<TextView> (Resource.Id.TodayDate);
@@ -77,6 +80,12 @@ namespace Ruly.view
 
 //			textView = FindViewById<TextView> (Resource.Id.ShellFrameTitle);
 //			textView.Text = ShellViewModel.Shells[0].Surface.ModelName;
+		}
+
+		protected override void OnStart ()
+		{
+			base.OnStart ();
+			AlarmReceiver.SetAlarm ();
 		}
 
 		public override bool OnTouchEvent (MotionEvent e)

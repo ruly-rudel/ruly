@@ -74,7 +74,6 @@
     <Compile Include="view\Adapter\AlarmAdapter.cs">
       <DependentUpon>HomeViewPagerAdapter.cs</DependentUpon>
     </Compile>
-    <Compile Include="view\Activity\AlarmReceiver.cs" />
     <Compile Include="model\DataBase\CombinedTaskHistory.cs" />
     <Compile Include="model\DataBase\PersistentModelData.cs" />
     <Compile Include="model\DataBase\TaskAlarm.cs" />
@@ -103,6 +102,7 @@
     <Compile Include="model\Shell\ShellMotion.cs" />
     <Compile Include="viewmodel\Shell\ShellViewModelData.cs" />
     <Compile Include="model\Shell\PMF.cs" />
+    <Compile Include="view\BroadcastReceiver\AlarmReceiver.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -190,6 +190,7 @@
     <Folder Include="Assets\shader\" />
     <Folder Include="Assets\Shell\" />
     <Folder Include="viewmodel\Shell\" />
+    <Folder Include="view\BroadcastReceiver\" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="sqlite-net">

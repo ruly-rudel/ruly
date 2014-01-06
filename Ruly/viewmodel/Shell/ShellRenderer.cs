@@ -48,30 +48,32 @@ namespace Ruly.viewmodel
 
 			////////////////////////////////////////////////////////////////////
 			//// draw models
-			foreach (var shell in ShellViewModel.Shells) {
-				if(shell != null && shell.Loaded) {
-					foreach(var rs in shell.RenderSets) {
-						mRT[rs.target].switchTargetFrameBuffer();
-						GLSL glsl = mGLSL[rs.shader];
+			ShellViewModel.LockWith (() => {
+				foreach (var shell in ShellViewModel.Shells) {
+					if(shell.Loaded) {
+						foreach(var rs in shell.RenderSets) {
+							mRT[rs.target].switchTargetFrameBuffer();
+							GLSL glsl = mGLSL[rs.shader];
 
-						GLES20.GlUseProgram(glsl.mProgram);
+							GLES20.GlUseProgram(glsl.mProgram);
 
-						// Projection Matrix
-						GLES20.GlUniformMatrix4fv(glsl.muPMatrix, 1, false, ShellViewModel.ProjectionMatrix, 0);
+							// Projection Matrix
+							GLES20.GlUniformMatrix4fv(glsl.muPMatrix, 1, false, ShellViewModel.ProjectionMatrix, 0);
 
-						// LightPosition
-						GLES20.GlUniform3fv(glsl.muLightDir, 1, mLightDir, 0);
+							// LightPosition
+							GLES20.GlUniform3fv(glsl.muLightDir, 1, mLightDir, 0);
 
-						bindBuffer(shell.Surface, glsl);
-						if(!rs.shader.EndsWith("alpha")) {
-							drawNonAlpha(shell.Surface, glsl);							
-							drawAlpha(shell.Surface, glsl, false);						
-						} else {
-							drawAlpha(shell.Surface, glsl, true);							
+							bindBuffer(shell.Surface, glsl);
+							if(!rs.shader.EndsWith("alpha")) {
+								drawNonAlpha(shell.Surface, glsl);							
+								drawAlpha(shell.Surface, glsl, false);						
+							} else {
+								drawAlpha(shell.Surface, glsl, true);							
+							}
 						}
 					}
 				}
-			}
+			});
 
 			GLES20.GlFlush();
 			checkGlError(TAG);

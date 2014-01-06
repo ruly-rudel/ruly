@@ -25,6 +25,10 @@ namespace Ruly.viewmodel
 		private float[] location = new float[3];
 		private float[] rotation = new float[3];
 
+		private bool loaded = false;
+
+		private object lockobj = new object();
+
 
 		public ShellViewModel()
 		{
@@ -64,7 +68,9 @@ namespace Ruly.viewmodel
 		{
 			var shell = new Shell ();
 			shell.LoadPMD (root, dir, name);
-			Shells.Add(shell);
+			lock (me.lockobj) {
+				Shells.Add (shell);
+			}
 			return shell;
 		}
 
@@ -72,19 +78,40 @@ namespace Ruly.viewmodel
 		{
 			var shell = new Shell ();
 			shell.LoadPMF (root, dir, name);
-			Shells.Add(shell);
+			lock (me.lockobj) {
+				Shells.Add (shell);
+			}
 			return shell;
 		}
 
 		public static void LoadVMD (string root, string dir, string name)
 		{
-			Shells[0].LoadVMD(root, dir, name);
+			lock (me.lockobj) {
+				Shells [0].LoadVMD (root, dir, name);
+			}
 		}
 
 		public static void CommitShell ()
 		{
-			foreach (var i in Shells) {
-				i.Loaded = true;
+			lock (me.lockobj) {
+				foreach (var i in Shells) {
+					i.Loaded = true;
+				}
+				me.loaded = true;
+			}
+		}
+
+		public static void LockWith (Action act)
+		{
+			lock (me.lockobj) {
+				act ();
+			}
+		}
+
+		public static bool Loaded {
+			get { return me.loaded; }
+			private set {
+				me.loaded = value;
 			}
 		}
 
@@ -92,10 +119,12 @@ namespace Ruly.viewmodel
 		{
 			// motion
 			var ts = (DateTime.Now - new DateTime (0)).TotalSeconds * 60.0;
-			foreach (var i in Shells) {
-				if (i != null && i.Loaded && i.Surface.Animation) {
-					double fr =  ts % i.Motions [i.CurrentMotion].max_frame;
-					i.MoveBoneAtFrame ((float)fr);
+			lock (me.lockobj) {
+				foreach (var i in Shells) {
+					if (i.Loaded && i.Surface.Animation) {
+						double fr = ts % i.Motions [i.CurrentMotion].max_frame;
+						i.MoveBoneAtFrame ((float)fr);
+					}
 				}
 			}
 

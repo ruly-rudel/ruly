@@ -103,6 +103,7 @@
     <Compile Include="viewmodel\Shell\ShellViewModelData.cs" />
     <Compile Include="model\Shell\PMF.cs" />
     <Compile Include="view\BroadcastReceiver\AlarmReceiver.cs" />
+    <Compile Include="view\Service\WakeLockService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -191,6 +192,7 @@
     <Folder Include="Assets\Shell\" />
     <Folder Include="viewmodel\Shell\" />
     <Folder Include="view\BroadcastReceiver\" />
+    <Folder Include="view\Service\" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="sqlite-net">

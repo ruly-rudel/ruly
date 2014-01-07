@@ -51,7 +51,25 @@ namespace Ruly.view
 
 		public override void OnReceive (Context context, Intent intent)
 		{
-			ShowNotification (context, int.Parse(intent.Action));
+//			var i = new Intent(context, typeof(WakeLockService));
+//			context.StartService (i);
+
+			// PowerManager
+			var power = (PowerManager)context.GetSystemService (Context.PowerService);
+			var wl = power.NewWakeLock (WakeLockFlags.Full | WakeLockFlags.AcquireCausesWakeup | WakeLockFlags.OnAfterRelease, "Ruly.Ruly");
+			wl.Acquire ();
+//			wl.Release ();
+
+			// KeyguardLock
+			var km = (KeyguardManager) context.GetSystemService(Context.KeyguardService);
+			var klock = km.NewKeyguardLock("Ruly.Ruly");
+			klock.DisableKeyguard();
+
+			var i = new Intent(context, typeof(ShellActivity));
+			i.SetFlags(ActivityFlags.NewTask | ActivityFlags.NoUserAction);
+			context.StartActivity (i);
+
+//			ShowNotification (context, int.Parse(intent.Action));
 		}
 
 		#endregion

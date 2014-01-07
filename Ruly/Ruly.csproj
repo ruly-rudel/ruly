@@ -104,6 +104,7 @@
     <Compile Include="model\Shell\PMF.cs" />
     <Compile Include="view\BroadcastReceiver\AlarmReceiver.cs" />
     <Compile Include="view\Service\WakeLockService.cs" />
+    <Compile Include="view\Fragment\HistoryDatePickerFragment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

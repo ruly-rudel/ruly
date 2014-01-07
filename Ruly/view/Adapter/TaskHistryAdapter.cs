@@ -81,8 +81,13 @@ namespace Ruly.view
 				view.FindViewById<TextView> (Resource.Id.taskHistoryFrom).Text = "";
 				view.FindViewById<TextView> (Resource.Id.taskHistoryTo).Text = "";
 				view.FindViewById<TextView>(Resource.Id.taskHistoryName).SetBackgroundColor (Android.Graphics.Color.White);
-				var span = items [position].End - items [position].Begin;
-				view.SetMinimumHeight ((int)span.TotalMinutes * 3); 
+				if (items [position].End == new DateTime ()) {
+					var span = DateTime.Now - items [position].Begin;
+					view.SetMinimumHeight ((int)span.TotalMinutes * 3); 
+				} else {
+					var span = items [position].End - items [position].Begin;
+					view.SetMinimumHeight ((int)span.TotalMinutes * 3); 
+				}
 			}
 		}
 

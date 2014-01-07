@@ -89,6 +89,15 @@ namespace Ruly.viewmodel
 			}
 		}
 
+		public static DateTime ShowDate {
+			get {
+				return me.m_model.ShowDate;
+			}
+			set {
+				me.m_model.ShowDate = value;
+			}
+		}
+
 		public static TaskAlarm AddAlarm(int hour, int minute)
 		{
 			var alarm = new TaskAlarm() {

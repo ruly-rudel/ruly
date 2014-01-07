@@ -51,7 +51,6 @@ namespace Ruly.view
 
 			SetAdapter ();
 
-
 			timer = new Timer ();
 			timer.AutoReset = true;
 			timer.Interval = 100;	// 100ms
@@ -59,11 +58,18 @@ namespace Ruly.view
 				handler.Post(() =>
 					{
 						todayTime.Text = DateTime.Now.ToLongTimeString();
-						todayDate.Text = DateTime.Today.ToShortDateString ();
+						todayDate.Text = ViewModel.ShowDate.ToShortDateString ();
 						todayDay.Text = DateTime.Today.DayOfWeek.ToString ();
 					});
 			};
 			timer.Enabled = true;
+
+			todayDate.Touch += (object sender, View.TouchEventArgs e) => {
+				if(e.Event.Action == MotionEventActions.Up) {
+					var df = new HistoryDatePickerFragment(todayDate);
+					df.Show(this.FragmentManager, "historyDatePicker");
+				}
+			};
 
 			return rootView;
 		}

@@ -20,6 +20,7 @@ namespace Ruly.model
 		private PersistentModelData m_data;
 		private SQLiteConnection m_db;
 		private TaskData m_unknown_task;
+		private DateTime m_show_date;
 
 		public Model ()
 		{
@@ -46,7 +47,10 @@ namespace Ruly.model
 			TaskHistories = new ObservableCollection<CombinedTaskHistory> ();
 			RawTaskHistories = new ObservableCollection<CombinedTaskHistory> ();
 			UpdateTaskList ();
-			UpdateTaskHistoryList ();
+
+			// show today task at default
+			// this result in call UpdateTaskHistoryList();
+			ShowDate = DateTime.Today;
 		}
 
 		public ObservableCollection<TaskData> Tasks {
@@ -114,6 +118,17 @@ namespace Ruly.model
 
 			private set {
 				m_category_relations = value;
+			}
+		}
+
+		public DateTime ShowDate {
+			get {
+				return m_show_date;
+			}
+
+			set {
+				m_show_date = value;
+				UpdateTaskHistoryList ();
 			}
 		}
 
@@ -233,8 +248,13 @@ namespace Ruly.model
 			m_histories.Clear ();
 			m_raw_histories.Clear ();
 //			var resulth = m_db.Table<TaskHistory> ();
-			var today_day = new DateTime (DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day);
-			var resulth = from x in m_db.Table<TaskHistory> () where x.End >= today_day || x.Begin >= today_day orderby x.Begin select x;
+			var today_day = new DateTime (ShowDate.Year, ShowDate.Month, ShowDate.Day);
+			var next_day = new DateTime (ShowDate.Year, ShowDate.Month, ShowDate.Day);
+			next_day = next_day.AddDays (1.0);
+//			var resulth = from x in m_db.Table<TaskHistory> () where x.End >= today_day || x.Begin >= today_day orderby x.Begin select x;
+			var resulth = from x in m_db.Table<TaskHistory> () 
+				              where (x.End >= today_day && x.End < next_day) || (x.Begin >= today_day && x.Begin < next_day)
+			               orderby x.Begin select x;
 			CombinedTaskHistory current = null;
 			foreach (var i in resulth) {
 				if (current == null) {	// first

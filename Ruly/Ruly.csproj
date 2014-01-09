@@ -105,6 +105,7 @@
     <Compile Include="view\BroadcastReceiver\AlarmReceiver.cs" />
     <Compile Include="view\Service\WakeLockService.cs" />
     <Compile Include="view\Fragment\HistoryDatePickerFragment.cs" />
+    <Compile Include="view\Fragment\SettingFragment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -175,6 +176,11 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_expand.png" />
     <AndroidResource Include="Resources\layout\TaskAlarm.axml" />
     <AndroidResource Include="Resources\layout\ShellActivity.axml" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_settings.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_settings.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_settings.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_settings.png" />
+    <AndroidResource Include="Resources\xml\preferences.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
@@ -194,6 +200,7 @@
     <Folder Include="viewmodel\Shell\" />
     <Folder Include="view\BroadcastReceiver\" />
     <Folder Include="view\Service\" />
+    <Folder Include="Resources\xml\" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="sqlite-net">

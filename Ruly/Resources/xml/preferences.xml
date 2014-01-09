@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="pref_begin_sleep"
+        android:title="就寝通知"
+        android:summary="就寝する時間になった時にRulyが通知します"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="pref_end_sleep"
+        android:title="起床通知"
+        android:summary="起床する時間になった時にRulyが通知します"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="pref_notify_with_sound"
+        android:title="音で知らせる"
+        android:summary="起床/就寝時、その他の通知を音声で行います"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="pref_unlock_keylock"
+        android:title="キーロックを解除"
+        android:summary="通知時にキーロックを自動的に解除します"
+        android:defaultValue="true" />
+</PreferenceScreen>
+

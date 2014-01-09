@@ -24,6 +24,7 @@ namespace Ruly.view
 		TextView todayDate;
 		TextView todayDay;
 		TextView todayTime;
+		ImageButton configButton;
 		Handler handle = new Handler();
 
 		protected override void OnCreate (Bundle bundle)
@@ -70,12 +71,19 @@ namespace Ruly.view
 			todayDate = FindViewById<TextView> (Resource.Id.TodayDate);
 			todayDay  = FindViewById<TextView> (Resource.Id.TodayDay);
 			todayTime = FindViewById<TextView> (Resource.Id.TodayTime);
+			configButton = FindViewById<ImageButton> (Resource.Id.ConfigButton);
+
 			ShellViewModel.Data.PropertyChanged += (object sender, System.ComponentModel.PropertyChangedEventArgs e) => {
 				handle.Post(() => {
 					todayDate.Text = ShellViewModel.Data.TodayDate;
 					todayDay.Text = ShellViewModel.Data.TodayDay;
 					todayTime.Text = ShellViewModel.Data.TodayTime;
 				});
+			};
+
+			configButton.Click += (object sender, EventArgs e) => {
+				throw new NotImplementedException();
+//				FragmentManager.BeginTransaction().Replace(Resource.Id.ShellFrame, new SettingFragment()).Commit();
 			};
 
 //			textView = FindViewById<TextView> (Resource.Id.ShellFrameTitle);

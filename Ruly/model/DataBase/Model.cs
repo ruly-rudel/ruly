@@ -229,6 +229,10 @@ namespace Ruly.model
 					End = task.End
 				});
 			}
+			if (State == 1 && m_data.current_exec.Id == task.Id) {	// working
+				m_data.current_exec.TaskId = task.TaskId[0];
+				m_data.current_exec.Begin = task.Begin;
+			}
 			UpdateTaskHistoryList ();
 		}
 

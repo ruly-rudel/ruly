@@ -117,8 +117,8 @@ namespace Ruly
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f09000e
-			public const int ConfigButton = 2131296270;
+			// aapt resource value: 0x7f09000f
+			public const int ConfigButton = 2131296271;
 			
 			// aapt resource value: 0x7f090001
 			public const int InboxTaskList = 2131296257;
@@ -126,11 +126,14 @@ namespace Ruly
 			// aapt resource value: 0x7f090004
 			public const int NextTaskList = 2131296260;
 			
-			// aapt resource value: 0x7f09000d
-			public const int RelativeLayout = 2131296269;
+			// aapt resource value: 0x7f09000e
+			public const int RelativeLayout = 2131296270;
 			
 			// aapt resource value: 0x7f09000c
-			public const int ShellFrame = 2131296268;
+			public const int ShellActivityFrame = 2131296268;
+			
+			// aapt resource value: 0x7f09000d
+			public const int ShellFrame = 2131296269;
 			
 			// aapt resource value: 0x7f090008
 			public const int TodayDate = 2131296264;
@@ -153,89 +156,89 @@ namespace Ruly
 			// aapt resource value: 0x7f090007
 			public const int linearLayout3 = 2131296263;
 			
+			// aapt resource value: 0x7f090023
+			public const int menu_add = 2131296291;
+			
 			// aapt resource value: 0x7f090022
-			public const int menu_add = 2131296290;
-			
-			// aapt resource value: 0x7f090021
-			public const int menu_discard = 2131296289;
-			
-			// aapt resource value: 0x7f090024
-			public const int menu_edit = 2131296292;
-			
-			// aapt resource value: 0x7f090028
-			public const int menu_finish = 2131296296;
+			public const int menu_discard = 2131296290;
 			
 			// aapt resource value: 0x7f090025
-			public const int menu_go = 2131296293;
+			public const int menu_edit = 2131296293;
 			
 			// aapt resource value: 0x7f090029
-			public const int menu_new = 2131296297;
+			public const int menu_finish = 2131296297;
 			
 			// aapt resource value: 0x7f090026
-			public const int menu_pause = 2131296294;
+			public const int menu_go = 2131296294;
+			
+			// aapt resource value: 0x7f09002a
+			public const int menu_new = 2131296298;
 			
 			// aapt resource value: 0x7f090027
-			public const int menu_resume = 2131296295;
+			public const int menu_pause = 2131296295;
 			
-			// aapt resource value: 0x7f090023
-			public const int menu_save = 2131296291;
+			// aapt resource value: 0x7f090028
+			public const int menu_resume = 2131296296;
 			
-			// aapt resource value: 0x7f09000f
-			public const int taskAlarmDateTime = 2131296271;
-			
-			// aapt resource value: 0x7f090012
-			public const int taskAlarmList = 2131296274;
-			
-			// aapt resource value: 0x7f09001f
-			public const int taskCreated = 2131296287;
-			
-			// aapt resource value: 0x7f090013
-			public const int taskEditHome = 2131296275;
-			
-			// aapt resource value: 0x7f090014
-			public const int taskHistoryFrom = 2131296276;
-			
-			// aapt resource value: 0x7f090016
-			public const int taskHistoryName = 2131296278;
-			
-			// aapt resource value: 0x7f090015
-			public const int taskHistoryTo = 2131296277;
-			
-			// aapt resource value: 0x7f090017
-			public const int taskInfoList = 2131296279;
-			
-			// aapt resource value: 0x7f090020
-			public const int taskModified = 2131296288;
-			
-			// aapt resource value: 0x7f090011
-			public const int taskNote = 2131296273;
-			
-			// aapt resource value: 0x7f09001e
-			public const int taskParent = 2131296286;
-			
-			// aapt resource value: 0x7f09001d
-			public const int taskPlace = 2131296285;
-			
-			// aapt resource value: 0x7f09001c
-			public const int taskState = 2131296284;
+			// aapt resource value: 0x7f090024
+			public const int menu_save = 2131296292;
 			
 			// aapt resource value: 0x7f090010
-			public const int taskTitle = 2131296272;
+			public const int taskAlarmDateTime = 2131296272;
+			
+			// aapt resource value: 0x7f090013
+			public const int taskAlarmList = 2131296275;
+			
+			// aapt resource value: 0x7f090020
+			public const int taskCreated = 2131296288;
+			
+			// aapt resource value: 0x7f090014
+			public const int taskEditHome = 2131296276;
+			
+			// aapt resource value: 0x7f090015
+			public const int taskHistoryFrom = 2131296277;
+			
+			// aapt resource value: 0x7f090017
+			public const int taskHistoryName = 2131296279;
+			
+			// aapt resource value: 0x7f090016
+			public const int taskHistoryTo = 2131296278;
+			
+			// aapt resource value: 0x7f090018
+			public const int taskInfoList = 2131296280;
+			
+			// aapt resource value: 0x7f090021
+			public const int taskModified = 2131296289;
+			
+			// aapt resource value: 0x7f090012
+			public const int taskNote = 2131296274;
+			
+			// aapt resource value: 0x7f09001f
+			public const int taskParent = 2131296287;
+			
+			// aapt resource value: 0x7f09001e
+			public const int taskPlace = 2131296286;
+			
+			// aapt resource value: 0x7f09001d
+			public const int taskState = 2131296285;
+			
+			// aapt resource value: 0x7f090011
+			public const int taskTitle = 2131296273;
 			
 			// aapt resource value: 0x7f090003
 			public const int textView1 = 2131296259;
 			
-			// aapt resource value: 0x7f090018
-			public const int textView2 = 2131296280;
-			
 			// aapt resource value: 0x7f090019
-			public const int textView3 = 2131296281;
+			public const int textView2 = 2131296281;
 			
 			// aapt resource value: 0x7f09001a
-			public const int textView4 = 2131296282;
+			public const int textView3 = 2131296282;
 			
 			// aapt resource value: 0x7f09001b
-			public const int textView5 = 2131296283;
+			public const int textView4 = 2131296283;
+			
+			// aapt resource value: 0x7f09001c
+			public const int textView5 = 2131296284;
 			
 			// aapt resource value: 0x7f090006
 			public const int toggleAbstDetail = 2131296262;
@@ -272,25 +275,28 @@ namespace Ruly
 			public const int ShellActivity = 2130903044;
 			
 			// aapt resource value: 0x7f030005
-			public const int TaskAlarm = 2130903045;
+			public const int ShellFragment = 2130903045;
 			
 			// aapt resource value: 0x7f030006
-			public const int TaskEdit = 2130903046;
+			public const int TaskAlarm = 2130903046;
 			
 			// aapt resource value: 0x7f030007
-			public const int TaskEditHome = 2130903047;
+			public const int TaskEdit = 2130903047;
 			
 			// aapt resource value: 0x7f030008
-			public const int TaskHistoryItem = 2130903048;
+			public const int TaskEditHome = 2130903048;
 			
 			// aapt resource value: 0x7f030009
-			public const int TaskInfo = 2130903049;
+			public const int TaskHistoryItem = 2130903049;
 			
 			// aapt resource value: 0x7f03000a
-			public const int TaskItem = 2130903050;
+			public const int TaskInfo = 2130903050;
 			
 			// aapt resource value: 0x7f03000b
-			public const int TaskItemDetail = 2130903051;
+			public const int TaskItem = 2130903051;
+			
+			// aapt resource value: 0x7f03000c
+			public const int TaskItemDetail = 2130903052;
 			
 			static Layout()
 			{

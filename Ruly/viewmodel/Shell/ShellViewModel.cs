@@ -12,6 +12,8 @@ using Android.Widget;
 using Ruly.model;
 using Android.Opengl;
 using Android.Util;
+using System.IO;
+using Java.Util.Zip;
 
 
 namespace Ruly.viewmodel
@@ -185,6 +187,38 @@ namespace Ruly.viewmodel
 //				mCameraIndex.rotation[2] = 0;
 //				setCamera(-30f, mCameraIndex.location, mCameraIndex.rotation, 45, mWidth, mHeight);
 //			}
+		}
+
+		public static void SetupShell(string target)
+		{
+			// Unzip
+			var root = System.Environment.GetFolderPath (System.Environment.SpecialFolder.Personal);
+			if(!Directory.Exists(root + "/" + target)) {
+				Log.Debug ("Ruly", "extracting default Shell...");
+				using (var s = Application.Context.Assets.Open ("Shell/" + target + ".zip")) 
+				using (var z = new ZipInputStream(s))
+				{
+					ZipEntry ze;
+					byte[] buf = new byte[1024];
+					while ((ze = z.NextEntry) != null) {
+						if (!ze.IsDirectory) {
+							string name = root + "/" + ze.Name;
+							Util.EnsureDirectory (System.IO.Path.GetDirectoryName(name));
+							using (var ws = File.OpenWrite (name)) 
+							{
+								var i = 0;
+								while (i < ze.Size) {
+									int num = z.Read (buf, 0, 1024);
+									ws.Write (buf, 0, num);
+									i += num;
+								}
+								z.CloseEntry ();
+								Log.Debug ("Ruly", "Extract File " + ze.Name);
+							}
+						}
+					}
+				}
+			}
 		}
 
 	}

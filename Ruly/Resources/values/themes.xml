@@ -7,5 +7,6 @@
     <style name="MyActionBar"
            parent="@android:style/Widget.ActionBar">
         <item name="android:displayOptions">disableHome</item>
+        <item name="android:background">#80ffffff</item>
     </style>
 </resources>

@@ -183,6 +183,11 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_settings.png" />
     <AndroidResource Include="Resources\xml\preferences.xml" />
     <AndroidResource Include="Resources\layout\ShellFragment.axml" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_alarms.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_alarms.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_alarms.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_alarms.png" />
+    <AndroidResource Include="Resources\menu\shell_menu.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>

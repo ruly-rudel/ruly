@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_alarm1"
+          android:icon="@drawable/ic_action_alarms"
+          android:title="就寝"
+          android:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/menu_alarm2"
+          android:icon="@drawable/ic_action_alarms"
+          android:title="起床"
+          android:showAsAction="ifRoom|withText" />
+    <item android:id="@+id/menu_settings"
+          android:icon="@drawable/ic_action_settings"
+          android:title="設定"
+          android:showAsAction="ifRoom|withText" />
+</menu>

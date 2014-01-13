@@ -23,6 +23,7 @@
             p1:layout_marginRight="8.0dp"
             p1:textStyle="bold"
             p1:typeface="normal"
+            p1:layout_alignParentBottom="true"
             p1:layout_alignParentRight="true" />
         <TextView
             p1:textAppearance="?android:attr/textAppearanceMedium"
@@ -41,14 +42,7 @@
             p1:textStyle="bold"
             p1:id="@+id/TodayDate"
             p1:layout_marginLeft="8px"
-            p1:layout_below="@id/TodayDay"
-            p1:layout_marginTop="-20px" />
-        <ImageButton
-            p1:src="@drawable/ic_action_settings"
-            p1:layout_width="wrap_content"
-            p1:layout_height="wrap_content"
-            p1:id="@+id/ConfigButton"
             p1:layout_alignParentBottom="true"
-            p1:layout_alignParentRight="true" />
+            p1:layout_marginBottom="40px" />
     </RelativeLayout>
 </FrameLayout>

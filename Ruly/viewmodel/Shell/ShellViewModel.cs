@@ -163,7 +163,7 @@ namespace Ruly.viewmodel
 		public static void setDefaultCamera() {
 //			Matrix.SetIdentityM(mRMatrix, 0);
 			me.location[0] = 0;
-			me.location[1] = 16; // 10
+			me.location[1] = 15f; // 10
 			me.location[2] = 0;
 			me.rotation[0] = 0;
 			me.rotation[1] = 0;

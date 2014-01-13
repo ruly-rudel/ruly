@@ -24,8 +24,6 @@ namespace Ruly.view
 			RequestWindowFeature (WindowFeatures.ActionBarOverlay);
 			SetContentView (Resource.Layout.ShellActivity);
 
-//			FragmentManager.BeginTransaction().Add(Resource.Layout.ShellFragment, new ShellFragment()).Commit();
-//			FragmentManager.BeginTransaction ().Replace (Resource.Id.ShellActivityFrame, new ShellFragment ()).Commit ();
 			var fm = FragmentManager.BeginTransaction ();
 			fm.Add (Resource.Id.ShellActivityFrame, new ShellFragment ());
 			fm.Commit ();
@@ -42,6 +40,24 @@ namespace Ruly.view
 		{
 			MenuInflater.Inflate (Resource.Menu.shell_menu, menu);
 			return true;
+		}
+
+		public override bool OnOptionsItemSelected (IMenuItem item)
+		{
+			switch (item.ItemId) {
+			case Resource.Id.menu_alarm:
+				return true;
+
+			case Resource.Id.menu_settings:
+				var fm = FragmentManager.BeginTransaction();
+				fm.Replace(Resource.Id.ShellActivityFrame, new SettingFragment());
+				fm.AddToBackStack(null);
+				fm.Commit();
+				return true;
+
+			default: 
+				return base.OnOptionsItemSelected(item);
+			}
 		}
 
 		public override bool OnTouchEvent (MotionEvent e)

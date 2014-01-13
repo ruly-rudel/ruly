@@ -97,7 +97,7 @@ namespace Ruly.viewmodel
 			mNpot = hasExt("GL_OES_texture_npot");
 
 			// initialize
-			GLES20.GlClearColor(1, 1, 1, 1);
+			GLES20.GlClearColor(0, 0, 0, 1);
 			GLES20.GlEnable(GLES20.GlDepthTest);
 			GLES20.GlEnable(GLES20.GlBlend);
 			checkGlError ("GlEnable");

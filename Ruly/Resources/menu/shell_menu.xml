@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/menu_alarm1"
+    <item android:id="@+id/menu_alarm"
           android:icon="@drawable/ic_action_alarms"
-          android:title="就寝"
+          android:title="アラーム"
           android:showAsAction="ifRoom|withText"/>
-    <item android:id="@+id/menu_alarm2"
-          android:icon="@drawable/ic_action_alarms"
-          android:title="起床"
-          android:showAsAction="ifRoom|withText" />
     <item android:id="@+id/menu_settings"
           android:icon="@drawable/ic_action_settings"
           android:title="設定"

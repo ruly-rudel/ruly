@@ -4,6 +4,10 @@
           android:icon="@drawable/ic_action_alarms"
           android:title="アラーム"
           android:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/menu_history"
+          android:icon="@drawable/ic_action_go_to_today"
+          android:title="履歴"
+          android:showAsAction="ifRoom|withText" />
     <item android:id="@+id/menu_settings"
           android:icon="@drawable/ic_action_settings"
           android:title="設定"

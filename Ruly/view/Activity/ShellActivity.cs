@@ -48,6 +48,10 @@ namespace Ruly.view
 			case Resource.Id.menu_alarm:
 				return true;
 
+			case Resource.Id.menu_history:
+				StartActivity (typeof(MainActivity));
+				return true;
+
 			case Resource.Id.menu_settings:
 				var fm = FragmentManager.BeginTransaction();
 				fm.Replace(Resource.Id.ShellActivityFrame, new SettingFragment());
@@ -60,13 +64,13 @@ namespace Ruly.view
 			}
 		}
 
-		public override bool OnTouchEvent (MotionEvent e)
-		{
-			if (e.Action == MotionEventActions.Up && e.DownTime >= 1000) {
-				StartActivity (typeof(MainActivity));
-			}
-			return true;
-		}
+//		public override bool OnTouchEvent (MotionEvent e)
+//		{
+//			if (e.Action == MotionEventActions.Up && e.DownTime >= 1000) {
+//				StartActivity (typeof(MainActivity));
+//			}
+//			return true;
+//		}
 
 	}
 }

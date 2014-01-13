@@ -9,25 +9,52 @@
     <RelativeLayout
         p1:minWidth="25px"
         p1:minHeight="25px"
-        p1:layout_width="fill_parent"
-        p1:layout_height="fill_parent"
-        p1:id="@+id/RelativeLayout">
+        p1:layout_width="match_parent"
+        p1:layout_height="wrap_content"
+        p1:id="@+id/RelativeLayout"
+        p1:layout_gravity="bottom">
+        <Switch
+            p1:layout_width="wrap_content"
+            p1:layout_height="wrap_content"
+            p1:id="@+id/AlarmSwitch1"
+            p1:layout_alignParentRight="true" />
+        <TextView
+            p1:text="06:00"
+            p1:textAppearance="?android:attr/textAppearanceLarge"
+            p1:layout_width="wrap_content"
+            p1:layout_height="wrap_content"
+            p1:id="@+id/AlarmTime1"
+            p1:layout_toLeftOf="@id/AlarmSwitch1" />
+        <Switch
+            p1:layout_width="wrap_content"
+            p1:layout_height="wrap_content"
+            p1:id="@+id/AlarmSwitch2"
+            p1:layout_alignParentRight="true"
+            p1:layout_below="@id/AlarmSwitch1" />
+        <TextView
+            p1:text="22:00"
+            p1:textAppearance="?android:attr/textAppearanceLarge"
+            p1:layout_width="wrap_content"
+            p1:layout_height="wrap_content"
+            p1:id="@+id/AlarmTime2"
+            p1:layout_alignBaseline="@id/AlarmSwitch2"
+            p1:layout_toLeftOf="@id/AlarmSwitch2" />
         <TextView
             p1:textAppearance="?android:attr/textAppearanceLarge"
             p1:layout_width="wrap_content"
             p1:layout_height="wrap_content"
-            p1:text=""
+            p1:text="time"
             p1:id="@+id/TodayTime"
             p1:textSize="52dp"
             p1:layout_marginLeft="0.0dp"
             p1:layout_marginRight="8.0dp"
             p1:textStyle="bold"
             p1:typeface="normal"
-            p1:layout_alignParentBottom="true"
-            p1:layout_alignParentRight="true" />
+            p1:layout_alignParentRight="true"
+            p1:layout_below="@id/AlarmSwitch2" />
         <TextView
             p1:textAppearance="?android:attr/textAppearanceMedium"
-            p1:text=""
+            p1:text="day"
             p1:layout_width="wrap_content"
             p1:layout_height="wrap_content"
             p1:textStyle="bold"
@@ -36,13 +63,13 @@
             p1:layout_alignBaseline="@id/TodayTime" />
         <TextView
             p1:textAppearance="?android:attr/textAppearanceMedium"
-            p1:text=""
+            p1:text="date"
             p1:layout_width="wrap_content"
             p1:layout_height="wrap_content"
             p1:textStyle="bold"
             p1:id="@+id/TodayDate"
             p1:layout_marginLeft="8px"
-            p1:layout_alignParentBottom="true"
-            p1:layout_marginBottom="40px" />
+            p1:layout_alignTop="@id/TodayTime"
+            p1:layout_marginTop="16px" />
     </RelativeLayout>
 </FrameLayout>

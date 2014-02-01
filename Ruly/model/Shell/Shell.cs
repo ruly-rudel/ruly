@@ -118,6 +118,18 @@ namespace Ruly.model
 						TextureFile.AddTexture (m.material.texture);
 					}
 				}
+				if (m.material.sph != null) {
+					m.material.sph = TextureFile.SearchTextureFilePath (root, dir, m.material.sph);
+					if (m.material.sph != null) {
+						TextureFile.AddTexture (m.material.sph);
+					}
+				}
+				if (m.material.spa != null) {
+					m.material.spa = TextureFile.SearchTextureFilePath (root, dir, m.material.spa);
+					if (m.material.spa != null) {
+						TextureFile.AddTexture (m.material.spa);
+					}
+				}
 			}
 
 			for (int i = 0; i < Surface.toon_name.Length; i++) {

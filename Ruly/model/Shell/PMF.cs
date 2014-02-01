@@ -19,7 +19,8 @@ namespace Ruly.model
         public byte edge_flag;
         public int face_vert_count;
         public string texture;
-        public string sphere;   // aditional
+        public string sph;   // aditional
+		public string spa;   // aditional
 
         // additional
         public int face_vert_offset;
@@ -88,6 +89,8 @@ namespace Ruly.model
 						edge_flag = i.edge_flag,
 						face_vert_count = i.face_vert_count,
 						texture = i.texture,
+						sph = i.sph,
+						spa = i.spa,
 						face_vert_offset = i.face_vert_offset
 					},
 					face_vert_count = i.face_vert_count,
@@ -290,6 +293,18 @@ namespace Ruly.model
 					{
 						Materials[i].texture = bs.ReadString();
 						Log.Debug("RMC", "load texture in material ... " + Materials[i].texture);
+						var sf = bs.ReadByte();
+						if (sf == 1)
+						{
+							Materials[i].sph = bs.ReadString();
+							Materials[i].spa = null;
+							Log.Debug("RMC", "load sphere(sph) in material ... " + Materials[i].sph);
+						} else if (sf == 2)
+						{
+							Materials[i].sph = null;
+							Materials[i].spa = bs.ReadString();
+							Log.Debug("RMC", "load sphere(spa) in material ... " + Materials[i].spa);
+						}
 					}
                     Materials[i].face_vert_offset = bs.ReadInt32();
                     Materials[i].bone_num = bs.ReadInt32();

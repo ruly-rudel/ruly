@@ -3,7 +3,15 @@
     p1:id="@+id/ShellFrame"
     p1:layout_width="match_parent"
     p1:layout_height="match_parent">
+    <TextView
+        p1:text=""
+        p1:textAppearance="?android:attr/textAppearanceLarge"
+        p1:layout_width="match_parent"
+        p1:layout_height="match_parent"
+        p1:id="@+id/LogBG"
+        p1:textColor="#22CC1B" />
     <Ruly.view.ShellView
+        p1:id="@+id/ShellView"
         p1:layout_width="match_parent"
         p1:layout_height="match_parent" />
     <RelativeLayout
@@ -24,7 +32,8 @@
             p1:layout_width="wrap_content"
             p1:layout_height="wrap_content"
             p1:id="@+id/AlarmTime1"
-            p1:layout_toLeftOf="@id/AlarmSwitch1" />
+            p1:layout_toLeftOf="@id/AlarmSwitch1"
+            p1:textColor="#22CC1B" />
         <Switch
             p1:layout_width="wrap_content"
             p1:layout_height="wrap_content"
@@ -38,7 +47,8 @@
             p1:layout_height="wrap_content"
             p1:id="@+id/AlarmTime2"
             p1:layout_alignBaseline="@id/AlarmSwitch2"
-            p1:layout_toLeftOf="@id/AlarmSwitch2" />
+            p1:layout_toLeftOf="@id/AlarmSwitch2"
+            p1:textColor="#22CC1B" />
         <TextView
             p1:textAppearance="?android:attr/textAppearanceLarge"
             p1:layout_width="wrap_content"
@@ -51,7 +61,8 @@
             p1:textStyle="bold"
             p1:typeface="normal"
             p1:layout_alignParentRight="true"
-            p1:layout_below="@id/AlarmSwitch2" />
+            p1:layout_below="@id/AlarmSwitch2"
+            p1:textColor="#ff22cc1b" />
         <TextView
             p1:textAppearance="?android:attr/textAppearanceMedium"
             p1:text="day"
@@ -60,7 +71,8 @@
             p1:textStyle="bold"
             p1:id="@+id/TodayDay"
             p1:layout_marginLeft="8px"
-            p1:layout_alignBaseline="@id/TodayTime" />
+            p1:layout_alignBaseline="@id/TodayTime"
+            p1:textColor="#22CC1B" />
         <TextView
             p1:textAppearance="?android:attr/textAppearanceMedium"
             p1:text="date"
@@ -70,6 +82,7 @@
             p1:id="@+id/TodayDate"
             p1:layout_marginLeft="8px"
             p1:layout_alignTop="@id/TodayTime"
-            p1:layout_marginTop="16px" />
+            p1:layout_marginTop="16px"
+            p1:textColor="#22CC1B" />
     </RelativeLayout>
 </FrameLayout>

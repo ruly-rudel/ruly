@@ -36,7 +36,8 @@ namespace Ruly.viewmodel
 		// texture samplers
 		public int msTextureSampler;
 		public int msToonSampler;
-		public int msSphereSampler;
+		public int msSphSampler;
+		public int msSpaSampler;
 
 		// Uniforms
 		public int muSpaEn;
@@ -67,7 +68,8 @@ namespace Ruly.viewmodel
 
 			msTextureSampler	= GLES20.GlGetUniformLocation(mProgram, "sTex");
 			msToonSampler		= GLES20.GlGetUniformLocation(mProgram, "sToon");
-			msSphereSampler		= GLES20.GlGetUniformLocation(mProgram, "sSphere");
+			msSphSampler		= GLES20.GlGetUniformLocation(mProgram, "sSph");
+			msSpaSampler		= GLES20.GlGetUniformLocation(mProgram, "sSpa");
 
 			muSpaEn				= GLES20.GlGetUniformLocation(mProgram, "bSpaEn");
 			muSphEn				= GLES20.GlGetUniformLocation(mProgram, "bSphEn");

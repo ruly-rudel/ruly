@@ -49,6 +49,9 @@ namespace Ruly.view
 					#elif XS
 					ShellViewModel.SetupShell("mikuXS");
 					ShellViewModel.LoadPMD(root, "/mikuXS", "/mikuXS.pmd");
+					#else
+					ShellViewModel.SetupShell("zunko");
+					ShellViewModel.LoadPMF(root, "/zunko", "/zunko.pmf");
 					#endif
 					ShellViewModel.LoadVMD (root, "/motion", "/stand_pose.vmd");
 					ShellViewModel.CommitShell ();
@@ -69,6 +72,10 @@ namespace Ruly.view
 					todayTime.Text = ShellViewModel.Data.TodayTime;
 				});
 			};
+
+
+			var sv = rootView.FindViewById<ShellView> (Resource.Id.ShellView);
+			sv.Holder.SetFormat (Android.Graphics.Format.Translucent);
 
 			return rootView;
 		}

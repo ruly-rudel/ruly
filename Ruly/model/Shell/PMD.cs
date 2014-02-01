@@ -19,6 +19,8 @@ namespace Ruly.model
 		public byte			edge_flag;
 		public int			face_vert_count;
 		public string 		texture;
+		public string 		sph;
+		public string		spa;
 
 		public int 			face_vert_offset;
 	}

@@ -224,5 +224,6 @@
     <AndroidAsset Include="Assets\Shell\mikuXSc.zip" />
     <AndroidAsset Include="Assets\shader\vs_nm.vsh" />
     <AndroidAsset Include="Assets\shader\fs_alpha.fsh" />
+    <AndroidAsset Include="Assets\Shell\zunko.zip" />
   </ItemGroup>
 </Project>

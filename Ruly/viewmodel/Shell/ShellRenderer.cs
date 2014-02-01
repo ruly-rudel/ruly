@@ -287,6 +287,30 @@ namespace Ruly.viewmodel
 				}
 			}
 
+			// sphere(sph)
+			GLES20.GlUniform1i(glsl.msSphSampler, 2);
+			GLES20.GlActiveTexture(GLES20.GlTexture2);
+			if (mat.material.sph != null) {
+				TexInfo tb = TextureFile.FetchTexInfo (mat.material.sph);
+				if (tb != null) {
+					GLES20.GlBindTexture (GLES20.GlTexture2d, tb.tex);
+				} else {	// avoid crash
+					GLES20.GlBindTexture (GLES20.GlTexture2d, TextureFile.FetchTexInfo (surface.toon_name [0]).tex);	// white texture using toon0.bmp
+				}
+			} else {
+				GLES20.GlBindTexture(GLES20.GlTexture2d, TextureFile.FetchTexInfo(surface.toon_name[0]).tex);	// white texture using toon0.bmp
+			}
+
+			// sphere(spa)
+			GLES20.GlUniform1i(glsl.msSpaSampler, 3);
+			GLES20.GlActiveTexture(GLES20.GlTexture3);
+			if (mat.material.spa != null) {
+				TexInfo tb = TextureFile.FetchTexInfo (mat.material.spa);
+				if (tb != null) {
+					GLES20.GlBindTexture (GLES20.GlTexture2d, tb.tex);
+				}
+			}
+
 			// draw
 			surface.IndexBuffer.Position (mat.face_vert_offset);
 			GLES20.GlDrawElements(GLES20.GlTriangles, mat.face_vert_count, GLES20.GlUnsignedShort, surface.IndexBuffer);

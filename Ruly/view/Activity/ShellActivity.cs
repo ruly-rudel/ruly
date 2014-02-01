@@ -27,7 +27,6 @@ namespace Ruly.view
 			var fm = FragmentManager.BeginTransaction ();
 			fm.Add (Resource.Id.ShellActivityFrame, new ShellFragment ());
 			fm.Commit ();
-
 		}
 
 		protected override void OnStart ()

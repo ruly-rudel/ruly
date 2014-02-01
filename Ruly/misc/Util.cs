@@ -53,7 +53,7 @@ namespace Ruly
 			}
 			rn [num] = (byte)'\0';
 
-			return sjisEnc.GetString (rn);
+			return sjisEnc.GetString (rn, 0, num);
 		}
 
 		public static float[] ReadFloats(BinaryReader br, int num)
